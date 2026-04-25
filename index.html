@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Re'Loren v2 · Spec-compliant redesign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body, #root { margin: 0; padding: 0; width: 100%; height: 100%; }
+    body {
+      font-family: 'Noto Sans', 'Noto Sans Bengali', system-ui, sans-serif;
+      background: #e8eaed;
+      color: #141D2D;
+      -webkit-font-smoothing: antialiased;
+    }
+    #root { overflow: hidden; }
+    /* Override DC defaults slightly for a warmer gallery background */
+    button { font-family: inherit; }
+    input, textarea { font-family: inherit; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel (pinned, integrity-hashed) -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Tokens + data (must load first, populate window.T / window.SAMPLE) -->
+  <script type="text/babel" src="tokens.jsx"></script>
+  <script type="text/babel" src="data.jsx"></script>
+
+  <!-- Device frame + canvas -->
+  <script type="text/babel" src="android-frame.jsx"></script>
+  <script type="text/babel" src="design-canvas.jsx"></script>
+
+  <!-- Shared components -->
+  <script type="text/babel" src="components.jsx"></script>
+
+  <!-- Screen modules -->
+  <script type="text/babel" src="screens-auth.jsx"></script>
+  <script type="text/babel" src="screens-worker.jsx"></script>
+  <script type="text/babel" src="screens-jobs.jsx"></script>
+  <script type="text/babel" src="screens-social.jsx"></script>
+  <script type="text/babel" src="screens-payment.jsx"></script>
+  <script type="text/babel" src="screens-progress.jsx"></script>
+
+  <!-- Main app last -->
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
