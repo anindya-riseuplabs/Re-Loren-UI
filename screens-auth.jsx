@@ -14,13 +14,13 @@ const SplashScreen = ({ onDone }) => {
     }}>
       {/* Dark overlay for depth */}
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, rgba(11,15,26,0.4) 100%)', pointerEvents: 'none' }} />
-      
+
       <div style={{ zIndex: 1, textAlign: 'center' }}>
         <BrandLogo height={100} style={{ filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.5))' }} />
       </div>
 
       <div style={{ zIndex: 1, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Txt variant="subtitle" style={{ 
+        {/* <Txt variant="subtitle" style={{ 
           fontSize: 26, 
           fontFamily: "'Playfair Display', serif",
           color: '#FDFBF7', 
@@ -30,12 +30,12 @@ const SplashScreen = ({ onDone }) => {
           textShadow: '0 0 12px rgba(212,175,55,0.3), 0 2px 4px rgba(0,0,0,0.5)'
         }}>
           Welcome to Re'Loren
-        </Txt>
+        </Txt> */}
         <div style={{ width: 40, height: 2, background: T.color.gold500, margin: '8px 0 16px', opacity: 0.6 }} />
-        <Txt variant="headline" style={{ 
-          fontSize: 26, 
-          color: T.color.textHeading, 
-          fontWeight: 800, 
+        <Txt variant="headline" style={{
+          fontSize: 26,
+          color: T.color.textHeading,
+          fontWeight: 800,
           letterSpacing: '0.1em',
           lineHeight: 1.2,
           whiteSpace: 'nowrap',
@@ -43,10 +43,10 @@ const SplashScreen = ({ onDone }) => {
         }}>
           BE THE CHOOSER
         </Txt>
-        <Txt variant="headline" style={{ 
-          fontSize: 26, 
-          color: T.color.textHeading, 
-          fontWeight: 800, 
+        <Txt variant="headline" style={{
+          fontSize: 26,
+          color: T.color.textHeading,
+          fontWeight: 800,
           letterSpacing: '0.1em',
           lineHeight: 1.2,
           whiteSpace: 'nowrap',
@@ -77,7 +77,7 @@ const LandingScreen = ({ onSignUp, onLogin }) => {
     { eyebrow: 'Work', title: 'Earn on your own schedule', body: 'Get daily job matches at your preferred time.', img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800' },
     { eyebrow: 'Trust', title: 'Identity-verified marketplace', body: 'NID + live photo checks on every worker.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800' },
   ];
-  
+
   useEffect(() => {
     const timer = setInterval(() => setSlide(s => (s + 1) % slides.length), 5000);
     return () => clearInterval(timer);
@@ -228,18 +228,18 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
   const [accountType, setAccountType] = useState('worker'); // 'worker' or 'employer'
   const [skills, setSkills] = useState('');
   const [show, setShow] = useState(false);
-  
+
   const ok = name && phone.length >= 10 && pw.length >= 8 && (accountType !== 'worker' || skills.length > 0);
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Create account" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
-        
+
         <div>
           <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 600, marginBottom: 12, display: 'block', letterSpacing: '0.05em' }}>ACCOUNT TYPE</Txt>
           <div style={{ display: 'flex', gap: 12 }}>
-            <button 
+            <button
               onClick={() => setAccountType('worker')}
               style={{
                 flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
@@ -253,7 +253,7 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
               <Icon name="user" size={20} color={accountType === 'worker' ? T.color.gold500 : T.color.textMuted} />
               <Txt variant="bodySm" style={{ fontWeight: 600 }}>Worker</Txt>
             </button>
-            <button 
+            <button
               onClick={() => setAccountType('employer')}
               style={{
                 flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
@@ -272,13 +272,13 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
 
         <TextField label="Full name" value={name} onChange={setName} placeholder="Enter your name" />
         <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
-        
+
         {accountType === 'worker' && (
           <div style={{ animation: 'fadeIn 0.3s ease' }}>
-            <TextField 
-              label="What are your skills?" 
-              value={skills} 
-              onChange={setSkills} 
+            <TextField
+              label="What are your skills?"
+              value={skills}
+              onChange={setSkills}
               placeholder="e.g. Electrician, Driver, etc."
               helper="List your main expertise"
             />
@@ -286,7 +286,7 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
         )}
 
         <TextField label="Email (optional)" value={email} onChange={setEmail} type="email" placeholder="email@example.com" />
-        
+
         <TextField label="Password" value={pw} onChange={setPw} type={show ? 'text' : 'password'}
           helper="Minimum 8 characters"
           suffix={<IconButton name={show ? 'eyeOff' : 'eye'} size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
@@ -382,7 +382,7 @@ const ForgotPasswordEntryScreen = ({ onBack, onSend, onSwitchOtp }) => {
             <PrimaryButton onClick={() => onSend('phone')}>Send OTP</PrimaryButton>
           </>
         )}
-        
+
         <button onClick={onSwitchOtp} style={{
           background: 'none', border: 'none', color: T.color.gold500,
           fontFamily: T.fontSans, fontSize: 14, cursor: 'pointer',
