@@ -14,22 +14,24 @@ const T = {
     primary800: '#082047',
     primary900: '#051530',
 
-    // Dark-mode blue-charcoal variants (warm, sophisticated — the DEFAULT theme)
-    navyBg:      '#141D2D', // scaffold/AppBar/BottomNav — warmed charcoal
-    navyRaised:  '#1A2639', // cards one elevation
-    navyDeep:    '#0F1820', // modals/deepest
-    navyHover:   '#1E3050',
-    navyBorder:  '#2A3D54',
-    navyDivider: '#1F2E42',
+    // Dark-mode luxury variants
+    navyBg:      'linear-gradient(135deg, #0A1F4D 0%, #050E24 100%)', // More vibrant navy/blue gradient
+    navyBgSolid: '#0A1F4D',
+    navyRaised:  'rgba(26, 44, 80, 0.7)', // Slightly more blue glassmorphism
+    navyDeep:    '#071126', // deep blue for modals/deepest
+    navyHover:   'rgba(40, 60, 100, 0.5)',
+    navyBorder:  'rgba(212, 175, 55, 0.18)', // subtle gold border
+    navyDivider: 'rgba(212, 175, 55, 0.1)',
 
-    // Secondary — Gold (text + CTA on navy) — UNCHANGED, kept for harmony
+    // Secondary — Gold (text + CTA on navy)
     gold50:  '#FAF4DC',
     gold100: '#F3E4A8',
     gold300: '#E5C869',
     gold500: '#D4AF37',
-    gold600: '#DEBA4E',
+    gold600: '#C9A227', // Rich gold accent
     gold700: '#E8C566',
     gold900: '#F5DCA0',
+    goldGradient: 'linear-gradient(90deg, #8C5A17 0%, #C89533 20%, #FDE48F 50%, #C49130 80%, #875514 100%)',
 
     // Accent — Teal/Cyan (complementary to blue, adds visual sophistication)
     teal50:   '#E0F7F6',
@@ -49,10 +51,11 @@ const T = {
     taupe900:  '#2A2620',
 
     // Foreground tiers on navy
-    textPrimary:   '#D4AF37', // gold body + headings — UNCHANGED
-    textSecondary: 'rgba(212, 175, 55, 0.72)',
-    textMuted:     'rgba(212, 175, 55, 0.48)',
-    textOnGold:    '#141D2D',
+    textHeading:   '#FDFBF7', // warm white for headings
+    textPrimary:   '#A0AEC0', // soft gray for body text
+    textSecondary: '#718096',
+    textMuted:     'rgba(160, 174, 192, 0.48)',
+    textOnGold:    '#0B0F1A',
 
     // Neutrals (refined warm grays — for non-navy surfaces like chat images)
     n0:   '#FFFFFF',
@@ -78,11 +81,11 @@ const T = {
     conflict: '#FF9800',
   },
   space: { xs: 4, s: 8, m: 12, l: 16, xl: 24, xxl: 32, xxxl: 48, huge: 64 },
-  radius: { s: 4, m: 8, l: 12, xl: 16, full: 9999 },
+  radius: { s: 8, m: 12, l: 16, xl: 20, full: 9999 },
   elevation: {
-    sm: '0 1px 2px rgba(0,0,0,0.40)',
-    md: '0 4px 10px rgba(0,0,0,0.45)',
-    lg: '0 10px 20px rgba(0,0,0,0.55)',
+    sm: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.2)', // soft inner shadow
+    md: 'inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 16px rgba(0, 0, 0, 0.3)',
+    lg: 'inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.15)', // with soft gold glow
   },
   type: {
     display:  { size: 36, lh: 1.3, w: 700, ls: '-0.5%' },

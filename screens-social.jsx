@@ -65,7 +65,7 @@ const ChatThreadScreen = ({ onBack, onImage, onCall }) => {
 
 // ── Image viewer ─────────────────────────────────────────────
 const ImageViewerScreen = ({ onBack }) => (
-  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#000' }}>
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '12px 16px',
@@ -91,25 +91,144 @@ const ImageViewerScreen = ({ onBack }) => (
   </div>
 );
 
+// ── Active call ──────────────────────────────────────────────
+const ActiveCallScreen = ({ onEnd, user = { name: 'Rahim Uddin', role: 'Worker' } }) => {
+  const [seconds, setSeconds] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isSpeaker, setIsSpeaker] = useState(false);
+
+  useEffect(() => {
+    const t = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const fmtTime = s => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
+
+  return (
+    <div style={{
+      flex: 1, display: 'flex', flexDirection: 'column',
+      background: `linear-gradient(180deg, ${T.color.navyBg} 0%, ${T.color.navyDeep} 100%)`,
+      position: 'relative', overflowY: 'auto', overflowX: 'hidden'
+    }}>
+      {/* Abstract background circles */}
+      <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '60%', aspectRatio: '1/1', background: 'radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%)', borderRadius: '50%' }} />
+      <div style={{ position: 'absolute', bottom: '10%', right: '-10%', width: '80%', aspectRatio: '1/1', background: 'radial-gradient(circle, rgba(212,175,55,0.03) 0%, transparent 70%)', borderRadius: '50%' }} />
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+        <div style={{ position: 'relative', marginBottom: 24 }}>
+          <div style={{
+            position: 'absolute', inset: -20, borderRadius: '50%',
+            border: `2px solid ${T.color.gold500}`, opacity: 0.2,
+            animation: 'pulseIn 2s infinite'
+          }} />
+          <div style={{
+            width: 120, height: 120, borderRadius: 60,
+            background: T.color.navyRaised, border: `3px solid ${T.color.gold500}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 40, fontWeight: 700, color: T.color.gold500,
+            boxShadow: '0 0 30px rgba(212,175,55,0.2)'
+          }}>
+            {user.name.split(' ').map(n => n[0]).join('')}
+          </div>
+        </div>
+
+        <Txt variant="headline" style={{ fontSize: 28, marginBottom: 8 }}>{user.name}</Txt>
+        <Txt variant="body" color={T.color.gold500} style={{ fontWeight: 600, letterSpacing: '0.05em' }}>{user.role.toUpperCase()}</Txt>
+        
+        <div style={{ marginTop: 40, background: 'rgba(255,255,255,0.05)', padding: '8px 20px', borderRadius: T.radius.full, border: '1px solid rgba(255,255,255,0.1)' }}>
+          <Txt variant="subtitle" color={T.color.textSecondary} style={{ fontFamily: 'monospace' }}>{fmtTime(seconds)}</Txt>
+        </div>
+      </div>
+
+      {/* Call Controls */}
+      <div style={{ padding: '24px 24px 40px', display: 'flex', flexDirection: 'column', gap: 24, zIndex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+          {[
+            { id: 'mute', icon: isMuted ? 'micOff' : 'mic', label: 'Mute', active: isMuted, onClick: () => setIsMuted(!isMuted) },
+            { id: 'keypad', icon: 'keypad', label: 'Keypad' },
+            { id: 'speaker', icon: 'volumeHigh', label: 'Speaker', active: isSpeaker, onClick: () => setIsSpeaker(!isSpeaker) },
+          ].map(ctrl => (
+            <div key={ctrl.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+              <button onClick={ctrl.onClick} style={{
+                width: 54, height: 54, borderRadius: 27,
+                background: ctrl.active ? T.color.gold500 : 'rgba(255,255,255,0.08)',
+                border: `1px solid ${ctrl.active ? T.color.gold500 : 'rgba(255,255,255,0.2)'}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', transition: 'all 0.2s'
+              }}>
+                <Icon name={ctrl.icon || 'circle'} size={22} color={ctrl.active ? T.color.textOnGold : '#fff'} />
+              </button>
+              <Txt variant="caption" color="#fff" style={{ opacity: 0.8, fontSize: 11 }}>{ctrl.label}</Txt>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button onClick={onEnd} style={{
+            width: 64, height: 64, borderRadius: 32,
+            background: T.color.error, border: 'none',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', boxShadow: '0 8px 16px rgba(239,83,80,0.3)',
+            transform: 'rotate(135deg)'
+          }}>
+            <Icon name="phone" size={28} color="#fff" />
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes pulseIn {
+          0% { transform: scale(1); opacity: 0.2; }
+          50% { transform: scale(1.2); opacity: 0.1; }
+          100% { transform: scale(1); opacity: 0.2; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // ── Call permission (dialog) ─────────────────────────────────
 const CallPermissionDialog = ({ onClose, onAllow }) => (
-  <Dialog onClose={onClose} title="Allow voice calls?"
-    actions={[
-      <SecondaryButton key="d" onClick={onClose}>Don't allow</SecondaryButton>,
-      <PrimaryButton key="a" onClick={onAllow}>Allow</PrimaryButton>,
-    ]}>
-    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+  <Overlay onClose={onClose} align="center">
+    <div style={{ padding: '0 20px', width: '100%', maxWidth: 400 }}>
       <div style={{
-        width: 64, height: 64, borderRadius: 32, background: 'rgba(212,175,55,0.15)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: T.color.navyRaised, borderRadius: T.radius.xl,
+        border: `1px solid ${T.color.navyBorder}`, padding: '24px 20px',
+        textAlign: 'center', boxShadow: T.elevation.lg
       }}>
-        <Icon name="phone" size={32} color={T.color.gold500} />
+        <div style={{ position: 'relative', width: 64, height: 64, margin: '0 auto 20px' }}>
+          <div style={{
+            position: 'absolute', inset: 0, borderRadius: 32,
+            background: 'rgba(212,175,55,0.1)', border: `2px solid ${T.color.gold500}`,
+            animation: 'pulseIn 2s infinite'
+          }} />
+          <div style={{
+            position: 'absolute', inset: 8, borderRadius: 24,
+            background: T.color.gold500, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', color: T.color.textOnGold
+          }}>
+            <Icon name="phone" size={24} color={T.color.textOnGold} />
+          </div>
+        </div>
+
+        <Txt variant="title" style={{ fontSize: 20, marginBottom: 8 }}>Allow voice calls?</Txt>
+        <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 20, lineHeight: 1.5 }}>
+          Re'Loren needs microphone access to connect you with workers. Calls are 
+          <span style={{ color: T.color.gold500, fontWeight: 600 }}> encrypted </span> 
+          and your number is never shared.
+        </Txt>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <PrimaryButton onClick={onAllow}>Allow access</PrimaryButton>
+          <button onClick={onClose} style={{
+            background: 'none', border: 'none', color: T.color.textMuted,
+            fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            padding: 4
+          }}>Not now</button>
+        </div>
       </div>
     </div>
-    <Txt variant="bodySm" color={T.color.textSecondary} style={{ textAlign: 'center' }}>
-      Re'Loren needs mic access to connect you with Rahim Uddin. Calls are routed through the app and never share your phone number.
-    </Txt>
-  </Dialog>
+  </Overlay>
 );
 
 // ── Notifications ────────────────────────────────────────────
@@ -168,36 +287,41 @@ const NotificationsScreen = ({ onBack, onTap }) => {
 // ── Safety popup (bottom sheet) ──────────────────────────────
 const SafetyPopupSheet = ({ onClose, onShareLocation }) => (
   <BottomSheet onClose={onClose} title="Stay safe on the job">
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 4 }}>
       {[
-        { icon: 'shield', title: 'Meet in public places',
-          body: 'Especially for first-time jobs. Avoid isolated areas.' },
-        { icon: 'location', title: 'Share your live location',
-          body: 'Let a trusted contact follow your route in real time.' },
-        { icon: 'phone', title: 'Call in-app, not directly',
-          body: "Keep conversations inside the app so we can help if anything goes wrong." },
-        { icon: 'warning', title: "If something feels off, leave",
-          body: "Tap 'Report' on the job — we escalate in under 30 minutes." },
+        { icon: 'shield', title: 'Meet in public places', color: '#4FC3F7',
+          body: 'Especially for first-time jobs.' },
+        { icon: 'location', title: 'Share your live location', color: T.color.gold500,
+          body: 'Let a trusted contact follow your route.' },
+        { icon: 'phone', title: 'Call in-app, not directly', color: '#81C784',
+          body: "Keep conversations inside the app." },
+        { icon: 'warning', title: "If something feels off, leave", color: T.color.error,
+          body: "Tap 'Report' on the job." },
       ].map(t => (
-        <div key={t.title} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        <div key={t.title} style={{ 
+          display: 'flex', gap: 12, alignItems: 'center', padding: '10px 12px',
+          background: 'rgba(255,255,255,0.03)', borderRadius: T.radius.m,
+          border: '1px solid rgba(255,255,255,0.05)'
+        }}>
           <div style={{
-            width: 40, height: 40, borderRadius: 20, background: 'rgba(212,175,55,0.12)',
+            width: 36, height: 36, borderRadius: 8, background: `${t.color}15`,
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            border: `1px solid ${t.color}30`
           }}>
-            <Icon name={t.icon} size={20} color={T.color.gold500} />
+            <Icon name={t.icon} size={18} color={t.color} />
           </div>
-          <div>
-            <Txt variant="bodySm" style={{ fontWeight: 600 }}>{t.title}</Txt>
-            <Txt variant="caption" color={T.color.textSecondary} style={{ letterSpacing: 0, marginTop: 2 }}>
+          <div style={{ flex: 1 }}>
+            <Txt variant="bodySm" style={{ fontWeight: 700, fontSize: 13 }}>{t.title}</Txt>
+            <Txt variant="caption" color={T.color.textSecondary} style={{ letterSpacing: 0, marginTop: 2, fontSize: 11 }}>
               {t.body}
             </Txt>
           </div>
         </div>
       ))}
     </div>
-    <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <PrimaryButton icon="location" onClick={onShareLocation}>Share live location</PrimaryButton>
-      <SecondaryButton onClick={onClose}>Got it</SecondaryButton>
+    <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <PrimaryButton icon="location" style={{ minHeight: 44 }} onClick={onShareLocation}>Share live location</PrimaryButton>
+      <SecondaryButton onClick={onClose} style={{ border: 'none', minHeight: 40 }}>I understand</SecondaryButton>
     </div>
   </BottomSheet>
 );
@@ -289,5 +413,5 @@ const PostJobRatingScreen = ({ onBack, onSubmit, role = 'employer' }) => {
 
 Object.assign(window, {
   ChatThreadScreen, ImageViewerScreen, CallPermissionDialog,
-  NotificationsScreen, SafetyPopupSheet, PostJobRatingScreen,
+  ActiveCallScreen, NotificationsScreen, SafetyPopupSheet, PostJobRatingScreen,
 });

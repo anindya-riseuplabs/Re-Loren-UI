@@ -2,27 +2,66 @@
 
 // ── Splash ───────────────────────────────────────────────────
 const SplashScreen = ({ onDone }) => {
-  useEffect(() => { const t = setTimeout(() => onDone && onDone(), 1600); return () => clearTimeout(t); }, []);
+  useEffect(() => { const t = setTimeout(() => onDone && onDone(), 3000); return () => clearTimeout(t); }, []);
   return (
     <div style={{
-      flex: 1, display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      background: T.color.navyBg,
+      width: '100%', height: '100%',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'space-between',
+      background: `#0B0F1A url('splash-bg.png') center/cover no-repeat`,
+      padding: '60px 24px 80px',
+      position: 'relative',
     }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{
-          fontFamily: T.fontSans, fontWeight: 700, fontSize: 44,
-          color: T.color.gold500, letterSpacing: '-1%',
-        }}>Re<span style={{ color: T.color.gold700 }}>'</span>Loren</div>
-        <Txt variant="caption" color={T.color.textMuted} style={{ marginTop: 8 }}>
-          Jobs that fit your day
+      {/* Dark overlay for depth */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, rgba(11,15,26,0.4) 100%)', pointerEvents: 'none' }} />
+      
+      <div style={{ zIndex: 1, textAlign: 'center' }}>
+        <BrandLogo height={100} style={{ filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.5))' }} />
+      </div>
+
+      <div style={{ zIndex: 1, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Txt variant="subtitle" style={{ 
+          fontSize: 26, 
+          fontFamily: "'Playfair Display', serif",
+          color: '#FDFBF7', 
+          fontWeight: 500,
+          marginBottom: 6,
+          letterSpacing: '0.02em',
+          textShadow: '0 0 12px rgba(212,175,55,0.3), 0 2px 4px rgba(0,0,0,0.5)'
+        }}>
+          Welcome to Re'Loren
+        </Txt>
+        <div style={{ width: 40, height: 2, background: T.color.gold500, margin: '8px 0 16px', opacity: 0.6 }} />
+        <Txt variant="headline" style={{ 
+          fontSize: 26, 
+          color: T.color.textHeading, 
+          fontWeight: 800, 
+          letterSpacing: '0.1em',
+          lineHeight: 1.2,
+          whiteSpace: 'nowrap',
+          textShadow: '0 4px 12px rgba(0,0,0,0.9)'
+        }}>
+          BE THE CHOOSER
+        </Txt>
+        <Txt variant="headline" style={{ 
+          fontSize: 26, 
+          color: T.color.textHeading, 
+          fontWeight: 800, 
+          letterSpacing: '0.1em',
+          lineHeight: 1.2,
+          whiteSpace: 'nowrap',
+          textShadow: '0 4px 12px rgba(0,0,0,0.9)'
+        }}>
+          TAKE THE LEAD
         </Txt>
       </div>
-      <div style={{ position: 'absolute', bottom: 80, display: 'flex', gap: 6 }}>
+
+      <div style={{ zIndex: 1, display: 'flex', gap: 8 }}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
-            width: 8, height: 8, borderRadius: 4, background: T.color.gold500,
-            opacity: 0.4, animation: `pulseDot 1.2s ease-in-out ${i * 0.2}s infinite`,
+            width: 6, height: 6, borderRadius: 3, background: T.color.gold500,
+            boxShadow: '0 0 8px rgba(212,175,55,0.8)',
+            animation: `pulseDot 1.2s ease-in-out ${i * 0.2}s infinite`,
           }} />
         ))}
       </div>
@@ -34,57 +73,70 @@ const SplashScreen = ({ onDone }) => {
 const LandingScreen = ({ onSignUp, onLogin }) => {
   const [slide, setSlide] = useState(0);
   const slides = [
-    { eyebrow: 'Post', title: 'Post a job in your own words', body: 'Bangla, Banglish or English — workers find you.' },
-    { eyebrow: 'Work', title: 'Earn on your own schedule', body: 'Get daily job matches at your preferred time.' },
-    { eyebrow: 'Trust', title: 'Identity-verified marketplace', body: 'NID + live photo checks on every worker.' },
+    { eyebrow: 'Post', title: 'Post a job in your own words', body: 'Bangla, Banglish or English — workers find you.', img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800' },
+    { eyebrow: 'Work', title: 'Earn on your own schedule', body: 'Get daily job matches at your preferred time.', img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800' },
+    { eyebrow: 'Trust', title: 'Identity-verified marketplace', body: 'NID + live photo checks on every worker.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800' },
   ];
+  
+  useEffect(() => {
+    const timer = setInterval(() => setSlide(s => (s + 1) % slides.length), 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const s = slides[slide];
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      {/* Illustration */}
+      {/* Illustration / Slider Area */}
       <div style={{
         flex: 1, position: 'relative', overflow: 'hidden',
         background: `radial-gradient(1000px 400px at 50% 20%, ${T.color.navyHover}, ${T.color.navyBg} 60%)`,
       }}>
+        {/* Animated Background Slide */}
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.3,
+          backgroundImage: `url(${s.img})`, backgroundSize: 'cover', backgroundPosition: 'center',
+          transition: 'all 1s ease-in-out',
+        }} />
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, transparent 0%, ${T.color.navyBg} 90%)` }} />
+
         {/* Abstract mark */}
-        <svg viewBox="0 0 200 200" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <svg viewBox="0 0 200 200" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }}>
           <circle cx="100" cy="100" r="60" fill="none" stroke={T.color.gold500} strokeWidth="0.6" opacity="0.5" />
           <circle cx="100" cy="100" r="40" fill="none" stroke={T.color.gold500} strokeWidth="0.6" opacity="0.3" />
           <circle cx="100" cy="100" r="20" fill="none" stroke={T.color.gold500} strokeWidth="0.6" opacity="0.15" />
-          <circle cx="100" cy="100" r={slide === 0 ? 10 : slide === 1 ? 14 : 8} fill={T.color.gold500} opacity="0.9" />
-          <g stroke={T.color.gold500} strokeWidth="0.4" opacity="0.4">
-            <line x1="100" y1="40" x2="100" y2="160" />
-            <line x1="40" y1="100" x2="160" y2="100" />
-          </g>
+          <circle cx="100" cy="100" r={slide === 0 ? 10 : slide === 1 ? 14 : 8} fill={T.color.gold500} opacity="0.9" style={{ transition: 'r 0.5s cubic-bezier(0.4, 0, 0.2, 1)' }} />
         </svg>
-        <div style={{ position: 'absolute', bottom: 32, left: 0, right: 0, padding: '0 24px' }}>
-          <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 700, marginBottom: 8 }}>
-            {s.eyebrow}
-          </Txt>
-          <Txt variant="headline" style={{ marginBottom: 8, fontSize: 26 }}>{s.title}</Txt>
-          <Txt variant="body" color={T.color.textSecondary}>{s.body}</Txt>
+
+        <div style={{ position: 'absolute', bottom: 32, left: 0, right: 0, padding: '0 24px', zIndex: 2 }}>
+          <div style={{ transform: `translateY(${0}px)`, transition: 'all 0.5s ease' }}>
+            <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 700, marginBottom: 8, display: 'block', letterSpacing: '0.1em' }}>
+              {s.eyebrow.toUpperCase()}
+            </Txt>
+            <Txt variant="headline" style={{ marginBottom: 8, fontSize: 26, lineHeight: 1.2 }}>{s.title}</Txt>
+            <Txt variant="body" color={T.color.textSecondary}>{s.body}</Txt>
+          </div>
           <div style={{ display: 'flex', gap: 6, marginTop: 20 }}>
             {slides.map((_, i) => (
               <button key={i} onClick={() => setSlide(i)}
                 style={{
                   width: i === slide ? 24 : 8, height: 6, borderRadius: 3,
                   background: i === slide ? T.color.gold500 : T.color.navyBorder,
-                  border: 'none', cursor: 'pointer', transition: 'width 150ms',
+                  border: 'none', cursor: 'pointer', transition: 'width 300ms',
                 }} />
             ))}
           </div>
         </div>
       </div>
       {/* Footer wordmark + CTAs */}
-      <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <div>
-          <Txt variant="display" style={{ fontSize: 28 }}>Re'Loren</Txt>
+      <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 12, background: T.color.navyDeep, borderTop: `1px solid ${T.color.navyBorder}` }}>
+        <div style={{ marginBottom: 4 }}>
+          <BrandLogo height={36} style={{ marginBottom: 8 }} />
           <Txt variant="bodySm" color={T.color.textSecondary}>
-            Jobs that fit your day — in Bangla, Banglish or English.
+            Premium workforce marketplace for Bangladesh.
           </Txt>
         </div>
-        <PrimaryButton onClick={onSignUp}>Sign Up</PrimaryButton>
-        <SecondaryButton onClick={onLogin}>Log In</SecondaryButton>
+        <PrimaryButton onClick={onSignUp}>Create Account</PrimaryButton>
+        <SecondaryButton onClick={onLogin}>Sign In</SecondaryButton>
       </div>
     </div>
   );
@@ -97,7 +149,7 @@ const PhoneOtpEntryScreen = ({ onSendOtp, onCreate, onForgot }) => {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <div style={{ padding: '20px 16px 0' }}>
-        <Txt variant="display" style={{ fontSize: 26, marginBottom: 4 }}>Re'Loren</Txt>
+        <BrandLogo height={40} style={{ marginBottom: 8 }} />
       </div>
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ marginTop: 24 }}>
@@ -169,28 +221,80 @@ const OtpVerifyScreen = ({ onBack, onVerify }) => {
 
 // ── RegisterForm ─────────────────────────────────────────────
 const RegisterFormScreen = ({ onBack, onNext }) => {
-  const [name, setName] = useState('Karim Ahmed');
-  const [email, setEmail] = useState('karim@example.com');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('1711-234567');
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
-  const [cpw, setCpw] = useState('');
+  const [accountType, setAccountType] = useState('worker'); // 'worker' or 'employer'
+  const [skills, setSkills] = useState('');
   const [show, setShow] = useState(false);
-  const ok = name && pw.length >= 8 && pw === cpw;
+  
+  const ok = name && phone.length >= 10 && pw.length >= 8 && (accountType !== 'worker' || skills.length > 0);
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Create your account" left={<BackButton onClick={onBack} />} />
-      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
-        <Banner variant="success" title="Phone verified">+880 1711-234567</Banner>
-        <TextField label="Full name" value={name} onChange={setName} />
-        <TextField label="Email (optional)" value={email} onChange={setEmail} type="email" />
+      <AppBarElevated title="Create account" left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+        
+        <div>
+          <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 600, marginBottom: 12, display: 'block', letterSpacing: '0.05em' }}>ACCOUNT TYPE</Txt>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button 
+              onClick={() => setAccountType('worker')}
+              style={{
+                flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
+                background: accountType === 'worker' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
+                border: `1px solid ${accountType === 'worker' ? T.color.gold500 : T.color.navyBorder}`,
+                color: accountType === 'worker' ? T.color.gold500 : T.color.textSecondary,
+                cursor: 'pointer', transition: 'all 0.2s',
+                display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center'
+              }}
+            >
+              <Icon name="user" size={20} color={accountType === 'worker' ? T.color.gold500 : T.color.textMuted} />
+              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Worker</Txt>
+            </button>
+            <button 
+              onClick={() => setAccountType('employer')}
+              style={{
+                flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
+                background: accountType === 'employer' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
+                border: `1px solid ${accountType === 'employer' ? T.color.gold500 : T.color.navyBorder}`,
+                color: accountType === 'employer' ? T.color.gold500 : T.color.textSecondary,
+                cursor: 'pointer', transition: 'all 0.2s',
+                display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center'
+              }}
+            >
+              <Icon name="briefcase" size={20} color={accountType === 'employer' ? T.color.gold500 : T.color.textMuted} />
+              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Employer</Txt>
+            </button>
+          </div>
+        </div>
+
+        <TextField label="Full name" value={name} onChange={setName} placeholder="Enter your name" />
+        <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
+        
+        {accountType === 'worker' && (
+          <div style={{ animation: 'fadeIn 0.3s ease' }}>
+            <TextField 
+              label="What are your skills?" 
+              value={skills} 
+              onChange={setSkills} 
+              placeholder="e.g. Electrician, Driver, etc."
+              helper="List your main expertise"
+            />
+          </div>
+        )}
+
+        <TextField label="Email (optional)" value={email} onChange={setEmail} type="email" placeholder="email@example.com" />
+        
         <TextField label="Password" value={pw} onChange={setPw} type={show ? 'text' : 'password'}
           helper="Minimum 8 characters"
-          suffix={<IconButton name="eye" size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
-        <TextField label="Confirm password" value={cpw} onChange={setCpw} type={show ? 'text' : 'password'}
-          error={cpw && cpw !== pw ? 'Passwords do not match' : ''} />
-        <div style={{ marginTop: 8 }}>
+          suffix={<IconButton name={show ? 'eyeOff' : 'eye'} size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
+
+        <div style={{ marginTop: 8, paddingBottom: 20 }}>
           <PrimaryButton onClick={onNext} disabled={!ok}>Create account</PrimaryButton>
-          <Txt variant="caption" color={T.color.textMuted} style={{ textAlign: 'center', marginTop: 12, letterSpacing: 0 }}>
-            By continuing you agree to our Terms & Privacy.
+          <Txt variant="caption" color={T.color.textMuted} style={{ textAlign: 'center', marginTop: 12, display: 'block', letterSpacing: 0 }}>
+            By continuing you agree to our <span style={{ color: T.color.gold500, textDecoration: 'underline' }}>Terms & Privacy</span>.
           </Txt>
         </div>
       </div>
@@ -233,18 +337,52 @@ const ModeSelectOnboardingScreen = ({ onContinue }) => {
 
 // ── Forgot password entry ────────────────────────────────────
 const ForgotPasswordEntryScreen = ({ onBack, onSend, onSwitchOtp }) => {
+  const [method, setMethod] = useState('email'); // 'email' or 'phone'
   const [email, setEmail] = useState('karim@example.com');
+  const [phone, setPhone] = useState('1711-234567');
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Forgot password" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div>
-          <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your registered email</Txt>
-          <Txt variant="bodySm" color={T.color.textSecondary}>We'll send a reset link.</Txt>
+        <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
+          <button onClick={() => setMethod('email')} style={{
+            flex: 1, padding: '12px', borderRadius: T.radius.m,
+            background: method === 'email' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
+            border: `1px solid ${method === 'email' ? T.color.gold500 : T.color.navyBorder}`,
+            color: method === 'email' ? T.color.gold500 : T.color.textSecondary,
+            fontFamily: T.fontSans, fontWeight: 600, cursor: 'pointer'
+          }}>Email</button>
+          <button onClick={() => setMethod('phone')} style={{
+            flex: 1, padding: '12px', borderRadius: T.radius.m,
+            background: method === 'phone' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
+            border: `1px solid ${method === 'phone' ? T.color.gold500 : T.color.navyBorder}`,
+            color: method === 'phone' ? T.color.gold500 : T.color.textSecondary,
+            fontFamily: T.fontSans, fontWeight: 600, cursor: 'pointer'
+          }}>Phone</button>
         </div>
-        <TextField label="Email" value={email} onChange={setEmail} type="email" />
-        <Banner variant="info">Check your inbox and spam folder. Link expires in 30 minutes.</Banner>
-        <PrimaryButton onClick={onSend}>Send reset link</PrimaryButton>
+
+        {method === 'email' ? (
+          <>
+            <div>
+              <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your registered email</Txt>
+              <Txt variant="bodySm" color={T.color.textSecondary}>We'll send a reset link.</Txt>
+            </div>
+            <TextField label="Email" value={email} onChange={setEmail} type="email" />
+            <Banner variant="info">Check your inbox and spam folder. Link expires in 30 minutes.</Banner>
+            <PrimaryButton onClick={() => onSend('email')}>Send reset link</PrimaryButton>
+          </>
+        ) : (
+          <>
+            <div>
+              <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your phone number</Txt>
+              <Txt variant="bodySm" color={T.color.textSecondary}>We'll send an OTP to verify.</Txt>
+            </div>
+            <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
+            <PrimaryButton onClick={() => onSend('phone')}>Send OTP</PrimaryButton>
+          </>
+        )}
+        
         <button onClick={onSwitchOtp} style={{
           background: 'none', border: 'none', color: T.color.gold500,
           fontFamily: T.fontSans, fontSize: 14, cursor: 'pointer',
@@ -256,21 +394,24 @@ const ForgotPasswordEntryScreen = ({ onBack, onSend, onSwitchOtp }) => {
 };
 
 // ── Password reset ───────────────────────────────────────────
-const PasswordResetScreen = ({ onDone }) => {
+const PasswordResetScreen = ({ onDone, identity = 'karim@example.com' }) => {
   const [pw, setPw] = useState('');
   const [cpw, setCpw] = useState('');
   const ok = pw.length >= 8 && pw === cpw;
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Reset password" />
+      <AppBarElevated title="New Password" />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <Txt variant="bodySm" color={T.color.textSecondary}>For: karim@example.com</Txt>
-        <TextField label="New password" value={pw} onChange={setPw} type="password" helper="Minimum 8 characters" />
-        <TextField label="Confirm new password" value={cpw} onChange={setCpw} type="password"
-          error={cpw && cpw !== pw ? 'Passwords do not match' : ''} />
-        <Banner variant="warning">This link expires in 30 minutes.</Banner>
+        <div style={{ marginBottom: 8 }}>
+          <Txt variant="headline" style={{ fontSize: 24, marginBottom: 4 }}>Create new password</Txt>
+          <Txt variant="bodySm" color={T.color.textSecondary}>For: {identity}</Txt>
+        </div>
+        <TextField label="New password" value={pw} onChange={setPw} type="password" placeholder="Min 8 characters" />
+        <TextField label="Confirm password" value={cpw} onChange={setCpw} type="password"
+          error={cpw && cpw !== pw ? 'Passwords do not match' : ''} placeholder="Re-enter password" />
+        <Banner variant="info">Use a strong password that you haven't used before.</Banner>
         <div style={{ marginTop: 'auto' }}>
-          <PrimaryButton onClick={onDone} disabled={!ok}>Set new password</PrimaryButton>
+          <PrimaryButton onClick={onDone} disabled={!ok}>Confirm Password</PrimaryButton>
         </div>
       </div>
     </div>

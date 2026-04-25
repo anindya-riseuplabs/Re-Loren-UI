@@ -7,8 +7,13 @@ const { useState, useEffect, useRef, useMemo } = React;
 // ── Phone wrapper — standard 360x720 artboard ────────────────
 const Phone = ({ children, title, keyboard }) => (
   <AndroidDevice width={360} height={720} dark>
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, minHeight: 0 }}>
-      {children}
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
+      {/* Luxury light flares */}
+      <div style={{ position: 'absolute', top: '-10%', left: '-20%', width: '140%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(212, 175, 55, 0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'absolute', bottom: '-20%', right: '-20%', width: '120%', height: '60%', background: 'radial-gradient(circle at bottom right, rgba(15, 167, 163, 0.05) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        {children}
+      </div>
     </div>
   </AndroidDevice>
 );
@@ -54,7 +59,7 @@ function App() {
         {/* ─── 1. PRE-AUTH ─── */}
         <DCSection id="preauth" title="1 · Pre-auth & onboarding" subtitle="§3 §6 · first-run flow from splash → mode select">
           <DCArtboard id="splash" label="Splash" width={360} height={720}>
-            <Phone><SplashScreen onDone={noop} /></Phone>
+            <SplashScreen onDone={noop} />
           </DCArtboard>
           <DCArtboard id="landing" label="Landing · 3-slide" width={360} height={720}>
             <Phone><LandingScreen onSignUp={noop} onLogin={noop} /></Phone>
@@ -80,27 +85,18 @@ function App() {
         </DCSection>
 
         {/* ─── 2. WORKER VERIFICATION ─── */}
-        <DCSection id="verify" title="2 · Worker verification" subtitle="§6 · NID → facial → certs → 3 status states">
+        <DCSection id="verify" title="2 · Worker verification" subtitle="§6 · onboarding intro → NID → facial → certs">
+          <DCArtboard id="worker-intro" label="Worker Onboarding Intro" width={360} height={720}>
+            <Phone><WorkerOnboardingIntroScreen onNext={noop} onSkip={noop} /></Phone>
+          </DCArtboard>
           <DCArtboard id="profile-edit" label="Profile edit" width={360} height={720}>
             <Phone><ProfileEditScreen onBack={noop} onSave={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="nid" label="NID upload (both sides)" width={360} height={720}>
-            <Phone><NidUploadScreen onBack={noop} onNext={noop} /></Phone>
+          <DCArtboard id="nid" label="NID upload (skippable)" width={360} height={720}>
+            <Phone><NidUploadScreen onBack={noop} onNext={noop} onSkip={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="face" label="Facial capture · 3 poses" width={360} height={720}>
             <Phone><FacialCaptureScreen onBack={noop} onNext={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="cert" label="Cert upload (optional)" width={360} height={720}>
-            <Phone><CertUploadScreen onBack={noop} onNext={noop} onSkip={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="v-pending" label="Status · Pending" width={360} height={720}>
-            <Phone><VerificationStatusPendingScreen onBack={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="v-approved" label="Status · Approved" width={360} height={720}>
-            <Phone><VerificationStatusApprovedScreen onBack={noop} onActivate={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="v-rejected" label="Status · Rejected" width={360} height={720}>
-            <Phone><VerificationStatusRejectedScreen onBack={noop} onResubmit={noop} /></Phone>
           </DCArtboard>
         </DCSection>
 
@@ -115,16 +111,13 @@ function App() {
           <DCArtboard id="lang" label="Language preference" width={360} height={720}>
             <Phone><LanguagePreferenceScreen onBack={noop} onSave={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="mode-toggle" label="Mode toggle · employer↔worker" width={360} height={720}>
-            <Phone><ModeToggleScreen mode="worker" onBack={noop} onSwitch={noop} /></Phone>
-          </DCArtboard>
         </DCSection>
 
         {/* ─── 4. EMPLOYER · POST + MATCH ─── */}
         <DCSection id="post" title="4 · Employer · post & match" subtitle="§7 · consolidated single-screen post → review → shortlist">
           <DCArtboard id="emp-home" label="Employer home" width={360} height={720}>
             <PhoneWithNav active="home" mode="employer">
-              <EmployerHomeScreen onPost={noop} onNav={noop} />
+              <EmployerHomeScreen onPost={noop} onNav={noop} onSwitchMode={noop} />
             </PhoneWithNav>
           </DCArtboard>
           <DCArtboard id="post-compose" label="Post · 5 blocks" width={360} height={720}>
@@ -132,6 +125,9 @@ function App() {
           </DCArtboard>
           <DCArtboard id="post-review" label="Post · review" width={360} height={720}>
             <Phone><JobPostReviewScreen onBack={noop} onPost={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="post-success" label="Post · success" width={360} height={720}>
+            <Phone><JobPostSuccessScreen onDone={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="shortlist" label="Ranked shortlist" width={360} height={720}>
             <Phone><RankedShortlistScreen onBack={noop} onAccept={noop} onExplain={noop} /></Phone>
@@ -154,17 +150,6 @@ function App() {
           <DCArtboard id="feed" label="Job feed · Instant" width={360} height={720}>
             <PhoneWithNav active="jobs" mode="worker">
               <JobFeedScreen onOpenJob={noop} />
-            </PhoneWithNav>
-          </DCArtboard>
-          <DCArtboard id="feed-regular" label="Job feed · Regular" width={360} height={720}>
-            <PhoneWithNav active="jobs" mode="worker">
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <AppBarElevated title="Jobs for you" />
-                <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <Segmented options={[{value:'instant',label:'Instant Work'},{value:'regular',label:'Regular Work'}]} value="regular" onChange={noop} />
-                  {SAMPLE.jobFeed.filter(j => j.type === 'regular').map(j => <JobCard key={j.id} job={j} />)}
-                </div>
-              </div>
             </PhoneWithNav>
           </DCArtboard>
           <DCArtboard id="job-detail" label="Job detail" width={360} height={720}>
@@ -248,6 +233,9 @@ function App() {
           </DCArtboard>
           <DCArtboard id="chat-image" label="Image viewer" width={360} height={720}>
             <Phone><ImageViewerScreen onBack={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="active-call" label="Active call" width={360} height={720}>
+            <Phone><ActiveCallScreen onEnd={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="call-perm" label="Call permission dialog" width={360} height={720}>
             <Phone>

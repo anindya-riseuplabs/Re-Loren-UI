@@ -145,7 +145,7 @@ function AndroidDevice({
   return (
     <div style={{
       width, height, borderRadius: 18, overflow: 'hidden',
-      background: dark ? '#1d1b20' : MD_C.surface,
+      background: dark ? (window.T ? T.color.navyDeep : '#1d1b20') : MD_C.surface,
       border: `8px solid ${MD_C.frameBorder}`,
       boxShadow: '0 30px 80px rgba(0,0,0,0.25)',
       display: 'flex', flexDirection: 'column', boxSizing: 'border-box',

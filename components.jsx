@@ -44,12 +44,30 @@ const Icon = ({ name, size = 24, color = T.color.textPrimary, style }) => {
     minus: <path d="M5 12h14" />,
     circle: <circle cx="12" cy="12" r="9" />,
     file: <><path d="M6 3h8l4 4v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" /><path d="M14 3v4h4" /></>,
+    settings: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" /></>,
+    help: <><circle cx="12" cy="12" r="9" /><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></>,
+    history: <><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M12 7v5l4 2" /></>,
+    truck: <><rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></>,
+    creditCard: <><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></>,
+    globe: <><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 010 20 15.3 15.3 0 010-20" /></>,
+    starHalf: <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="url(#halfGrad)" />,
+    phoneHangup: <path d="M5 10c0 0 1-2 4-2s5 2 7 4 3 6 3 6l-3 2-2-4-2 1-1-1-1 1-2-1-2 4-3-2z" transform="rotate(135 12 12)" />,
+    mic: <><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 10a7 7 0 0014 0" /><line x1="12" y1="21" x2="12" y2="18" /></>,
+    micOff: <><line x1="1" y1="1" x2="23" y2="23" /><path d="M9 5a3 3 0 015.12 2.12M15 9.34V11a3 3 0 01-5.94.6" /><path d="M17 16.95A7 7 0 015 10" /><line x1="12" y1="21" x2="12" y2="18" /></>,
+    keypad: <><rect x="5" y="3" width="4" height="4" rx="1" /><rect x="10" y="3" width="4" height="4" rx="1" /><rect x="15" y="3" width="4" height="4" rx="1" /><rect x="5" y="8" width="4" height="4" rx="1" /><rect x="10" y="8" width="4" height="4" rx="1" /><rect x="15" y="8" width="4" height="4" rx="1" /><rect x="5" y="13" width="4" height="4" rx="1" /><rect x="10" y="13" width="4" height="4" rx="1" /><rect x="15" y="13" width="4" height="4" rx="1" /><rect x="10" y="18" width="4" height="4" rx="1" /></>,
+    volumeHigh: <><path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M15.54 8.46a5 5 0 010 7.07" /><path d="M19.07 4.93a10 10 0 010 14.14" /></>,
   };
   const content = paths[name] || <circle cx="12" cy="12" r="9" />;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
       stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"
       style={style}>
+      <defs>
+        <linearGradient id="halfGrad">
+          <stop offset="50%" stopColor={T.color.gold500} />
+          <stop offset="50%" stopColor="transparent" />
+        </linearGradient>
+      </defs>
       {content}
     </svg>
   );
@@ -58,13 +76,14 @@ const Icon = ({ name, size = 24, color = T.color.textPrimary, style }) => {
 // ── Text helpers ─────────────────────────────────────────────
 const Txt = ({ variant = 'body', children, color, style, as: As = 'div', bn = false }) => {
   const t = T.type[variant] || T.type.body;
+  const isHeading = ['display', 'headline', 'title', 'subtitle'].includes(variant);
   const s = {
     fontFamily: bn ? T.fontBangla : T.fontSans,
     fontSize: t.size,
     lineHeight: t.lh,
     fontWeight: t.w,
     letterSpacing: t.ls || 'normal',
-    color: color || T.color.textPrimary,
+    color: color || (isHeading ? T.color.textHeading : T.color.textPrimary),
     margin: 0,
     textWrap: 'pretty',
     ...style,
@@ -79,11 +98,11 @@ const btnBase = {
   borderRadius: T.radius.m, border: 'none',
   fontFamily: T.fontSans, fontWeight: 600, fontSize: 16,
   cursor: 'pointer', width: '100%',
-  transition: 'background 150ms ease-out, transform 150ms ease-out',
+  transition: 'background 150ms ease-out, transform 150ms ease-out, box-shadow 150ms ease-out',
 };
 const PrimaryButton = ({ children, onClick, disabled, icon, style }) => (
-  <button onClick={disabled ? undefined : onClick} disabled={disabled}
-    style={{ ...btnBase, background: disabled ? T.color.taupe500 : T.color.gold500, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
+  <button onClick={disabled ? undefined : onClick} disabled={disabled} className={disabled ? '' : 'btn-primary'}
+    style={{ ...btnBase, background: disabled ? T.color.taupe500 : T.color.goldGradient, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
     {children}
   </button>
@@ -96,8 +115,8 @@ const SecondaryButton = ({ children, onClick, icon, style }) => (
   </button>
 );
 const AccentButton = ({ children, onClick, icon, style }) => (
-  <button onClick={onClick}
-    style={{ ...btnBase, background: T.color.gold600, color: T.color.textOnGold, ...style }}>
+  <button onClick={onClick} className="btn-primary"
+    style={{ ...btnBase, background: T.color.goldGradient, color: T.color.textOnGold, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
     {children}
   </button>
@@ -197,25 +216,28 @@ const OtpInput = ({ length = 4, value = '', onChange, error }) => {
 };
 
 // ── PhoneNumberField ─────────────────────────────────────────
-const PhoneNumberField = ({ value, onChange }) => (
-  <div style={{
-    display: 'flex', alignItems: 'center',
-    background: T.color.navyRaised, border: `1.5px solid ${T.color.navyBorder}`,
-    borderRadius: T.radius.m, minHeight: 48, padding: '0 14px',
-  }}>
-    <Txt variant="body" color={T.color.gold500} style={{ fontWeight: 600, marginRight: 12 }}>+880</Txt>
-    <div style={{ width: 1, height: 24, background: T.color.navyBorder, marginRight: 12 }} />
-    <input value={value || ''} onChange={e => onChange && onChange(e.target.value.replace(/\D/g, '').slice(0, 10))}
-      placeholder="1711-234567" inputMode="numeric"
-      style={{
-        flex: 1, minWidth: 0, background: 'transparent', border: 'none', outline: 'none',
-        color: T.color.textPrimary, fontSize: 16, fontFamily: T.fontSans, padding: '12px 0',
-      }} />
+const PhoneNumberField = ({ value, onChange, label }) => (
+  <div style={{ display: 'block' }}>
+    {label && <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>{label}</Txt>}
+    <div style={{
+      display: 'flex', alignItems: 'center',
+      background: T.color.navyRaised, border: `1.5px solid ${T.color.navyBorder}`,
+      borderRadius: T.radius.m, minHeight: 48, padding: '0 14px',
+    }}>
+      <Txt variant="body" color={T.color.gold500} style={{ fontWeight: 600, marginRight: 12 }}>+880</Txt>
+      <div style={{ width: 1, height: 24, background: T.color.navyBorder, marginRight: 12 }} />
+      <input value={value || ''} onChange={e => onChange && onChange(e.target.value.replace(/\D/g, '').slice(0, 10))}
+        placeholder="1711-234567" inputMode="numeric"
+        style={{
+          flex: 1, minWidth: 0, background: 'transparent', border: 'none', outline: 'none',
+          color: T.color.textPrimary, fontSize: 16, fontFamily: T.fontSans, padding: '12px 0',
+        }} />
+    </div>
   </div>
 );
 
 // ── Banner ───────────────────────────────────────────────────
-const Banner = ({ variant = 'info', children, icon, title }) => {
+const Banner = ({ variant = 'info', children, icon, title, style }) => {
   const map = {
     success: { bg: T.color.successBg, fg: T.color.success, icon: 'checkCircle' },
     warning: { bg: T.color.warningBg, fg: T.color.warning, icon: 'warning' },
@@ -224,12 +246,13 @@ const Banner = ({ variant = 'info', children, icon, title }) => {
     offline: { bg: 'rgba(251,140,0,0.12)', fg: T.color.offline, icon: 'warning' },
     conflict:{ bg: T.color.warningBg, fg: T.color.warning, icon: 'warning' },
   };
-  const c = map[variant];
+  const c = map[variant] || map.info;
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start', gap: 12,
       background: c.bg, borderLeft: `3px solid ${c.fg}`,
       borderRadius: T.radius.m, padding: '12px 14px',
+      ...style,
     }}>
       <Icon name={icon || c.icon} size={20} color={c.fg} style={{ flex: 'none', marginTop: 1 }} />
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -322,7 +345,7 @@ const ExplanationChip = ({ kind, children }) => {
 
 // ── Card / JobCard / BidCard / WorkerCard ───────────────────
 const Card = ({ children, onClick, style, elevation = 'sm' }) => (
-  <div onClick={onClick}
+  <div onClick={onClick} className="card-glass"
     style={{
       background: T.color.navyRaised, borderRadius: T.radius.l,
       border: `1px solid ${T.color.navyBorder}`,
@@ -395,7 +418,7 @@ const ErrorState = ({ title = 'Something went wrong', body, onRetry }) => (
 const Overlay = ({ onClose, children, align = 'bottom' }) => (
   <div onClick={onClose}
     style={{
-      position: 'absolute', inset: 0, background: 'rgba(20,29,45,0.72)',
+      position: 'absolute', inset: 0, background: 'rgba(7, 17, 38, 0.75)',
       display: 'flex', alignItems: align === 'bottom' ? 'flex-end' : 'center', justifyContent: 'center',
       zIndex: 100,
     }}>
@@ -432,6 +455,44 @@ const Dialog = ({ onClose, title, children, actions }) => (
   </Overlay>
 );
 
+// ── Drawer (Sidebar) ─────────────────────────────────────────
+const Drawer = ({ isOpen, onClose, onNav, user = { name: 'Karim Ahmed', rating: 4.8 } }) => {
+  if (!isOpen) return null;
+  const menu = [
+    { id: 'history', icon: 'history', label: 'Work history' },
+    { id: 'payment', icon: 'creditCard', label: 'Add payment method' },
+    { id: 'settings', icon: 'settings', label: 'Settings' },
+    { id: 'manage', icon: 'user', label: 'Manage account' },
+    { id: 'help', icon: 'help', label: 'Help' },
+    { id: 'terms', icon: 'file', label: 'Terms & conditions' },
+  ];
+  return (
+    <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(7, 17, 38, 0.7)', zIndex: 1000, display: 'flex' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: '80%', height: '100%', background: T.color.navyBg, borderRight: `1px solid ${T.color.navyBorder}`, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '40px 20px 20px', background: T.color.navyDeep, borderBottom: `1px solid ${T.color.navyBorder}` }}>
+          <div style={{ width: 60, height: 60, borderRadius: 30, background: T.color.navyRaised, border: `2px solid ${T.color.gold500}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12, color: T.color.gold500, fontWeight: 700, fontSize: 20 }}>KA</div>
+          <Txt variant="subtitle">{user.name}</Txt>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+            <Icon name="starFill" size={14} color={T.color.gold500} />
+            <Txt variant="bodySm" color={T.color.gold500}>{user.rating}</Txt>
+          </div>
+        </div>
+        <div style={{ flex: 1, padding: 12, overflow: 'auto' }}>
+          {menu.map(m => (
+            <button key={m.id} onClick={() => { onNav(m.id); onClose(); }} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '14px 12px', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: T.radius.m }}>
+              <Icon name={m.icon} size={20} color={T.color.gold500} />
+              <Txt variant="bodySm" style={{ fontWeight: 500 }}>{m.label}</Txt>
+            </button>
+          ))}
+        </div>
+        <div style={{ padding: 20, borderTop: `1px solid ${T.color.navyBorder}` }}>
+          <button style={{ background: 'none', border: 'none', color: T.color.error, fontFamily: T.fontSans, fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Sign out</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ── Toast ────────────────────────────────────────────────────
 const Toast = ({ text, onDone }) => {
   useEffect(() => { const t = setTimeout(() => onDone && onDone(), 2400); return () => clearTimeout(t); }, []);
@@ -454,9 +515,11 @@ const AppBarElevated = ({ title, left, right, subtitle, modePill }) => (
   }}>
     {left}
     <div style={{ flex: 1, minWidth: 0 }}>
-      <Txt variant="subtitle" style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {title}
-      </Txt>
+      {typeof title === 'string' ? (
+        <Txt variant="subtitle" style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {title}
+        </Txt>
+      ) : title}
       {subtitle && <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{subtitle}</Txt>}
     </div>
     {modePill}
@@ -469,13 +532,17 @@ const BackButton = ({ onClick }) => (
 );
 
 const BottomNavBar = ({ active, onNav, mode = 'employer' }) => {
-  const tabs = [
-    { id: 'home', label: 'Home', icon: 'home' },
-    { id: 'jobs', label: 'Jobs', icon: 'briefcase' },
-    { id: 'chat', label: 'Chat', icon: 'chat' },
-    { id: 'money', label: mode === 'worker' ? 'Earn' : 'Pay', icon: 'wallet' },
-    { id: 'profile', label: 'Profile', icon: 'user' },
-  ];
+  const tabs = mode === 'employer' 
+    ? [
+        { id: 'home', label: 'Home', icon: 'home' },
+        { id: 'jobs', label: 'Jobs', icon: 'briefcase' },
+        { id: 'profile', label: 'Profile', icon: 'user' },
+      ]
+    : [
+        { id: 'home', label: 'Home', icon: 'home' },
+        { id: 'jobs', label: 'Job list', icon: 'briefcase' },
+        { id: 'profile', label: 'Profile', icon: 'user' },
+      ];
   return (
     <div style={{
       background: T.color.navyBg, borderTop: `1px solid ${T.color.navyBorder}`,
@@ -489,9 +556,9 @@ const BottomNavBar = ({ active, onNav, mode = 'employer' }) => {
               flex: 1, minHeight: 52, background: 'transparent', border: 'none', cursor: 'pointer',
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: 0,
             }}>
-            <Icon name={t.icon} size={22} color={isActive ? T.color.gold500 : T.color.textMuted} />
+            <Icon name={t.icon} size={22} color={isActive ? T.color.gold500 : T.color.textMuted} style={{ filter: isActive ? 'drop-shadow(0 0 6px rgba(212, 175, 55, 0.6))' : 'none', transition: 'filter 0.2s' }} />
             <Txt variant="caption" color={isActive ? T.color.gold500 : T.color.textMuted}
-              style={{ letterSpacing: 0, fontWeight: isActive ? 600 : 500 }}>
+              style={{ letterSpacing: 0, fontWeight: isActive ? 600 : 500, textShadow: isActive ? '0 0 8px rgba(212, 175, 55, 0.4)' : 'none', transition: 'text-shadow 0.2s' }}>
               {t.label}
             </Txt>
           </button>
@@ -593,14 +660,19 @@ const Toggle = ({ checked, onChange }) => (
   </button>
 );
 
+// ── Brand Logo ───────────────────────────────────────────────
+const BrandLogo = ({ height = 40, style }) => (
+  <img src="logo.png" alt="Re'Loren" style={{ height, display: 'block', objectFit: 'contain', ...style }} />
+);
+
 // Export
 Object.assign(window, {
-  Icon, Txt,
+  Icon, Txt, BrandLogo,
   PrimaryButton, SecondaryButton, AccentButton, DestructiveButton, IconButton,
   TextField, OtpInput, PhoneNumberField,
   Banner, StatusPill, CapabilityTag, VerifiedBadge, ExplanationChip,
   Card, RatingStars, SkeletonLoader, EmptyState, ErrorState,
-  BottomSheet, Dialog, Toast, Overlay,
+  BottomSheet, Dialog, Drawer, Toast, Overlay,
   AppBarElevated, BackButton, BottomNavBar, ModePill,
   Segmented, Radio, Checkbox, Toggle,
 });

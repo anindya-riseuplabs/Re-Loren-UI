@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Re'Loren v2 · Spec-compliant redesign</title>
+  <title>Re-Loren-UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Playfair+Display:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
     html, body, #root { margin: 0; padding: 0; width: 100%; height: 100%; }
@@ -20,6 +20,38 @@
     /* Override DC defaults slightly for a warmer gallery background */
     button { font-family: inherit; }
     input, textarea { font-family: inherit; }
+    
+    /* Luxury Premium Effects */
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 4px 15px rgba(212, 175, 55, 0.25);
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+    .btn-primary:hover {
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 6px 20px rgba(212, 175, 55, 0.4);
+      transform: translateY(-1px);
+    }
+    .btn-primary:hover::after {
+      left: 150%;
+      transition: left 0.6s ease-in-out;
+    }
+    .card-glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 16px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-glass:hover {
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+    }
   </style>
 </head>
 <body>
