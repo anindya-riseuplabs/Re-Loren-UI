@@ -1,145 +1,141 @@
 // Re'Loren v2 — employer/worker job flow screens.
 
-// ── Job post composer (consolidated) ─────────────────────────
+// ── Job post composer (ChatGPT-style free text) ─────────────
 const JobPostFreeTextScreen = ({ onBack, onReview }) => {
-  const [caption, setCaption] = useState('Medicine delivery');
   const [desc, setDesc] = useState('Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.');
-  const [hiringOption, setHiringOption] = useState('later'); // 'now' or 'later'
+  const [jobType, setJobType] = useState('instant'); // 'instant' or 'regular'
   const [deadline, setDeadline] = useState('2026-05-01');
+  const [relocate, setRelocate] = useState('yes'); // 'yes' or 'no'
   const [from, setFrom] = useState('Motijheel, Dhaka');
   const [to, setTo] = useState('Dhanmondi, Dhaka');
-  const [relocate, setRelocate] = useState(false);
-  const [relocationLocation, setRelocationLocation] = useState('');
   const [budget, setBudget] = useState('1500');
   const [priceBlock, setPriceBlock] = useState(false);
 
-  const allFilled = caption && desc && budget && from && to && (hiringOption === 'now' || deadline);
+  const needsRoute = relocate === 'yes';
+  const allFilled = desc && budget
+    && (jobType === 'instant' || deadline)
+    && (!needsRoute || (from && to));
 
   const onSubmit = () => {
     if (/\b\d{3,}\b|taka|tk|৳/i.test(desc)) { setPriceBlock(true); return; }
-    onReview && onReview({ caption, desc, hiringOption, deadline, from, to, relocate, relocationLocation, budget });
+    onReview && onReview({ desc, jobType, deadline, relocate, from: needsRoute ? from : '', to: needsRoute ? to : '', budget });
   };
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Post a Job" left={<BackButton onClick={onBack} />} />
-      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
-        
-        <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>JOB CAPTION</Txt>
-          <TextField placeholder="e.g. Delivery, Handyman..." value={caption} onChange={setCaption} />
-        </div>
+      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
         <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>JOB DESCRIPTION</Txt>
-          <TextField multiline rows={4} placeholder="Describe what needs to be done..." value={desc} onChange={setDesc} />
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>DESCRIBE YOUR JOB</Txt>
+          <div style={{
+            background: T.color.navyRaised, border: `1.5px solid ${T.color.navyBorder}`,
+            borderRadius: T.radius.l, padding: 14,
+          }}>
+            <textarea value={desc} onChange={(e) => setDesc(e.target.value)}
+              placeholder="Describe what needs to be done..."
+              rows={5}
+              style={{
+                width: '100%', background: 'transparent', border: 'none', outline: 'none',
+                color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 15, lineHeight: 1.5,
+                resize: 'none',
+              }} />
+          </div>
           {priceBlock && <Banner variant="error" title="Don't mention a price" style={{ marginTop: 10 }}>
             Workers will bid on your job — prices happen in bids, not descriptions.
           </Banner>}
         </div>
 
         <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10, display: 'block' }}>HIRING OPTION</Txt>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button onClick={() => setHiringOption('now')}
-              style={{
-                flex: 1, minHeight: 48, borderRadius: T.radius.m,
-                border: `1.5px solid ${hiringOption === 'now' ? T.color.gold500 : T.color.navyBorder}`,
-                background: hiringOption === 'now' ? 'rgba(212,175,55,0.08)' : 'transparent',
-                color: hiringOption === 'now' ? T.color.gold500 : T.color.textMuted,
-                cursor: 'pointer', fontFamily: T.fontSans, fontSize: 15, fontWeight: 600,
-              }}>Hire now</button>
-            <button onClick={() => setHiringOption('later')}
-              style={{
-                flex: 1, minHeight: 48, borderRadius: T.radius.m,
-                border: `1.5px solid ${hiringOption === 'later' ? T.color.gold500 : T.color.navyBorder}`,
-                background: hiringOption === 'later' ? 'rgba(212,175,55,0.08)' : 'transparent',
-                color: hiringOption === 'later' ? T.color.gold500 : T.color.textMuted,
-                cursor: 'pointer', fontFamily: T.fontSans, fontSize: 15, fontWeight: 600,
-              }}>Hire later</button>
-          </div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Job type</Txt>
+          <select value={jobType} onChange={(e) => setJobType(e.target.value)}
+            style={{
+              width: '100%', minHeight: 48, background: T.color.navyRaised,
+              border: `1.5px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
+              color: T.color.textPrimary, padding: '0 14px', fontFamily: T.fontSans, fontSize: 15,
+              outline: 'none',
+            }}>
+            <option value="instant">Instant</option>
+            <option value="regular">Regular</option>
+          </select>
         </div>
 
-        {hiringOption === 'later' && (
+        {jobType === 'regular' && (
           <div>
-            <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>DEADLINE</Txt>
-            <TextField type="date" value={deadline} onChange={setDeadline} />
+            <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Deadline</Txt>
+            <TextField type="datetime-local" value={deadline} onChange={setDeadline} />
           </div>
         )}
 
         <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10, display: 'block' }}>LOCATION FLOW</Txt>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <TextField label="From" value={from} onChange={setFrom} placeholder="Current location..." />
-            
-            <div style={{ position: 'relative' }}>
-              <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>To</Txt>
-              <select 
-                value={relocate ? 'relocate' : to}
-                onChange={(e) => {
-                  if (e.target.value === 'relocate') {
-                    setRelocate(true);
-                  } else {
-                    setRelocate(false);
-                    setTo(e.target.value);
-                  }
-                }}
-                style={{
-                  width: '100%', minHeight: 48, background: T.color.navyRaised,
-                  border: `1.5px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
-                  color: T.color.textPrimary, padding: '0 14px', fontFamily: T.fontSans, fontSize: 16,
-                  outline: 'none', appearance: 'none',
-                }}
-              >
-                <option value={from}>{from} (Same as From)</option>
-                <option value="Dhanmondi, Dhaka">Dhanmondi, Dhaka</option>
-                <option value="Gulshan, Dhaka">Gulshan, Dhaka</option>
-                <option value="relocate">Worker needs to relocate</option>
-              </select>
-            </div>
-
-            {relocate && (
-              <TextField label="Relocation Location" value={relocationLocation} onChange={setRelocationLocation} placeholder="Enter destination..." />
-            )}
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 8, fontWeight: 500 }}>
+            Does the worker need to be relocated?
+          </Txt>
+          <div style={{ display: 'flex', gap: 10 }}>
+            {[{ v: 'yes', l: 'Yes' }, { v: 'no', l: 'No' }].map(o => (
+              <button key={o.v} onClick={() => setRelocate(o.v)} style={{
+                flex: 1, minHeight: 44, borderRadius: T.radius.m, cursor: 'pointer',
+                background: relocate === o.v ? 'rgba(212,175,55,0.10)' : T.color.navyRaised,
+                border: `1.5px solid ${relocate === o.v ? T.color.gold500 : T.color.navyBorder}`,
+                color: relocate === o.v ? T.color.gold500 : T.color.textSecondary,
+                fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
+              }}>{o.l}</button>
+            ))}
           </div>
         </div>
 
-        <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>BUDGET</Txt>
-          <TextField value={budget} onChange={v => setBudget(v.replace(/\D/g, ''))}
-            prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>}
-            placeholder="1,500" />
-        </div>
+        {needsRoute && (
+          <>
+            <TextField label="From" value={from} onChange={setFrom} placeholder="Pickup location..." />
+            <TextField label="To" value={to} onChange={setTo} placeholder="Drop-off location..." />
+          </>
+        )}
 
-        <div style={{ marginTop: 10, paddingBottom: 20 }}>
-          <PrimaryButton onClick={onSubmit} disabled={!allFilled}>Review & post</PrimaryButton>
+        <TextField label="Budget" value={budget} onChange={v => setBudget(v.replace(/\D/g, ''))}
+          prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>}
+          placeholder="1,500" />
+
+        <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
+          <PrimaryButton onClick={onSubmit} disabled={!allFilled}>Post a job</PrimaryButton>
         </div>
       </div>
     </div>
   );
 };
 
-// ── Job post review ──────────────────────────────────────────
+// ── Job post review (confirmation) ──────────────────────────
 const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
-  const { caption, desc, hiringOption, deadline, from, to, relocate, relocationLocation, budget } = data;
+  const { desc, jobType = 'instant', deadline, relocate = 'yes', from, to, budget, caption = 'Medicine delivery — Motijheel → Dhanmondi' } = data;
+  const needsRoute = relocate === 'yes' && from && to;
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Review your job" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Confirm your job" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <Banner variant="info">Please review the details before posting.</Banner>
+        <Card style={{ background: T.color.navyDeep }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <Txt variant="caption" color={T.color.textMuted}>CAPTION</Txt>
+            <div style={{
+              padding: '1px 6px', borderRadius: T.radius.full,
+              background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+              color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
+              letterSpacing: '2%', textTransform: 'uppercase',
+            }}>Auto-generated</div>
+          </div>
+          <Txt variant="subtitle" color={T.color.gold500}>{caption}</Txt>
+        </Card>
         <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>JOB</Txt>
-          <Txt variant="subtitle" style={{ fontSize: 18 }}>{caption}</Txt>
-          <Txt variant="body" style={{ marginTop: 8, fontStyle: 'italic', color: T.color.textSecondary }}>
-            "{desc}"
-          </Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>DESCRIPTION</Txt>
+          <Txt variant="body" style={{ lineHeight: 1.5 }}>"{desc}"</Txt>
         </Card>
         <Card>
           {[
-            ['Hiring', hiringOption === 'now' ? 'Hire Now' : 'Hire Later'],
-            hiringOption === 'later' ? ['Deadline', deadline] : null,
-            ['From', from],
-            ['To', relocate ? `Relocate to: ${relocationLocation}` : to],
-            ['Budget ceiling', fmtBDT(budget)],
+            ['Job type', jobType === 'instant' ? 'Instant' : 'Regular'],
+            jobType === 'regular' ? ['Deadline', deadline] : null,
+            ['Relocation', relocate === 'yes' ? 'Yes' : 'No'],
+            needsRoute ? ['From', from] : null,
+            needsRoute ? ['To', to] : null,
+            ['Budget', fmtBDT(budget)],
           ].filter(Boolean).map(([k, v]) => (
             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${T.color.navyBorder}` }}>
               <Txt variant="bodySm" color={T.color.textSecondary}>{k}</Txt>
@@ -147,9 +143,8 @@ const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
             </div>
           ))}
         </Card>
-        <Banner variant="info">Posts cannot be edited once published.</Banner>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 20 }}>
-          <PrimaryButton onClick={() => onPost(data)}>Post job</PrimaryButton>
+          <PrimaryButton onClick={() => onPost && onPost(data)}>Confirm & post</PrimaryButton>
           <SecondaryButton onClick={onBack}>Edit</SecondaryButton>
         </div>
       </div>
@@ -158,7 +153,7 @@ const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
 };
 
 const JobPostSuccessScreen = ({ data = {}, onDone }) => {
-  const isHireNow = data.hiringOption === 'now';
+  const isHireNow = data.jobType === 'instant';
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}>
       <div style={{
@@ -210,14 +205,14 @@ const InstantCancelPromptDialog = ({ onClose, onCancel }) => {
 };
 
 // ── Job card ─────────────────────────────────────────────────
-const JobCard = ({ job, onClick, onAccept }) => (
+const JobCard = ({ job, onClick, onAccept, verified = true, segment = 'immediate' }) => (
   <Card onClick={onClick}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-      <Txt variant="subtitle" style={{ fontSize: 18, fontWeight: 700 }}>{job.title}</Txt>
+      <Txt variant="subtitle" style={{ fontSize: 18, fontWeight: 700, flex: 1, paddingRight: 8 }}>{job.title}</Txt>
       <Txt variant="subtitle" color={T.color.gold500}>{fmtBDT(job.price)}</Txt>
     </div>
-    
-    <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+
+    <div style={{ display: 'flex', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <Icon name="location" size={14} color={T.color.textMuted} />
         <Txt variant="caption" color={T.color.textMuted}>{job.location || 'Dhaka'}</Txt>
@@ -226,38 +221,59 @@ const JobCard = ({ job, onClick, onAccept }) => (
         <Icon name="truck" size={14} color={T.color.textMuted} />
         <Txt variant="caption" color={T.color.textMuted}>{job.distance}</Txt>
       </div>
+      {segment === 'active' && job.deadline && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <Icon name="clock" size={14} color={T.color.warning} />
+          <Txt variant="caption" color={T.color.warning}>Deadline {job.deadline}</Txt>
+        </div>
+      )}
     </div>
 
     <div style={{ display: 'flex', gap: 10 }}>
       <SecondaryButton style={{ flex: 1, minHeight: 40, fontSize: 14 }} onClick={(e) => { e.stopPropagation(); onClick(); }}>View details</SecondaryButton>
-      <PrimaryButton style={{ flex: 1, minHeight: 40, fontSize: 14 }} onClick={(e) => { e.stopPropagation(); onAccept && onAccept(job); }}>Accept offer</PrimaryButton>
+      <PrimaryButton style={{ flex: 1, minHeight: 40, fontSize: 14, opacity: verified ? 1 : 0.5, cursor: verified ? 'pointer' : 'not-allowed' }}
+        onClick={(e) => { e.stopPropagation(); if (verified) onAccept && onAccept(job); }}>
+        Accept offer
+      </PrimaryButton>
     </div>
   </Card>
 );
 
-// ── Job feed (worker) ────────────────────────────────────────
-const JobFeedScreen = ({ onOpenJob, onNav }) => {
+// ── Job feed (worker) — verified prop drives accept-button state ──
+const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
   const [seg, setSeg] = useState('immediate');
   const [filterOpen, setFilterOpen] = useState(false);
   const [sort, setSort] = useState('nearest');
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  
-  const jobs = SAMPLE.jobFeed.filter(j => 
+
+  const jobs = SAMPLE.jobFeed.filter(j =>
     seg === 'immediate' ? j.type === 'instant' : j.type === 'regular'
   );
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <Drawer isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} onNav={onNav} />
-      <AppBarElevated 
+      <AppBarElevated
         title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: T.color.navyDeep, border: `1px solid ${T.color.gold500}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.color.gold500, fontSize: 12, fontWeight: 700 }}>KA</div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Txt variant="bodySm" style={{ fontWeight: 600, lineHeight: 1.2 }}>Karim Ahmed</Txt>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Icon name="starFill" size={10} color={T.color.gold500} />
-                <Txt variant="caption" color={T.color.gold500} style={{ fontSize: 10 }}>4.8</Txt>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 18, background: T.color.navyDeep, border: `1px solid ${T.color.gold500}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.color.gold500, fontSize: 13, fontWeight: 700, flexShrink: 0 }}>KA</div>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Txt variant="bodySm" style={{ fontWeight: 600, lineHeight: 1.2, whiteSpace: 'nowrap' }}>Karim Ahmed</Txt>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Icon name="starFill" size={10} color={T.color.gold500} />
+                  <Txt variant="caption" color={T.color.gold500} style={{ fontSize: 10 }}>4.8</Txt>
+                </div>
+                <div style={{
+                  padding: '2px 6px', borderRadius: T.radius.full,
+                  background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+                  color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
+                  letterSpacing: '2%', textTransform: 'uppercase', lineHeight: 1.2,
+                }}>Worker</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
+                <Icon name="location" size={10} color={T.color.textMuted} />
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, fontSize: 10, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Motijheel, Dhaka</Txt>
               </div>
             </div>
           </div>
@@ -265,25 +281,18 @@ const JobFeedScreen = ({ onOpenJob, onNav }) => {
         right={
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ position: 'relative' }}>
-              <IconButton name="bell" onClick={() => onNav('notifications')} />
+              <IconButton name="bell" onClick={() => onNav && onNav('notifications')} />
               <div style={{ position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: 4, background: T.color.error, border: `1.5px solid ${T.color.navyBg}` }} />
             </div>
             <IconButton name="menu" onClick={() => setDrawerOpen(true)} />
           </div>
-        } 
+        }
       />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <Banner variant="warning" title="NID not verified" style={{ marginBottom: 4 }}>
-          Please verify your NID to unlock all worker features and apply for jobs.
-          <button style={{ 
-            background: 'none', border: 'none', color: T.color.gold500, 
-            textDecoration: 'underline', padding: 0, marginLeft: 8, cursor: 'pointer' 
-          }}>Verify now</button>
-        </Banner>
         <Segmented
           options={[{ value: 'immediate', label: 'Immediately hiring' }, { value: 'active', label: 'Still active' }]}
           value={seg} onChange={setSeg} />
-        
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
             {jobs.length} jobs available nearby
@@ -291,10 +300,10 @@ const JobFeedScreen = ({ onOpenJob, onNav }) => {
           <IconButton name="filter" onClick={() => setFilterOpen(true)} size={32} iconSize={18} />
         </div>
 
-        {jobs.map(j => <JobCard key={j.id} job={j} onClick={() => onOpenJob(j)} />)}
+        {jobs.map(j => <JobCard key={j.id} job={j} verified={verified} segment={seg} onClick={() => onOpenJob && onOpenJob(j)} />)}
         {jobs.length === 0 && <EmptyState icon="briefcase" title="No jobs match right now" body="Try adjusting your filters or check back soon." />}
       </div>
-      
+
       {filterOpen && (
         <BottomSheet onClose={() => setFilterOpen(false)} title="Sort by">
           {[
@@ -341,24 +350,25 @@ const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
         </div>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <StatusPill variant="posted">Posted</StatusPill>
           <CapabilityTag>600m away</CapabilityTag>
         </div>
 
         <Txt variant="body" style={{ marginTop: 10 }}>{j.description || 'Looking for a reliable worker to help with this task. Please see details below.'}</Txt>
 
-        <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 12 }}>ROUTE & LOCATION</Txt>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <div style={{ width: 8, height: 8, borderRadius: 4, background: T.color.success }} />
-            <Txt variant="bodySm">From: Motijheel, Dhaka</Txt>
-          </div>
-          <div style={{ height: 20, width: 2, background: T.color.navyBorder, marginLeft: 3, marginBottom: 8 }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 8, height: 8, borderRadius: 4, background: T.color.error }} />
-            <Txt variant="bodySm">To: Dhanmondi, Dhaka</Txt>
-          </div>
-        </Card>
+        {j.relocate && j.from && j.to && (
+          <Card>
+            <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 12 }}>ROUTE & LOCATION</Txt>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+              <div style={{ width: 8, height: 8, borderRadius: 4, background: T.color.success }} />
+              <Txt variant="bodySm">From: {j.from}</Txt>
+            </div>
+            <div style={{ height: 20, width: 2, background: T.color.navyBorder, marginLeft: 3, marginBottom: 8 }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 8, height: 8, borderRadius: 4, background: T.color.error }} />
+              <Txt variant="bodySm">To: {j.to}</Txt>
+            </div>
+          </Card>
+        )}
 
         <Card onClick={() => setReminderOpen(true)}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -372,12 +382,9 @@ const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
 
         <Card>
           <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>POSTED BY</Txt>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <Txt variant="body" style={{ fontWeight: 600, marginBottom: 2 }}>Karim Ahmed</Txt>
-              <RatingStars value={4.8} count={142} />
-            </div>
-            <VerifiedBadge />
+          <div>
+            <Txt variant="body" style={{ fontWeight: 600, marginBottom: 2 }}>Karim Ahmed</Txt>
+            <RatingStars value={4.8} count={142} />
           </div>
         </Card>
 
@@ -406,16 +413,15 @@ const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
 // ── Bid submit ───────────────────────────────────────────────
 const BidSubmitScreen = ({ onBack, onSubmit }) => {
   const [amount, setAmount] = useState('1500');
-  const [note, setNote] = useState("I'm 5 minutes away and can start right now.");
   const [showPopup, setShowPopup] = useState(false);
   const net = Math.round(parseInt(amount || '0') * 0.85);
   const commission = parseInt(amount || '0') - net;
-  
+
   if (showPopup) return (
     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: T.color.navyBg, padding: 24 }}>
       <Card style={{ textAlign: 'center', padding: 32 }}>
         <Icon name="checkCircle" size={64} color={T.color.success} style={{ marginBottom: 16 }} />
-        <Txt variant="title" style={{ marginBottom: 8 }}>Application Submitted!</Txt>
+        <Txt variant="title" style={{ marginBottom: 8 }}>Bid submitted</Txt>
         <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 24 }}>
           Your bid has been placed. You will be notified if the employer accepts.
         </Txt>
@@ -449,7 +455,6 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
             <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(net)}</Txt>
           </div>
         </Card>
-        <TextField label="Note to employer (optional)" multiline rows={3} value={note} onChange={setNote} />
         <Banner variant="info">You can edit this bid until it's accepted.</Banner>
         <div style={{ marginTop: 'auto' }}>
           <PrimaryButton onClick={() => setShowPopup(true)} disabled={!amount}>Submit bid</PrimaryButton>
@@ -471,6 +476,25 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
           <StatusPill variant="bidding">Bidding</StatusPill>
           <Txt variant="bodySm" color={T.color.textSecondary}>— you can still edit</Txt>
         </div>
+
+        <Card>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>JOB DETAILS</Txt>
+          <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 6 }}>Medicine delivery — Motijheel → Dhanmondi</Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>
+            Need someone to pick up medicine and deliver to Dhanmondi before 6 PM.
+          </Txt>
+          {[
+            ['Budget', fmtBDT(1500)],
+            ['Distance', '2 km'],
+            ['Posted', '12 min ago'],
+          ].map(([k, v]) => (
+            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${T.color.navyBorder}` }}>
+              <Txt variant="caption" color={T.color.textSecondary}>{k}</Txt>
+              <Txt variant="bodySm" style={{ fontWeight: 500 }}>{v}</Txt>
+            </div>
+          ))}
+        </Card>
+
         <TextField label="Your bid amount" value={amount} onChange={v => setAmount(v.replace(/\D/g, ''))}
           prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>} />
         <Card>
@@ -488,7 +512,6 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
             <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(net)}</Txt>
           </div>
         </Card>
-        <TextField label="Note to employer" multiline rows={2} value="Can start right now." />
         <Banner variant="warning">Once the employer accepts, this bid locks.</Banner>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <PrimaryButton onClick={onUpdate}>Update bid</PrimaryButton>
@@ -499,18 +522,15 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
   );
 };
 
-// ── Ranked shortlist ─────────────────────────────────────────
-const RankedShortlistScreen = ({ onBack, onAccept, onExplain }) => {
+// ── Job in progress (was Manage Bids) — uber-style search → bids list ──
+const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = false, onViewAsset }) => {
+  const [searching, setSearching] = useState(true);
   const [bids, setBids] = useState(SAMPLE.shortlist);
-  const [timeLeft, setTimeLeft] = useState(180); // 3 minutes
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
-    const t = setInterval(() => setTimeLeft(s => s - 1), 1000);
-    return () => clearInterval(t);
-  }, [timeLeft]);
-
-  const fmtTime = s => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
+    const t = setTimeout(() => setSearching(false), 2200);
+    return () => clearTimeout(t);
+  }, []);
 
   const onDecline = (rank) => {
     setBids(bids.filter(b => b.rank !== rank));
@@ -518,39 +538,65 @@ const RankedShortlistScreen = ({ onBack, onAccept, onExplain }) => {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated 
-        title="Manage Bids" 
-        subtitle={`${bids.length} active bids`} 
-        left={<BackButton onClick={onBack} />}
-        right={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(239,83,80,0.1)', padding: '4px 10px', borderRadius: T.radius.full, border: `1px solid ${T.color.error}` }}>
-            <Icon name="clock" size={14} color={T.color.error} />
-            <Txt variant="caption" color={T.color.error} style={{ fontWeight: 700 }}>{fmtTime(timeLeft)}</Txt>
-          </div>
-        }
-      />
+      <AppBarElevated title="Job in progress" subtitle={searching ? 'Searching for workers…' : `${bids.length} bids received`} left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <Banner variant="info" title="Choose a worker">
-          Bids will expire in 3 minutes. Please select a worker to proceed to payment.
-        </Banner>
-        
-        {bids.map(w => (
+
+        {/* Uber-style searching animation */}
+        <div style={{
+          padding: '20px 16px', borderRadius: T.radius.l,
+          background: T.color.navyDeep, border: `1px solid ${T.color.navyBorder}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14,
+          minHeight: 96,
+        }}>
+          <div style={{ position: 'relative', width: 56, height: 56 }}>
+            <div style={{
+              position: 'absolute', inset: 0, borderRadius: 28,
+              border: `2px solid ${T.color.gold500}`, opacity: 0.3,
+              animation: 'searchPulse 1.4s ease-out infinite',
+            }} />
+            <div style={{
+              position: 'absolute', inset: 8, borderRadius: 20,
+              border: `2px solid ${T.color.gold500}`, opacity: 0.6,
+              animation: 'searchPulse 1.4s ease-out 0.4s infinite',
+            }} />
+            <div style={{
+              position: 'absolute', inset: 18, borderRadius: 10,
+              background: T.color.gold500,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Icon name="search" size={14} color={T.color.textOnGold} />
+            </div>
+          </div>
+          <div>
+            <Txt variant="bodySm" style={{ fontWeight: 600 }}>
+              {searching ? 'Searching for workers nearby' : 'Workers found nearby'}
+            </Txt>
+            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>
+              {searching ? 'Finding the best matches for your job' : 'Pick the worker you want to hire'}
+            </Txt>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes searchPulse {
+            0%   { transform: scale(0.6); opacity: 0.6; }
+            100% { transform: scale(1.6); opacity: 0; }
+          }
+        `}</style>
+
+        {!searching && bids.map(w => (
           <Card key={w.rank}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{
-                  width: 32, height: 32, borderRadius: 16, background: T.color.gold500,
-                  color: T.color.textOnGold, fontFamily: T.fontSans, fontSize: 14, fontWeight: 700,
+                  width: 40, height: 40, borderRadius: 20, background: T.color.navyDeep,
+                  border: `1.5px solid ${T.color.gold500}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>#{w.rank}</div>
+                  color: T.color.gold500, fontFamily: T.fontSans, fontSize: 14, fontWeight: 700,
+                }}>{w.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Txt variant="body" style={{ fontWeight: 600 }}>{w.name}</Txt>
-                    {w.verified && <VerifiedBadge />}
-                  </div>
-                  <div style={{ marginTop: 3 }}>
-                    <RatingStars value={w.rating} count={w.ratingCount} compact />
-                  </div>
+                  <Txt variant="body" style={{ fontWeight: 600 }}>{w.name}</Txt>
+                  <RatingStars value={w.rating} count={w.ratingCount} compact />
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -558,67 +604,81 @@ const RankedShortlistScreen = ({ onBack, onAccept, onExplain }) => {
                 <Txt variant="subtitle" color={T.color.gold500}>{fmtBDT(w.bid)}</Txt>
               </div>
             </div>
-            
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
-              {w.chips.map(c => (
-                <ExplanationChip key={c} kind={c}>
-                  {c === 'tag-match' ? 'exact' : c === 'asset' ? (w.asset || 'Motorbike') : c === 'distance' ? w.distance : c === 'rating' ? w.rating.toFixed(1) : w.languages[0]}
-                </ExplanationChip>
-              ))}
-            </div>
+
+            <button onClick={() => onViewReview && onViewReview(w)} style={{
+              background: 'none', border: 'none', color: T.color.gold500,
+              fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
+              textDecoration: 'underline', marginBottom: 12,
+            }}>View reviews →</button>
+
+            {requireAsset && (
+              <SecondaryButton style={{ marginBottom: 10, minHeight: 38, fontSize: 13 }}
+                onClick={() => onViewAsset && onViewAsset(w)} icon="truck">View asset details</SecondaryButton>
+            )}
 
             <div style={{ display: 'flex', gap: 10 }}>
               <SecondaryButton style={{ flex: 1 }} onClick={() => onDecline(w.rank)}>Decline</SecondaryButton>
-              <PrimaryButton style={{ flex: 2 }} onClick={() => onAccept(w)}>Accept Bid</PrimaryButton>
+              <PrimaryButton style={{ flex: 2 }} onClick={() => onAccept && onAccept(w)}>Accept Bid</PrimaryButton>
             </div>
           </Card>
         ))}
-        {bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
+
+        {!searching && bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
       </div>
     </div>
   );
 };
 
-// ── Match explanation (bottom sheet) ─────────────────────────
-const MatchExplanationDetailSheet = ({ onClose }) => (
-  <BottomSheet onClose={onClose} title="Why Rahim Uddin matched">
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>TAG MATCH</Txt>
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
-      <CapabilityTag>Bike delivery</CapabilityTag>
-      <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, alignSelf: 'center' }}>← employer</Txt>
+// ── Worker review list (drilled from shortlist) ─────────────
+const WorkerReviewListScreen = ({ worker = { name: 'Rahim Uddin', rating: 4.9, ratingCount: 87 }, onBack }) => {
+  const reviews = [
+    { id: 1, employer: 'Karim Ahmed', employerSub: 'Motijheel · 12 jobs posted', stars: 5, date: '24/04/2026', text: 'Very professional, on time. Will hire again.' },
+    { id: 2, employer: 'Salma Begum', employerSub: 'Dhanmondi · 4 jobs posted', stars: 5, date: '18/04/2026', text: 'Excellent communication and careful with the items.' },
+    { id: 3, employer: 'Tareq Rahman', employerSub: 'Gulshan · 2 jobs posted', stars: 4, date: '12/04/2026', text: 'Good service, slight delay due to traffic but kept me updated.' },
+    { id: 4, employer: 'Nusrat Jahan', employerSub: 'Banani · 1 job posted', stars: 5, date: '08/04/2026', text: 'Polite and quick. Recommended.' },
+  ];
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title={`${worker.name} · Reviews`} left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Card style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: 28, background: T.color.navyDeep,
+            border: `1.5px solid ${T.color.gold500}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: T.color.gold500, fontFamily: T.fontSans, fontSize: 18, fontWeight: 700,
+          }}>{worker.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+          <div style={{ flex: 1 }}>
+            <Txt variant="subtitle">{worker.name}</Txt>
+            <RatingStars value={worker.rating} count={worker.ratingCount} compact />
+          </div>
+        </Card>
+        {reviews.map(r => (
+          <Card key={r.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+              <div>
+                <Txt variant="bodySm" style={{ fontWeight: 600 }}>{r.employer}</Txt>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>{r.employerSub}</Txt>
+              </div>
+              <div style={{ display: 'flex', gap: 1 }}>
+                {[1,2,3,4,5].map(i => (
+                  <span key={i} style={{ color: i <= r.stars ? T.color.gold500 : T.color.navyBorder, fontSize: 14 }}>★</span>
+                ))}
+              </div>
+            </div>
+            <Txt variant="bodySm" color={T.color.textSecondary} style={{ lineHeight: 1.5, marginTop: 8 }}>"{r.text}"</Txt>
+            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 8 }}>{r.date}</Txt>
+          </Card>
+        ))}
+      </div>
     </div>
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
-      <CapabilityTag>Bike delivery</CapabilityTag>
-      <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, alignSelf: 'center' }}>← worker</Txt>
-    </div>
-    <ExplanationChip kind="tag-match">exact</ExplanationChip>
-    <div style={{ height: 16 }} />
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>ASSET CHECK</Txt>
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <ExplanationChip kind="asset">Motorbike</ExplanationChip>
-      <VerifiedBadge />
-    </div>
-    <div style={{ height: 16 }} />
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>DISTANCE</Txt>
-    <ExplanationChip kind="distance">600 m</ExplanationChip>
-    <div style={{ height: 16 }} />
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>RATING (SOFT-WEIGHTED)</Txt>
-    <ExplanationChip kind="rating">4.9 ★</ExplanationChip>
-    <div style={{ height: 16 }} />
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>LANGUAGE (SOFT BOOST)</Txt>
-    <ExplanationChip kind="language">Bangla + English</ExplanationChip>
-    <div style={{ height: 16 }} />
-    <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>RELEVANCE SOURCE</Txt>
-    <ExplanationChip kind="relevance-source">admin table</ExplanationChip>
-    <div style={{ height: 20 }} />
-    <SecondaryButton onClick={onClose}>Close</SecondaryButton>
-  </BottomSheet>
-);
+  );
+};
 
 Object.assign(window, {
   JobPostFreeTextScreen, JobPostReviewScreen, JobPostSuccessScreen,
   InstantCancelPromptDialog,
   JobCard, JobFeedScreen, JobDetailScreen,
   BidSubmitScreen, BidEditScreen,
-  RankedShortlistScreen, MatchExplanationDetailSheet,
+  RankedShortlistScreen, WorkerReviewListScreen,
 });

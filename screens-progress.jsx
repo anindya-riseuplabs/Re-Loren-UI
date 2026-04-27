@@ -34,246 +34,102 @@ const ProgressSteps = ({ steps, currentIdx }) => (
   </div>
 );
 
-// ── In-progress (employer, online-paid) ──────────────────────
-const ProgressEmployerOnlineScreen = ({ onBack, onCancel, onComplete, onChat }) => {
-  const steps = ['Worker en route', 'Pickup in progress', 'En route to drop-off', 'Completed'];
+// ── Job Cancellation Reason ─────────────────────────────────
+const CancelReasonSheet = ({ onClose, onConfirm }) => {
+  const [reason, setReason] = useState('');
+  const [pic, setPic] = useState(false);
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Job in progress" left={<BackButton onClick={onBack} />}
-        right={<IconButton name="chat" onClick={onChat} />} />
-      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Card style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{
-            height: 140, background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
-            position: 'relative',
-          }}>
-            <svg viewBox="0 0 300 140" style={{ width: '100%', height: '100%', opacity: 0.4 }}>
-              <path d="M20 110 Q80 40 160 70 T280 30" stroke={T.color.gold500} strokeWidth="2" fill="none" strokeDasharray="4 4" />
-            </svg>
-            <div style={{ position: 'absolute', left: 28, top: 100 }}>
-              <div style={{ width: 12, height: 12, borderRadius: 6, background: T.color.success, border: '2px solid #fff' }} />
-            </div>
-            <div style={{ position: 'absolute', right: 28, top: 24 }}>
-              <div style={{ width: 12, height: 12, borderRadius: 6, background: T.color.error, border: '2px solid #fff' }} />
-            </div>
-            <div style={{ position: 'absolute', left: '45%', top: '45%' }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: 16, background: T.color.gold500,
-                border: '3px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 0 0 6px rgba(212,175,55,0.25)',
-              }}>
-                <Icon name="location" size={16} color={T.color.textOnGold} />
-              </div>
-            </div>
-          </div>
-          <div style={{ padding: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>ETA</Txt>
-              <Txt variant="subtitle" color={T.color.gold500}>14 min</Txt>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Distance</Txt>
-              <Txt variant="bodySm" style={{ fontWeight: 600 }}>2.1 km away</Txt>
-            </div>
-          </div>
-        </Card>
-        <Card>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: 24, background: T.color.navyDeep,
-              border: `1.5px solid ${T.color.gold500}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: T.color.gold500, fontFamily: T.fontSans, fontSize: 16, fontWeight: 700,
-            }}>RU</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Txt variant="bodySm" style={{ fontWeight: 600 }}>Rahim Uddin</Txt>
-                <VerifiedBadge />
-              </div>
-              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Motorbike · BD-12-3456</Txt>
-            </div>
-            <IconButton name="phone" />
-            <IconButton name="chat" onClick={onChat} />
-          </div>
-        </Card>
-        <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 14 }}>PROGRESS</Txt>
-          <ProgressSteps steps={steps} currentIdx={1} />
-        </Card>
-        <Banner variant="success" title="Payment held in escrow">
-          ৳1,500 releases to Rahim when you mark complete.
-        </Banner>
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <PrimaryButton onClick={onComplete}>Mark complete</PrimaryButton>
-          <button onClick={onCancel} style={{
-            background: 'none', border: 'none', color: T.color.error,
-            fontFamily: T.fontSans, fontSize: 14, fontWeight: 500, cursor: 'pointer', padding: 12,
-          }}>Cancel this job</button>
-        </div>
-      </div>
-    </div>
-  );
-};
+      <AppBarElevated title="Job Cancellation Reason" left={<BackButton onClick={onClose} />} />
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+        <TextField label="Reason for cancellation" multiline rows={5} value={reason} onChange={setReason}
+          placeholder="Tell us what happened..." />
 
-// ── In-progress (worker side) ────────────────────────────────
-const ProgressWorkerScreen = ({ onBack, onAdvance, onChat }) => {
-  const [step, setStep] = useState(1);
-  const [showCodeEntry, setShowCodeEntry] = useState(false);
-  const [code, setCode] = useState('');
-  const steps = ['Accepted', 'Heading to pickup', 'Job started', 'Dropped off', 'Completed'];
-  const ctas = [null, 'Arrived at pickup', 'Start Job (Enter Code)', 'Mark dropped off', 'Awaiting confirmation'];
-  
-  const isCashJob = true; // Example
-
-  return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Active Job" left={<BackButton onClick={onBack} />} />
-      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Card style={{ background: T.color.navyDeep }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>YOU'LL RECEIVE (NET)</Txt>
-              <Txt variant="h2" color={T.color.gold500}>৳1,275</Txt>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <StatusPill variant={isCashJob ? 'warning' : 'success'}>{isCashJob ? 'CASH' : 'ONLINE PAID'}</StatusPill>
-            </div>
-          </div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 4 }}>
-            Gross ৳1,500 − 15% commission
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>
+            Image (optional)
           </Txt>
-        </Card>
-
-        <Card>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 22, background: T.color.navyRaised, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.color.gold500, fontWeight: 700 }}>KA</div>
-            <div style={{ flex: 1 }}>
-              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Karim Ahmed</Txt>
-              <RatingStars value={4.8} count={142} compact />
-            </div>
-            <IconButton name="phone" onClick={() => {}} />
-            <IconButton name="chat" onClick={onChat} />
-          </div>
-        </Card>
-
-        <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>JOB</Txt>
-          <Txt variant="bodySm" style={{ marginBottom: 10 }}>Medicine delivery — Motijheel → Dhanmondi</Txt>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Icon name="checkCircle" size={16} color={T.color.success} />
+          <button onClick={() => setPic(p => !p)} style={{
+            width: '100%', padding: pic ? 0 : 24, borderRadius: T.radius.m, cursor: 'pointer',
+            background: pic ? `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})` : T.color.navyRaised,
+            border: `1.5px dashed ${pic ? T.color.gold500 : T.color.navyBorder}`,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
+            minHeight: pic ? 140 : 'auto',
+          }}>
+            <Icon name={pic ? 'checkCircle' : 'camera'} size={28} color={pic ? T.color.success : T.color.gold500} />
             <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
-              {isCashJob ? 'Collect ৳1,500 cash from employer' : 'Payment held in escrow'}
+              {pic ? 'Image attached' : 'Tap to add an image'}
             </Txt>
+          </button>
+        </div>
+
+        <div style={{ marginTop: 'auto', paddingBottom: 10 }}>
+          <PrimaryButton onClick={() => onConfirm && onConfirm(reason)} disabled={!reason.trim()}>Submit</PrimaryButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── Job completion (employer) — w/ inline rating + skip ─────
+const JobCompletionScreen = ({ onBack, onRate, onSkip }) => {
+  const [stars, setStars] = useState(0);
+  const [review, setReview] = useState('');
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 16px' }}>
+        <button onClick={onSkip} style={{
+          background: 'none', border: 'none', color: T.color.gold500,
+          fontFamily: T.fontSans, fontSize: 14, fontWeight: 600, cursor: 'pointer', padding: 6,
+        }}>Skip</button>
+      </div>
+      <div style={{ flex: 1, padding: 24, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <div style={{
+          width: 96, height: 96, borderRadius: 48, background: 'rgba(102,187,106,0.15)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon name="checkCircle" size={56} color={T.color.success} />
+        </div>
+        <Txt variant="h2" style={{ textAlign: 'center' }}>Job complete</Txt>
+        <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
+          Thanks for using Re'Loren. Your job has been completed.
+        </Txt>
+
+        <Card style={{ width: '100%', padding: 16 }}>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>JOB</Txt>
+          <Txt variant="subtitle" style={{ textAlign: 'center' }}>Medicine delivery — Motijheel → Dhanmondi</Txt>
+        </Card>
+
+        <Card style={{ width: '100%', textAlign: 'center', padding: 20 }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: 28, background: T.color.navyDeep,
+            border: `1.5px solid ${T.color.gold500}`, margin: '0 auto 8px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: T.color.gold500, fontFamily: T.fontSans, fontSize: 18, fontWeight: 700,
+          }}>RU</div>
+          <Txt variant="subtitle">Rahim Uddin</Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 4 }}>
+            Rate your experience
+          </Txt>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 12 }}>
+            {[1,2,3,4,5].map(i => (
+              <button key={i} onClick={() => setStars(i)} style={{
+                background: 'transparent', border: 'none', cursor: 'pointer', padding: 4,
+                fontSize: 32, color: i <= stars ? T.color.gold500 : T.color.navyBorder, lineHeight: 1,
+              }}>★</button>
+            ))}
           </div>
         </Card>
 
-        {isCashJob && step === 2 && (
-          <Banner variant="info" title="Cash Collection">
-            Please collect the total amount from the employer before starting the journey.
-          </Banner>
-        )}
+        <TextField multiline rows={3} value={review} onChange={setReview} placeholder="Write a review (optional)" />
 
-        <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 14 }}>STATUS</Txt>
-          <ProgressSteps steps={steps} currentIdx={step} />
-        </Card>
-
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 20 }}>
-          {step === 2 && !showCodeEntry ? (
-            <PrimaryButton onClick={() => setShowCodeEntry(true)}>Start Job</PrimaryButton>
-          ) : step === 2 && showCodeEntry ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <Txt variant="bodySm" color={T.color.gold500} style={{ textAlign: 'center', fontWeight: 600 }}>ENTER 4-DIGIT CODE FROM EMPLOYER</Txt>
-              <OtpInput value={code} onChange={setCode} length={4} />
-              <div style={{ display: 'flex', gap: 10 }}>
-                <SecondaryButton style={{ flex: 1 }} onClick={() => setShowCodeEntry(false)}>Back</SecondaryButton>
-                <PrimaryButton style={{ flex: 1 }} disabled={code.length < 4} onClick={() => { setStep(3); setCode(''); setShowCodeEntry(false); }}>Verify & Start</PrimaryButton>
-              </div>
-            </div>
-          ) : step < 4 ? (
-            <PrimaryButton onClick={() => setStep(s => s + 1)}>{ctas[step]}</PrimaryButton>
-          ) : (
-            <div style={{ textAlign: 'center', padding: 12 }}>
-              <Icon name="checkCircle" size={32} color={T.color.success} style={{ marginBottom: 8 }} />
-              <Txt variant="bodySm" color={T.color.success}>Job completed!</Txt>
-              <SecondaryButton style={{ marginTop: 16 }} onClick={onBack}>Back to dashboard</SecondaryButton>
-            </div>
-          )}
+        <div style={{ width: '100%', marginTop: 'auto' }}>
+          <PrimaryButton onClick={() => onRate && onRate({ stars, review })} disabled={stars === 0}>Submit</PrimaryButton>
         </div>
       </div>
     </div>
   );
 };
-
-// ── Cancel reason (sheet) ────────────────────────────────────
-const CancelReasonSheet = ({ onClose, onConfirm, context = 'employer' }) => {
-  const [reason, setReason] = useState(null);
-  const opts = context === 'employer'
-    ? ['Worker not responding', 'Changed my mind', 'Worker asked for more money', 'Other']
-    : ['Employer not responding', 'Address was wrong', 'Unsafe situation', 'Other'];
-  return (
-    <BottomSheet onClose={onClose} title="Cancel this job?">
-      <Banner variant="warning" title="Cancellation affects your rating">
-        {context === 'employer'
-          ? 'Cash jobs: refund not guaranteed. Online: refund issued if cancelled before work starts.'
-          : 'Repeated cancellations reduce your match score.'}
-      </Banner>
-      <Txt variant="caption" color={T.color.textMuted} style={{ marginTop: 18, marginBottom: 10 }}>
-        WHY ARE YOU CANCELLING?
-      </Txt>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {opts.map(o => (
-          <Radio key={o} checked={reason === o} label={o} onClick={() => setReason(o)} />
-        ))}
-      </div>
-      {reason === 'Other' && (
-        <div style={{ marginTop: 12 }}>
-          <TextField multiline rows={3} placeholder="Tell us what happened…" />
-        </div>
-      )}
-      <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-        <SecondaryButton onClick={onClose}>Never mind</SecondaryButton>
-        <DestructiveButton onClick={() => onConfirm(reason)}>Cancel job</DestructiveButton>
-      </div>
-    </BottomSheet>
-  );
-};
-
-// ── Job completion (employer) ────────────────────────────────
-const JobCompletionScreen = ({ onBack, onRate }) => (
-  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg,
-    alignItems: 'center', justifyContent: 'center', padding: 24, gap: 16 }}>
-    <div style={{
-      width: 96, height: 96, borderRadius: 48, background: 'rgba(102,187,106,0.15)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
-      <Icon name="checkCircle" size={56} color={T.color.success} />
-    </div>
-    <Txt variant="h2" style={{ textAlign: 'center' }}>Job complete</Txt>
-    <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
-      ৳1,275 released to Rahim. ৳225 went to platform.
-    </Txt>
-    <Card style={{ width: '100%' }}>
-      {[
-        ['Job', 'Medicine delivery'],
-        ['Worker', 'Rahim Uddin'],
-        ['Gross', '৳1,500'],
-        ['Platform fee', '−৳225'],
-        ['Released to worker', '৳1,275'],
-        ['Duration', '1h 12m'],
-      ].map(([k, v]) => (
-        <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: `1px solid ${T.color.navyBorder}` }}>
-          <Txt variant="bodySm" color={T.color.textSecondary}>{k}</Txt>
-          <Txt variant="bodySm" style={{ fontWeight: 500 }}>{v}</Txt>
-        </div>
-      ))}
-    </Card>
-    <div style={{ width: '100%', marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <PrimaryButton onClick={onRate}>Rate Rahim</PrimaryButton>
-      <SecondaryButton onClick={onBack}>Done for now</SecondaryButton>
-    </div>
-  </div>
-);
 
 // ── Work history (worker) ────────────────────────────────────
 const WorkHistoryScreen = ({ onBack }) => {
@@ -292,7 +148,7 @@ const WorkHistoryScreen = ({ onBack }) => {
           <Card style={{ background: T.color.navyDeep }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
-                <Txt variant="caption" color={T.color.textMuted}>EARNED (30 DAYS)</Txt>
+                <Txt variant="caption" color={T.color.textMuted}>EARNED</Txt>
                 <Txt variant="h2" color={T.color.gold500}>{fmtBDT(12485)}</Txt>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -332,18 +188,108 @@ const WorkHistoryScreen = ({ onBack }) => {
   );
 };
 
-// ── Payment methods ──────────────────────────────────────────
-const PaymentMethodsScreen = ({ onBack }) => {
-  const methods = [
-    { id: 1, type: 'bKash', number: '+880 1711•••567', primary: true, color: '#E2136E', initial: 'b' },
-    { id: 2, type: 'Card', number: 'Visa •••• 4821', primary: false, color: T.color.info, initial: 'V' },
+// ── Worker bid history (bidded jobs) ────────────────────────
+const WorkerBidHistoryScreen = ({ onBack, onOpenBid }) => {
+  const [seg, setSeg] = useState('active');
+  const all = [
+    { id: 'b1', job: 'Medicine delivery — Motijheel → Dhanmondi', employer: 'Karim Ahmed', bid: 1500, budget: 1500, status: 'active',   date: '27/04/2026 · 12 min ago' },
+    { id: 'b2', job: 'Move single sofa — Gulshan',                employer: 'Salma Begum', bid: 1900, budget: 2000, status: 'active',   date: '27/04/2026 · 38 min ago' },
+    { id: 'b3', job: 'Drop documents — Agargaon',                 employer: 'Tareq Rahman',bid: 750,  budget: 800,  status: 'accepted', date: '26/04/2026' },
+    { id: 'b4', job: 'Food delivery — Banani',                    employer: 'Nusrat Jahan',bid: 450,  budget: 500,  status: 'rejected', date: '25/04/2026' },
+    { id: 'b5', job: 'Fix kitchen sink — Banani',                 employer: 'Imran Hossain',bid: 1100,budget: 1200, status: 'withdrawn',date: '23/04/2026' },
   ];
+  const filtered = seg === 'all' ? all : all.filter(b =>
+    seg === 'active' ? b.status === 'active' :
+    seg === 'past'   ? b.status !== 'active' : true
+  );
+  const counts = {
+    active: all.filter(b => b.status === 'active').length,
+    past:   all.filter(b => b.status !== 'active').length,
+  };
+  const pillVariant = (s) =>
+    s === 'active'    ? 'bidding' :
+    s === 'accepted'  ? 'success' :
+    s === 'rejected'  ? 'error'   :
+                        'pending';
+  const pillLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title="My Bidded Jobs" left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Card style={{ background: T.color.navyDeep }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Txt variant="caption" color={T.color.textMuted}>ACTIVE BIDS</Txt>
+              <Txt variant="h2" color={T.color.gold500}>{counts.active}</Txt>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <Txt variant="caption" color={T.color.textMuted}>PAST BIDS</Txt>
+              <Txt variant="h2" color={T.color.gold500}>{counts.past}</Txt>
+            </div>
+          </div>
+        </Card>
+
+        <Segmented
+          options={[
+            { value: 'active', label: 'Active' },
+            { value: 'past',   label: 'Past' },
+            { value: 'all',    label: 'All' },
+          ]}
+          value={seg} onChange={setSeg} />
+
+        {filtered.length === 0 && (
+          <EmptyState icon="briefcase" title="No bids here" body="Your bids will show up once you place them on a job." />
+        )}
+
+        {filtered.map(b => (
+          <Card key={b.id} onClick={() => onOpenBid && onOpenBid(b)}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8, gap: 10 }}>
+              <Txt variant="bodySm" style={{ fontWeight: 600, flex: 1 }}>{b.job}</Txt>
+              <StatusPill variant={pillVariant(b.status)}>{pillLabel(b.status)}</StatusPill>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+              <Icon name="user" size={12} color={T.color.textMuted} />
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{b.employer}</Txt>
+              <span style={{ color: T.color.navyBorder }}>·</span>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{b.date}</Txt>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, borderTop: `1px solid ${T.color.navyBorder}` }}>
+              <div>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Your bid</Txt>
+                <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(b.bid)}</Txt>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Budget</Txt>
+                <Txt variant="bodySm" color={T.color.textSecondary}>{fmtBDT(b.budget)}</Txt>
+              </div>
+              {b.status === 'active' && (
+                <Icon name="chevron" size={16} color={T.color.textMuted} />
+              )}
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Payment methods ──────────────────────────────────────────
+const PaymentMethodsScreen = ({ onBack, onAdd }) => {
+  const [methods, setMethods] = useState([
+    { id: 1, type: 'bKash', number: '+880 1711•••567', active: true, color: '#E2136E', initial: 'b' },
+    { id: 2, type: 'Nagad', number: '+880 1711•••567', active: false, color: '#EE3124', initial: 'N' },
+  ]);
+
+  const toggleActive = (id) => setMethods(methods.map(m => m.id === id ? { ...m, active: !m.active } : m));
+  const remove = (id) => setMethods(methods.filter(m => m.id !== id));
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Payment Methods" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
         {methods.map(m => (
-          <Card key={m.id}>
+          <Card key={m.id} style={m.active ? { border: `1.5px solid ${T.color.gold500}` } : undefined}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
                 width: 44, height: 44, borderRadius: T.radius.s, flexShrink: 0,
@@ -351,17 +297,23 @@ const PaymentMethodsScreen = ({ onBack }) => {
                 color: '#fff', fontFamily: T.fontSans, fontSize: 18, fontWeight: 700,
               }}>{m.initial}</div>
               <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Txt variant="bodySm" style={{ fontWeight: 600 }}>{m.type}</Txt>
-                  {m.primary && <StatusPill variant="bidding">Primary</StatusPill>}
-                </div>
+                <Txt variant="bodySm" style={{ fontWeight: 600 }}>{m.type}</Txt>
                 <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>{m.number}</Txt>
               </div>
-              <IconButton name="moreVert" />
+              <Toggle checked={m.active} onChange={() => toggleActive(m.id)} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12, paddingTop: 10, borderTop: `1px solid ${T.color.navyBorder}` }}>
+              <Txt variant="caption" color={m.active ? T.color.gold500 : T.color.textMuted} style={{ fontWeight: 600 }}>
+                {m.active ? 'ACTIVE' : 'INACTIVE'}
+              </Txt>
+              <button onClick={() => remove(m.id)} style={{
+                background: 'none', border: 'none', color: T.color.error,
+                fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer', padding: '4px 8px',
+              }}>Remove</button>
             </div>
           </Card>
         ))}
-        <SecondaryButton icon="plus">Add payment method</SecondaryButton>
+        <SecondaryButton icon="plus" onClick={onAdd}>Add payment method</SecondaryButton>
         <Banner variant="info">Your payment info is encrypted end-to-end.</Banner>
       </div>
     </div>
@@ -382,22 +334,7 @@ const HelpScreen = ({ onBack }) => {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Help & Support" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Card onClick={() => {}}>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <div style={{
-              width: 40, height: 40, borderRadius: 20, background: 'rgba(212,175,55,0.12)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Icon name="chat" size={18} color={T.color.gold500} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Chat with support</Txt>
-              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Usually responds within 15 min</Txt>
-            </div>
-            <Icon name="chevron" size={18} color={T.color.textMuted} />
-          </div>
-        </Card>
-        <Txt variant="caption" color={T.color.textMuted} style={{ marginTop: 8 }}>FAQ</Txt>
+        <Txt variant="caption" color={T.color.textMuted}>FAQ</Txt>
         {faqs.map((f, i) => (
           <Card key={i} onClick={() => setOpen(open === i ? null : i)}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -446,16 +383,26 @@ const TermsScreen = ({ onBack }) => (
 
 // ── Profile / settings hub ──────────────────────────────────
 const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
-  const items = [
-    { id: 'edit', icon: 'user', label: 'Edit profile' },
-    { id: 'skills', icon: 'briefcase', label: 'My skills', badge: mode === 'worker' ? '3 declared' : null },
-    { id: 'assets', icon: 'truck', label: 'My assets', badge: mode === 'worker' ? 'Honda 150cc' : null },
-    { id: 'verification', icon: 'shield', label: 'Verification', badge: 'Verified', badgeColor: T.color.success },
-    { id: 'payment', icon: 'creditCard', label: 'Payment methods' },
-    { id: 'language', icon: 'globe', label: 'Language', badge: 'English' },
-    { id: 'help', icon: 'help', label: 'Help & support' },
-    { id: 'terms', icon: 'file', label: 'Terms & Privacy' },
-  ].filter(i => mode === 'worker' || (i.id !== 'skills' && i.id !== 'assets' && i.id !== 'verification'));
+  const isWorker = mode === 'worker';
+  const items = isWorker
+    ? [
+        { id: 'edit', icon: 'user', label: 'Edit profile' },
+        { id: 'skills', icon: 'briefcase', label: 'My skills', badge: '3 declared' },
+        { id: 'assets', icon: 'truck', label: 'My assets', badge: 'Honda 150cc' },
+        { id: 'bids', icon: 'briefcase', label: 'My bidded jobs', badge: '2 active' },
+        { id: 'payment', icon: 'creditCard', label: 'Payment methods' },
+        { id: 'language', icon: 'globe', label: 'Language', badge: 'English' },
+        { id: 'help', icon: 'help', label: 'Help & support' },
+        { id: 'terms', icon: 'file', label: 'Terms & Privacy' },
+      ]
+    : [
+        { id: 'edit', icon: 'user', label: 'Edit profile' },
+        { id: 'payment', icon: 'creditCard', label: 'Payment methods' },
+        { id: 'history', icon: 'history', label: 'Work history' },
+        { id: 'language', icon: 'globe', label: 'Language', badge: 'English' },
+        { id: 'help', icon: 'help', label: 'Help & support' },
+        { id: 'terms', icon: 'file', label: 'Terms & Privacy' },
+      ];
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Profile" />
@@ -467,11 +414,14 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: T.color.gold500, fontFamily: T.fontSans, fontSize: 28, fontWeight: 700,
           }}>KA</div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
             <Txt variant="subtitle">Karim Ahmed</Txt>
-            <VerifiedBadge />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Icon name="starFill" size={14} color={T.color.gold500} />
+              <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 600 }}>4.8</Txt>
+            </div>
           </div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>+880 1711-234567</Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 4 }}>+880 1711-234567</Txt>
         </div>
         <div style={{ padding: 16 }}>
           <Card>
@@ -483,7 +433,7 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
         </div>
         <div style={{ padding: '0 16px' }}>
           {items.map(i => (
-            <div key={i.id} onClick={() => onNav(i.id)}
+            <div key={i.id} onClick={() => onNav && onNav(i.id)}
               style={{
                 padding: '14px 4px', borderBottom: `1px solid ${T.color.navyBorder}`,
                 display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
@@ -496,7 +446,7 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
               </div>
               <Txt variant="bodySm" style={{ fontWeight: 500, flex: 1 }}>{i.label}</Txt>
               {i.badge && (
-                <Txt variant="caption" color={i.badgeColor || T.color.textMuted} style={{ letterSpacing: 0 }}>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
                   {i.badge}
                 </Txt>
               )}
@@ -524,55 +474,46 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <Drawer isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} onNav={onNav} />
-      <AppBarElevated 
+      <AppBarElevated
         title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: T.color.navyDeep, border: `1px solid ${T.color.gold500}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.color.gold500, fontSize: 12, fontWeight: 700 }}>KA</div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Txt variant="bodySm" style={{ fontWeight: 600, lineHeight: 1.2 }}>Karim Ahmed</Txt>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Icon name="starFill" size={10} color={T.color.gold500} />
-                <Txt variant="caption" color={T.color.gold500} style={{ fontSize: 10 }}>4.8</Txt>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 18, background: T.color.navyDeep, border: `1px solid ${T.color.gold500}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: T.color.gold500, fontSize: 13, fontWeight: 700, flexShrink: 0 }}>KA</div>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Txt variant="bodySm" style={{ fontWeight: 600, lineHeight: 1.2, whiteSpace: 'nowrap' }}>Karim Ahmed</Txt>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Icon name="starFill" size={10} color={T.color.gold500} />
+                  <Txt variant="caption" color={T.color.gold500} style={{ fontSize: 10 }}>4.8</Txt>
+                </div>
+                <div style={{
+                  padding: '2px 6px', borderRadius: T.radius.full,
+                  background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+                  color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
+                  letterSpacing: '2%', textTransform: 'uppercase', lineHeight: 1.2,
+                }}>Employer</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
+                <Icon name="location" size={10} color={T.color.textMuted} />
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, fontSize: 10, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Motijheel, Dhaka</Txt>
               </div>
             </div>
           </div>
         }
-        modePill={<ModePill mode={mode} onToggle={() => onSwitchMode && onSwitchMode(mode === 'employer' ? 'worker' : 'employer')} />}
         right={
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ position: 'relative' }}>
-              <IconButton name="bell" onClick={() => onNav('notifications')} />
+              <IconButton name="bell" onClick={() => onNav && onNav('notifications')} />
               <div style={{ position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: 4, background: T.color.error, border: `1.5px solid ${T.color.navyBg}` }} />
             </div>
             <IconButton name="menu" onClick={() => setDrawerOpen(true)} />
           </div>
-        } 
+        }
       />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <Card style={{ flex: 1, textAlign: 'center', padding: '12px 8px' }}>
-            <Txt variant="h2" color={T.color.gold500}>12</Txt>
-            <Txt variant="caption" color={T.color.textMuted}>TOTAL JOBS</Txt>
-          </Card>
-          <Card style={{ flex: 1, textAlign: 'center', padding: '12px 8px' }}>
-            <Txt variant="h2" color={T.color.gold500}>2</Txt>
-            <Txt variant="caption" color={T.color.textMuted}>ACTIVE JOBS</Txt>
-          </Card>
-        </div>
-
-        <Banner variant="warning" title="Under verification" style={{ marginBottom: 4 }}>
-          Your profile is being reviewed. This usually takes less than 24 hours.
-          <button style={{ 
-            background: 'none', border: 'none', color: T.color.gold500, 
-            textDecoration: 'underline', padding: 0, marginLeft: 8, cursor: 'pointer' 
-          }}>Check status</button>
-        </Banner>
-
         <Card style={{
           background: `linear-gradient(135deg, ${T.color.gold500}, ${T.color.gold600})`,
           border: 'none',
         }}>
-          <Txt variant="caption" color="rgba(15,25,45,0.7)" style={{ letterSpacing: '0.05em' }}>GOOD MORNING, KARIM</Txt>
           <Txt variant="h2" color={T.color.textOnGold} style={{ marginTop: 4 }}>Need help today?</Txt>
           <Txt variant="bodySm" color="rgba(15,25,45,0.8)" style={{ marginTop: 6, marginBottom: 14 }}>
             Post a job and get bids in minutes.
@@ -583,14 +524,13 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
             fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
           }}>Post a job →</button>
         </Card>
-        
+
         {hasPostedJob && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-              <Txt variant="caption" color={T.color.textMuted}>ACTIVE JOBS</Txt>
-              <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0, cursor: 'pointer' }}>View all</Txt>
+              <Txt variant="caption" color={T.color.textMuted}>ACTIVE JOB</Txt>
             </div>
-            <Card onClick={() => onNav('jobdetail')}>
+            <Card onClick={() => onNav && onNav('jobdetail')}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
                 <Txt variant="bodySm" style={{ fontWeight: 600 }}>Medicine delivery</Txt>
                 <StatusPill variant="bidding">4 bids</StatusPill>
@@ -689,9 +629,72 @@ const PaymentSelectionScreen = ({ onBack, onPaid, amount = 1500 }) => {
   );
 };
 
+// ── Employer work history ───────────────────────────────────
+const EmployerWorkHistoryScreen = ({ onBack }) => {
+  const history = [
+    { id: 1, title: 'Medicine delivery', date: '24/04/2026', amount: 1500, status: 'complete' },
+    { id: 2, title: 'Move single sofa — Gulshan', date: '22/04/2026', amount: 2000, status: 'complete' },
+    { id: 3, title: 'Drop documents — Agargaon', date: '20/04/2026', amount: 800, status: 'complete' },
+    { id: 4, title: 'Fix kitchen sink', date: '18/04/2026', amount: 0, status: 'cancelled' },
+    { id: 5, title: 'Food delivery — Banani', date: '15/04/2026', amount: 500, status: 'complete' },
+  ];
+  const completed = history.filter(h => h.status === 'complete');
+  const totalDisbursed = completed.reduce((s, h) => s + h.amount, 0);
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title="Work History" left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        <div style={{ padding: 16 }}>
+          <Card style={{ background: T.color.navyDeep }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                <Txt variant="caption" color={T.color.textMuted}>DISBURSED</Txt>
+                <Txt variant="h2" color={T.color.gold500}>{fmtBDT(totalDisbursed)}</Txt>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <Txt variant="caption" color={T.color.textMuted}>COMPLETED JOBS</Txt>
+                <Txt variant="h2" color={T.color.gold500}>{completed.length}</Txt>
+              </div>
+            </div>
+          </Card>
+        </div>
+        {history.map(h => (
+          <div key={h.id} style={{
+            padding: '14px 16px', borderBottom: `1px solid ${T.color.navyBorder}`,
+            display: 'flex', alignItems: 'center', gap: 12,
+          }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: 20, flexShrink: 0,
+              background: h.status === 'complete' ? 'rgba(102,187,106,0.15)' : 'rgba(239,83,80,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Icon name={h.status === 'complete' ? 'checkCircle' : 'x'} size={18}
+                color={h.status === 'complete' ? T.color.success : T.color.error} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <Txt variant="bodySm" style={{ fontWeight: 500 }}>{h.title}</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>{h.date}</Txt>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <Txt variant="bodySm" color={h.status === 'complete' ? T.color.gold500 : T.color.textMuted}
+                style={{ fontWeight: 600 }}>
+                {h.status === 'complete' ? fmtBDT(h.amount) : 'Cancelled'}
+              </Txt>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Employer home with location (verified profile, no greeting, no totals) ──
+// (already in EmployerHomeScreen — no separate variant needed)
+
 Object.assign(window, {
-  ProgressSteps, ProgressEmployerOnlineScreen, ProgressWorkerScreen,
+  ProgressSteps,
   CancelReasonSheet, JobCompletionScreen,
   WorkHistoryScreen, PaymentMethodsScreen, HelpScreen, TermsScreen,
   ProfileHubScreen, EmployerHomeScreen, PaymentSelectionScreen,
+  EmployerWorkHistoryScreen, WorkerBidHistoryScreen,
 });

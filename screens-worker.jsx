@@ -54,11 +54,11 @@ const WorkerOnboardingIntroScreen = ({ onNext, onSkip }) => {
   );
 };
 
-// ── Profile edit ─────────────────────────────────────────────
+// ── Profile edit (account section, not verification flow) ───
 const ProfileEditScreen = ({ onBack, onSave }) => {
   const [name, setName] = useState('Karim Ahmed');
+  const [phone, setPhone] = useState('1711-234567');
   const [email, setEmail] = useState('karim@example.com');
-  const [lang, setLang] = useState('English');
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Edit Profile" left={<BackButton onClick={onBack} />} />
@@ -73,32 +73,11 @@ const ProfileEditScreen = ({ onBack, onSave }) => {
           <SecondaryButton icon="image" style={{ width: 'auto' }}>Change photo</SecondaryButton>
         </div>
         <TextField label="Full name" value={name} onChange={setName} />
+        <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
         <TextField label="Email (optional)" value={email} onChange={setEmail} />
-        <div>
-          <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 500, marginBottom: 8 }}>Language preference</Txt>
-          <div style={{ display: 'flex', gap: 8 }}>
-            {['Bangla', 'English'].map(l => (
-              <button key={l} onClick={() => setLang(l)}
-                style={{
-                  flex: 1, minHeight: 44, border: `1px solid ${lang === l ? T.color.gold500 : T.color.navyBorder}`,
-                  background: lang === l ? 'rgba(212,175,55,0.10)' : 'transparent',
-                  color: T.color.gold500, borderRadius: T.radius.m, fontFamily: T.fontSans,
-                  fontSize: 14, fontWeight: 500, cursor: 'pointer',
-                }}>{l}</button>
-            ))}
-          </div>
+        <div style={{ marginTop: 'auto' }}>
+          <PrimaryButton onClick={onSave}>Save changes</PrimaryButton>
         </div>
-        <div>
-          <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 500, marginBottom: 6 }}>Timezone</Txt>
-          <div style={{
-            padding: 14, background: T.color.navyRaised, borderRadius: T.radius.m,
-            border: `1px solid ${T.color.navyBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          }}>
-            <Txt variant="body">Asia/Dhaka (GMT+6:00)</Txt>
-            <Icon name="chevronDown" size={18} color={T.color.textMuted} />
-          </div>
-        </div>
-
       </div>
     </div>
   );
@@ -296,153 +275,387 @@ const ModeToggleScreen = ({ mode, onBack, onSwitch }) => {
 };
 
 // ── Skill declaration ────────────────────────────────────────
-const SkillDeclarationScreen = ({ onBack, onSave }) => {
-  const [selected, setSelected] = useState(new Set(['Bike delivery', 'General handyman']));
+const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
+  const [selected, setSelected] = useState(new Set(['Bike delivery']));
   const [search, setSearch] = useState('');
-  const [free, setFree] = useState('');
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [assetPromptOpen, setAssetPromptOpen] = useState(false);
+
   const toggle = s => {
     const n = new Set(selected);
     if (n.has(s)) n.delete(s); else n.add(s);
     setSelected(n);
   };
-  const sections = [
-    { title: 'Popular right now', items: SAMPLE.skills.popular },
-    { title: 'Transport & Delivery', items: SAMPLE.skills.transport },
-    { title: 'Handyman', items: SAMPLE.skills.handyman },
-  ];
+
+  const allItems = [...SAMPLE.skills.popular, ...SAMPLE.skills.transport, ...SAMPLE.skills.handyman];
+  const q = search.trim();
+  const available = allItems.filter(s => !selected.has(s));
+  const filtered = q ? available.filter(i => i.toLowerCase().includes(q.toLowerCase())) : available;
+  const exactMatch = q && allItems.some(i => i.toLowerCase() === q.toLowerCase());
+  const showAddCustom = q && !exactMatch;
+
+  const addSkill = (s) => {
+    const n = new Set(selected);
+    n.add(s.trim());
+    setSelected(n);
+    setSearch('');
+  };
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Declare Skills" left={<BackButton onClick={onBack} />} />
-      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
         <div>
           <Txt variant="subtitle" style={{ marginBottom: 4 }}>Add what you can do</Txt>
           <Txt variant="bodySm" color={T.color.textSecondary}>
-            Describe in your own words — Bangla, Banglish or English all work.
+            Search the list, or add a custom skill if not found.
           </Txt>
         </div>
-        <TextField placeholder="e.g. Bike riding for delivery" value={free} onChange={setFree}
-          suffix={<IconButton name="plus" size={32} iconSize={18} color={T.color.gold500} />} />
-        {sections.map(sec => (
-          <div key={sec.title}>
-            <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>{sec.title.toUpperCase()}</Txt>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {sec.items.filter(i => i.toLowerCase().includes(search.toLowerCase())).map(s => (
-                <Checkbox key={s} checked={selected.has(s)} label={s} onClick={() => toggle(s)} />
-              ))}
-            </div>
-          </div>
-        ))}
+
+        <input value={search} onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search or type a skill..."
+          style={{
+            width: '100%', minHeight: 48, background: T.color.navyRaised,
+            border: `1.5px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
+            color: T.color.textPrimary, padding: '0 14px', fontFamily: T.fontSans, fontSize: 15,
+            outline: 'none',
+          }} />
+
+        <div style={{
+          display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflow: 'auto',
+          border: `1px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
+          background: T.color.navyDeep, padding: 6,
+        }}>
+          {filtered.length === 0 && !showAddCustom && (
+            <Txt variant="caption" color={T.color.textMuted} style={{ padding: 14, letterSpacing: 0, textAlign: 'center' }}>
+              All matching skills already added.
+            </Txt>
+          )}
+          {filtered.map(s => (
+            <button key={s} onClick={() => addSkill(s)} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 14px', background: 'transparent', border: 'none', cursor: 'pointer',
+              color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 14, textAlign: 'left',
+              borderRadius: T.radius.s,
+            }}>
+              <span>{s}</span>
+              <Icon name="plus" size={16} color={T.color.gold500} />
+            </button>
+          ))}
+          {showAddCustom && (
+            <button onClick={() => addSkill(q)} style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '12px 14px', margin: 4,
+              background: 'rgba(212,175,55,0.08)', border: `1.5px dashed ${T.color.gold500}`,
+              borderRadius: T.radius.s, cursor: 'pointer',
+              color: T.color.gold500, fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
+              textAlign: 'left',
+            }}>
+              <Icon name="plus" size={16} color={T.color.gold500} />
+              Add skill: "{q}"
+            </button>
+          )}
+        </div>
+
         {selected.size > 0 && (
           <Card style={{ background: T.color.navyDeep }}>
             <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>
-              YOUR SKILLS ({selected.size} SELECTED)
+              YOUR SKILLS ({selected.size} ADDED)
             </Txt>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {[...selected].map(s => <CapabilityTag key={s} onRemove={() => toggle(s)}>{s}</CapabilityTag>)}
             </div>
           </Card>
         )}
+
         <div style={{ marginTop: 8 }}>
-          <PrimaryButton onClick={onSave} disabled={selected.size === 0}>Save skills</PrimaryButton>
+          <PrimaryButton onClick={() => setConfirmOpen(true)} disabled={selected.size === 0}>Save skills</PrimaryButton>
         </div>
       </div>
+
+      {confirmOpen && (
+        <BottomSheet onClose={() => setConfirmOpen(false)} title="Confirm your skills">
+          <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 14 }}>
+            You have these skills. Please confirm to proceed further.
+          </Txt>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 18 }}>
+            {[...selected].map(s => <CapabilityTag key={s} onRemove={() => toggle(s)}>{s}</CapabilityTag>)}
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <SecondaryButton style={{ flex: 1 }} onClick={() => setConfirmOpen(false)}>Update</SecondaryButton>
+            <PrimaryButton style={{ flex: 1 }} onClick={() => { setConfirmOpen(false); setAssetPromptOpen(true); }}>Confirm</PrimaryButton>
+          </div>
+        </BottomSheet>
+      )}
+
+      {assetPromptOpen && (
+        <Dialog
+          onClose={() => setAssetPromptOpen(false)}
+          title="Declare your assets?"
+          actions={[
+            <SecondaryButton key="skip" onClick={() => { setAssetPromptOpen(false); onSave && onSave([...selected]); }}>Skip for now</SecondaryButton>,
+            <PrimaryButton key="add" onClick={() => { setAssetPromptOpen(false); onDeclareAssets ? onDeclareAssets() : onSave && onSave([...selected]); }}>Declare assets</PrimaryButton>,
+          ]}>
+          <Txt variant="bodySm" color={T.color.textSecondary}>
+            Adding assets (motorbike, tools, etc.) helps you match more jobs. You can add them later from your profile.
+          </Txt>
+        </Dialog>
+      )}
     </div>
   );
 };
 
-// ── Asset declaration ────────────────────────────────────────
-const AssetDeclarationScreen = ({ onBack, onSave }) => {
+// ── Asset list (declaration entry) ──────────────────────────
+const AssetDeclarationScreen = ({ onBack, onSave, onAddAsset, onViewDetails }) => {
   const [assets, setAssets] = useState([
-    { id: 1, name: 'Hero Honda 150cc', type: 'Motorbike', isPrimary: true },
+    { id: 1, name: 'Hero Honda 150cc', type: 'Motorbike', description: 'Honda CB 150 · BD-12-3456', pics: 1 },
   ]);
-  const [isAdding, setIsAdding] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newType, setNewType] = useState('Bicycle');
+  const [removeTarget, setRemoveTarget] = useState(null);
 
-  const addAsset = () => {
-    if (!newName) return;
-    setAssets([...assets, { id: Date.now(), name: newName, type: newType, isPrimary: false }]);
-    setNewName('');
-    setIsAdding(false);
-  };
-
-  const setPrimary = (id) => {
-    setAssets(assets.map(a => ({ ...a, isPrimary: a.id === id })));
-  };
-
-  const removeAsset = (id) => {
-    setAssets(assets.filter(a => a.id !== id));
+  const confirmRemove = () => {
+    setAssets(assets.filter(a => a.id !== removeTarget.id));
+    setRemoveTarget(null);
   };
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="My Assets" left={<BackButton onClick={onBack} />} />
-      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 12, overflow: 'auto' }}>
         <Txt variant="caption" color={T.color.textMuted}>YOUR ASSETS</Txt>
-        
+
         {assets.map(a => (
-          <Card key={a.id} style={{ border: a.isPrimary ? `1.5px solid ${T.color.gold500}` : undefined }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Card key={a.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 20, background: T.color.navyDeep, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon name={a.type === 'Motorbike' ? 'truck' : 'globe'} size={20} color={T.color.gold500} />
+                  <Icon name="truck" size={20} color={T.color.gold500} />
                 </div>
                 <div>
                   <Txt variant="bodySm" style={{ fontWeight: 600 }}>{a.name}</Txt>
                   <Txt variant="caption" color={T.color.textMuted}>{a.type}</Txt>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                {a.isPrimary ? (
-                  <StatusPill variant="success">Primary</StatusPill>
-                ) : (
-                  <button onClick={() => setPrimary(a.id)} style={{ background: 'none', border: 'none', color: T.color.gold500, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Set Primary</button>
-                )}
-                <IconButton name="x" size={32} iconSize={16} onClick={() => removeAsset(a.id)} />
-              </div>
+              <IconButton name="x" size={32} iconSize={16} onClick={() => setRemoveTarget(a)} />
             </div>
+            <SecondaryButton style={{ minHeight: 36, fontSize: 13 }} onClick={() => onViewDetails && onViewDetails(a)}>View details</SecondaryButton>
           </Card>
         ))}
 
-        {isAdding ? (
-          <Card style={{ background: T.color.navyDeep, border: `1px dashed ${T.color.gold500}` }}>
-            <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 12 }}>Add New Asset</Txt>
-            <TextField label="Asset name" placeholder="e.g. Yamaha FZ" value={newName} onChange={setNewName} />
-            <div style={{ marginTop: 12 }}>
-              <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 6, display: 'block' }}>TYPE</Txt>
-              <select 
-                value={newType} 
-                onChange={e => setNewType(e.target.value)}
-                style={{ width: '100%', height: 44, background: T.color.navyRaised, border: `1px solid ${T.color.navyBorder}`, borderRadius: T.radius.m, color: '#fff', padding: '0 10px', outline: 'none' }}
-              >
-                <option>Motorbike</option>
-                <option>Bicycle</option>
-                <option>Car</option>
-                <option>Van/Truck</option>
-                <option>Other Tools</option>
-              </select>
-            </div>
-            <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-              <SecondaryButton style={{ flex: 1 }} onClick={() => setIsAdding(false)}>Cancel</SecondaryButton>
-              <PrimaryButton style={{ flex: 1 }} onClick={addAsset}>Add</PrimaryButton>
-            </div>
-          </Card>
-        ) : (
-          <SecondaryButton icon="plus" onClick={() => setIsAdding(true)}>Add another asset</SecondaryButton>
-        )}
+        <SecondaryButton icon="plus" onClick={onAddAsset}>Add asset</SecondaryButton>
 
         <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
-          <PrimaryButton onClick={() => onSave(assets)}>Save & Continue</PrimaryButton>
+          <PrimaryButton onClick={() => onSave && onSave(assets)}>Save & Continue</PrimaryButton>
+        </div>
+      </div>
+
+      {removeTarget && (
+        <Dialog
+          onClose={() => setRemoveTarget(null)}
+          title="Remove this asset?"
+          actions={[
+            <SecondaryButton key="cancel" onClick={() => setRemoveTarget(null)}>Cancel</SecondaryButton>,
+            <DestructiveButton key="confirm" onClick={confirmRemove}>Remove</DestructiveButton>,
+          ]}>
+          <Txt variant="bodySm" color={T.color.textSecondary}>
+            Are you sure you want to remove <span style={{ color: T.color.gold500, fontWeight: 600 }}>{removeTarget.name}</span>? This cannot be undone.
+          </Txt>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
+// ── Asset detail form (add new) ──────────────────────────────
+const AssetDetailFormScreen = ({ onBack, onPreview }) => {
+  const [name, setName] = useState('Yamaha FZ');
+  const [type, setType] = useState('');
+  const [typeQuery, setTypeQuery] = useState('');
+  const [showTypeDD, setShowTypeDD] = useState(false);
+  const [desc, setDesc] = useState('');
+  const [pics, setPics] = useState([]);
+
+  const types = ['Motorbike', 'Bicycle', 'Car', 'Van', 'Truck', 'Pickup', 'Power tools', 'Hand tools', 'Sewing machine', 'Camera'];
+  const filteredTypes = typeQuery
+    ? types.filter(t => t.toLowerCase().includes(typeQuery.toLowerCase()))
+    : types;
+
+  const ok = name && type && desc;
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title="Add Asset" left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+        <TextField label="Asset name" value={name} onChange={setName} placeholder="e.g. Yamaha FZ" />
+
+        <div style={{ position: 'relative' }}>
+          <TextField label="Asset type" value={type || typeQuery}
+            onChange={(v) => { setType(''); setTypeQuery(v); setShowTypeDD(true); }}
+            placeholder="Type or search..."
+            suffix={
+              <IconButton name="chevronDown" size={32} iconSize={16}
+                onClick={() => setShowTypeDD(d => !d)} />
+            } />
+          {showTypeDD && (
+            <div style={{
+              position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4,
+              background: T.color.navyDeep, border: `1px solid ${T.color.navyBorder}`,
+              borderRadius: T.radius.m, maxHeight: 180, overflow: 'auto', zIndex: 10,
+              boxShadow: T.elevation.lg,
+            }}>
+              {filteredTypes.length === 0 ? (
+                <div style={{ padding: 14 }}>
+                  <Txt variant="bodySm" color={T.color.textMuted}>
+                    No match. Use "{typeQuery}" as custom type.
+                  </Txt>
+                  <button onClick={() => { setType(typeQuery); setShowTypeDD(false); }} style={{
+                    marginTop: 8, background: 'none', border: 'none', color: T.color.gold500,
+                    fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
+                  }}>Use custom →</button>
+                </div>
+              ) : filteredTypes.map(t => (
+                <button key={t} onClick={() => { setType(t); setTypeQuery(''); setShowTypeDD(false); }} style={{
+                  display: 'block', width: '100%', textAlign: 'left',
+                  padding: 12, background: 'transparent', border: 'none', cursor: 'pointer',
+                  color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 14,
+                }}>{t}</button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <TextField label="Description" multiline rows={3} value={desc} onChange={setDesc}
+          placeholder="Make, model, registration, condition..." />
+
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Pictures</Txt>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {pics.map((_, i) => (
+              <div key={i} style={{
+                width: 70, height: 70, borderRadius: T.radius.m,
+                background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+                border: `1px solid ${T.color.gold500}`, position: 'relative',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon name="image" size={20} color={T.color.gold500} />
+                <button onClick={() => setPics(pics.filter((_, j) => j !== i))} style={{
+                  position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: 10,
+                  background: T.color.error, border: 'none', cursor: 'pointer', color: '#fff',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
+                }}>×</button>
+              </div>
+            ))}
+            <button onClick={() => setPics([...pics, 1])} style={{
+              width: 70, height: 70, borderRadius: T.radius.m,
+              background: T.color.navyRaised, border: `1.5px dashed ${T.color.navyBorder}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+            }}>
+              <Icon name="plus" size={20} color={T.color.gold500} />
+            </button>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
+          <PrimaryButton onClick={() => onPreview && onPreview({ name, type, desc, pics: pics.length })} disabled={!ok}>
+            Preview asset
+          </PrimaryButton>
         </div>
       </div>
     </div>
   );
 };
 
+// ── Asset preview (editable before commit) ──────────────────
+const AssetPreviewScreen = ({ asset = { name: 'Yamaha FZ', type: 'Motorbike', desc: 'Black, 2024 model, registered', pics: 2 }, onBack, onEdit, onConfirm }) => (
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+    <AppBarElevated title="Preview Asset" left={<BackButton onClick={onBack} />} />
+    <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+      <Banner variant="info">Review before adding to your assets list. You can edit if needed.</Banner>
+      <Card>
+        {asset.pics > 0 && (
+          <div style={{ display: 'flex', gap: 8, marginBottom: 14, overflowX: 'auto' }}>
+            {Array.from({ length: asset.pics }).map((_, i) => (
+              <div key={i} style={{
+                minWidth: 100, height: 100, borderRadius: T.radius.m, flexShrink: 0,
+                background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+                border: `1px solid ${T.color.navyBorder}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon name="image" size={24} color={T.color.gold500} />
+              </div>
+            ))}
+          </div>
+        )}
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>NAME</Txt>
+        <Txt variant="subtitle" style={{ marginBottom: 12 }}>{asset.name}</Txt>
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>TYPE</Txt>
+        <Txt variant="bodySm" style={{ marginBottom: 12 }}>{asset.type}</Txt>
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>DESCRIPTION</Txt>
+        <Txt variant="bodySm">{asset.desc}</Txt>
+      </Card>
+      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 20 }}>
+        <PrimaryButton onClick={onConfirm}>Add to my assets</PrimaryButton>
+        <SecondaryButton onClick={onEdit}>Edit details</SecondaryButton>
+      </div>
+    </div>
+  </div>
+);
+
+// ── Asset added success ─────────────────────────────────────
+const AssetAddedSuccessScreen = ({ onContinue, onAddAnother }) => (
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg,
+    alignItems: 'center', justifyContent: 'center', padding: 24, gap: 16 }}>
+    <div style={{
+      width: 96, height: 96, borderRadius: 48, background: 'rgba(102,187,106,0.15)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <Icon name="checkCircle" size={56} color={T.color.success} />
+    </div>
+    <Txt variant="h2" style={{ textAlign: 'center' }}>Asset added</Txt>
+    <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
+      Your asset has been added. It's now available for matching jobs.
+    </Txt>
+    <div style={{ width: '100%', marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <PrimaryButton onClick={onContinue}>Done</PrimaryButton>
+      <SecondaryButton onClick={onAddAnother}>Add another</SecondaryButton>
+    </div>
+  </div>
+);
+
+// ── Asset details view ──────────────────────────────────────
+const AssetDetailsViewScreen = ({ asset = { name: 'Hero Honda 150cc', type: 'Motorbike', description: 'Honda CB 150 · BD-12-3456 · Black, 2023 model, regularly serviced.', pics: 2 }, onBack }) => (
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+    <AppBarElevated title="Asset Details" left={<BackButton onClick={onBack} />} />
+    <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+      {asset.pics > 0 && (
+        <div style={{ display: 'flex', gap: 8, overflowX: 'auto' }}>
+          {Array.from({ length: asset.pics }).map((_, i) => (
+            <div key={i} style={{
+              minWidth: 240, height: 180, borderRadius: T.radius.l, flexShrink: 0,
+              background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+              border: `1px solid ${T.color.navyBorder}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Icon name="image" size={48} color={T.color.gold500} />
+            </div>
+          ))}
+        </div>
+      )}
+      <Card>
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>NAME</Txt>
+        <Txt variant="subtitle" style={{ marginBottom: 12 }}>{asset.name}</Txt>
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>TYPE</Txt>
+        <Txt variant="bodySm" style={{ marginBottom: 12 }}>{asset.type}</Txt>
+        <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>DESCRIPTION</Txt>
+        <Txt variant="bodySm" style={{ lineHeight: 1.6 }}>{asset.description}</Txt>
+      </Card>
+    </div>
+  </div>
+);
+
 // ── Language preference ──────────────────────────────────────
 const LanguagePreferenceScreen = ({ onBack, onSave }) => {
   const [lang, setLang] = useState('English');
-  const [sameNotif, setSameNotif] = useState(true);
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Language" left={<BackButton onClick={onBack} />} />
@@ -455,26 +668,9 @@ const LanguagePreferenceScreen = ({ onBack, onSave }) => {
             ))}
           </div>
         </div>
-        <Card style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ flex: 1 }}>
-            <Txt variant="body" style={{ fontWeight: 500 }}>Use same language for notifications</Txt>
-            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>
-              Push and SMS will match
-            </Txt>
-          </div>
-          <Toggle checked={sameNotif} onChange={setSameNotif} />
-        </Card>
-        <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 6 }}>SEND ME NOTIFICATIONS AT</Txt>
-          <div style={{
-            padding: 14, background: T.color.navyRaised, borderRadius: T.radius.m,
-            border: `1px solid ${T.color.navyBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          }}>
-            <Txt variant="body">10:00 AM (Asia/Dhaka)</Txt>
-            <Icon name="chevronDown" size={18} color={T.color.textMuted} />
-          </div>
+        <div style={{ marginTop: 'auto' }}>
+          <PrimaryButton onClick={onSave}>Save</PrimaryButton>
         </div>
-        <div style={{ height: 40 }} />
       </div>
     </div>
   );
@@ -485,4 +681,5 @@ Object.assign(window, {
   ProfileEditScreen, NidUploadScreen, FacialCaptureScreen,
   ModeToggleScreen,
   SkillDeclarationScreen, AssetDeclarationScreen, LanguagePreferenceScreen,
+  AssetDetailFormScreen, AssetPreviewScreen, AssetAddedSuccessScreen, AssetDetailsViewScreen,
 });

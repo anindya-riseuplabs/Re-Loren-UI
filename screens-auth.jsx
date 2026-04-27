@@ -142,10 +142,13 @@ const LandingScreen = ({ onSignUp, onLogin }) => {
   );
 };
 
-// ── PhoneOtpEntry ────────────────────────────────────────────
+// ── Phone + Password login ───────────────────────────────────
 const PhoneOtpEntryScreen = ({ onSendOtp, onCreate, onForgot }) => {
   const [phone, setPhone] = useState('1711-234567');
+  const [pw, setPw] = useState('');
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const ok = phone.length >= 10 && pw.length >= 1;
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <div style={{ padding: '20px 16px 0' }}>
@@ -153,12 +156,21 @@ const PhoneOtpEntryScreen = ({ onSendOtp, onCreate, onForgot }) => {
       </div>
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ marginTop: 24 }}>
-          <Txt variant="headline" style={{ fontSize: 24, marginBottom: 6 }}>Sign in with your phone</Txt>
-          <Txt variant="body" color={T.color.textSecondary}>We'll send a 4-digit OTP via SMS.</Txt>
+          <Txt variant="headline" style={{ fontSize: 24, marginBottom: 6 }}>Sign in</Txt>
+          <Txt variant="body" color={T.color.textSecondary}>Enter your mobile number and password.</Txt>
         </div>
-        <PhoneNumberField value={phone} onChange={setPhone} />
-        <PrimaryButton onClick={() => { setLoading(true); setTimeout(onSendOtp, 400); }} disabled={phone.length < 10}>
-          {loading ? 'Sending…' : 'Send OTP'}
+        <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
+        <TextField label="Password" value={pw} onChange={setPw} type={show ? 'text' : 'password'}
+          placeholder="Enter your password"
+          suffix={<IconButton name={show ? 'eye' : 'eye'} size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
+        <div style={{ textAlign: 'right', marginTop: -6 }}>
+          <button onClick={onForgot} style={{
+            background: 'none', border: 'none', color: T.color.gold500,
+            fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer', padding: 0,
+          }}>Forgot password?</button>
+        </div>
+        <PrimaryButton onClick={() => { setLoading(true); setTimeout(() => onSendOtp && onSendOtp(), 400); }} disabled={!ok}>
+          {loading ? 'Signing in…' : 'Sign in'}
         </PrimaryButton>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
           <div style={{ flex: 1, height: 1, background: T.color.navyBorder }} />
@@ -168,10 +180,6 @@ const PhoneOtpEntryScreen = ({ onSendOtp, onCreate, onForgot }) => {
         <div style={{ textAlign: 'center' }}>
           <Txt variant="bodySm" color={T.color.textSecondary}>New to Re'Loren?</Txt>
           <SecondaryButton onClick={onCreate} style={{ marginTop: 8 }}>Create account</SecondaryButton>
-          <button onClick={onForgot} style={{
-            background: 'none', border: 'none', color: T.color.textSecondary,
-            fontFamily: T.fontSans, fontSize: 13, marginTop: 14, textDecoration: 'underline', cursor: 'pointer',
-          }}>Use email instead</button>
         </div>
       </div>
     </div>
@@ -223,73 +231,78 @@ const OtpVerifyScreen = ({ onBack, onVerify }) => {
 const RegisterFormScreen = ({ onBack, onNext }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('1711-234567');
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
+  const [otp, setOtp] = useState('');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
-  const [accountType, setAccountType] = useState('worker'); // 'worker' or 'employer'
-  const [skills, setSkills] = useState('');
+  const [cpw, setCpw] = useState('');
+  const [photo, setPhoto] = useState(false);
   const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
 
-  const ok = name && phone.length >= 10 && pw.length >= 8 && (accountType !== 'worker' || skills.length > 0);
+  const ok = name && phone.length >= 10 && phoneVerified && pw.length >= 8 && pw === cpw;
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Create account" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
 
-        <div>
-          <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 600, marginBottom: 12, display: 'block', letterSpacing: '0.05em' }}>ACCOUNT TYPE</Txt>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button
-              onClick={() => setAccountType('worker')}
-              style={{
-                flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
-                background: accountType === 'worker' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
-                border: `1px solid ${accountType === 'worker' ? T.color.gold500 : T.color.navyBorder}`,
-                color: accountType === 'worker' ? T.color.gold500 : T.color.textSecondary,
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center'
-              }}
-            >
-              <Icon name="user" size={20} color={accountType === 'worker' ? T.color.gold500 : T.color.textMuted} />
-              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Worker</Txt>
-            </button>
-            <button
-              onClick={() => setAccountType('employer')}
-              style={{
-                flex: 1, padding: '16px 12px', borderRadius: T.radius.m,
-                background: accountType === 'employer' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
-                border: `1px solid ${accountType === 'employer' ? T.color.gold500 : T.color.navyBorder}`,
-                color: accountType === 'employer' ? T.color.gold500 : T.color.textSecondary,
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center'
-              }}
-            >
-              <Icon name="briefcase" size={20} color={accountType === 'employer' ? T.color.gold500 : T.color.textMuted} />
-              <Txt variant="bodySm" style={{ fontWeight: 600 }}>Employer</Txt>
-            </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <button onClick={() => setPhoto(p => !p)} style={{
+            width: 80, height: 80, borderRadius: 40,
+            background: photo ? `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})` : T.color.navyDeep,
+            border: `2px dashed ${photo ? T.color.gold500 : T.color.navyBorder}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', flexShrink: 0,
+          }}>
+            <Icon name={photo ? 'checkCircle' : 'camera'} size={28} color={photo ? T.color.success : T.color.gold500} />
+          </button>
+          <div>
+            <Txt variant="bodySm" style={{ fontWeight: 600 }}>Profile photo</Txt>
+            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
+              {photo ? 'Photo added' : 'Tap to upload'}
+            </Txt>
           </div>
         </div>
 
         <TextField label="Full name" value={name} onChange={setName} placeholder="Enter your name" />
-        <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
 
-        {accountType === 'worker' && (
-          <div style={{ animation: 'fadeIn 0.3s ease' }}>
-            <TextField
-              label="What are your skills?"
-              value={skills}
-              onChange={setSkills}
-              placeholder="e.g. Electrician, Driver, etc."
-              helper="List your main expertise"
-            />
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Phone number</Txt>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+            <div style={{ flex: 1 }}>
+              <PhoneNumberField value={phone} onChange={(v) => { setPhone(v); setPhoneVerified(false); }} />
+            </div>
+            {phoneVerified ? (
+              <div style={{
+                minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                background: 'rgba(102,187,106,0.16)', border: `1px solid ${T.color.success}`,
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <Icon name="checkCircle" size={16} color={T.color.success} />
+                <Txt variant="caption" color={T.color.success} style={{ letterSpacing: 0, fontWeight: 600 }}>Verified</Txt>
+              </div>
+            ) : (
+              <button onClick={() => setOtpOpen(true)} disabled={phone.length < 10} style={{
+                minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                background: phone.length < 10 ? T.color.navyDeep : T.color.gold500,
+                border: 'none', color: phone.length < 10 ? T.color.textMuted : T.color.textOnGold,
+                fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: phone.length < 10 ? 'not-allowed' : 'pointer',
+              }}>Verify</button>
+            )}
           </div>
-        )}
+        </div>
 
         <TextField label="Email (optional)" value={email} onChange={setEmail} type="email" placeholder="email@example.com" />
 
         <TextField label="Password" value={pw} onChange={setPw} type={show ? 'text' : 'password'}
           helper="Minimum 8 characters"
-          suffix={<IconButton name={show ? 'eyeOff' : 'eye'} size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
+          suffix={<IconButton name="eye" size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
+
+        <TextField label="Retype password" value={cpw} onChange={setCpw} type={show2 ? 'text' : 'password'}
+          error={cpw && cpw !== pw ? 'Passwords do not match' : ''}
+          suffix={<IconButton name="eye" size={32} iconSize={18} onClick={() => setShow2(s => !s)} />} />
 
         <div style={{ marginTop: 8, paddingBottom: 20 }}>
           <PrimaryButton onClick={onNext} disabled={!ok}>Create account</PrimaryButton>
@@ -298,6 +311,20 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
           </Txt>
         </div>
       </div>
+
+      {otpOpen && (
+        <BottomSheet onClose={() => setOtpOpen(false)} title="Verify your phone">
+          <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 4 }}>
+            We sent a 4-digit code to
+          </Txt>
+          <Txt variant="subtitle" style={{ marginBottom: 16 }}>+880 {phone}</Txt>
+          <OtpInput length={4} value={otp} onChange={setOtp} />
+          <div style={{ height: 16 }} />
+          <PrimaryButton onClick={() => { setPhoneVerified(true); setOtpOpen(false); setOtp(''); }} disabled={otp.length !== 4}>
+            Verify
+          </PrimaryButton>
+        </BottomSheet>
+      )}
     </div>
   );
 };
@@ -337,57 +364,17 @@ const ModeSelectOnboardingScreen = ({ onContinue }) => {
 
 // ── Forgot password entry ────────────────────────────────────
 const ForgotPasswordEntryScreen = ({ onBack, onSend, onSwitchOtp }) => {
-  const [method, setMethod] = useState('email'); // 'email' or 'phone'
-  const [email, setEmail] = useState('karim@example.com');
   const [phone, setPhone] = useState('1711-234567');
-
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Forgot password" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
-          <button onClick={() => setMethod('email')} style={{
-            flex: 1, padding: '12px', borderRadius: T.radius.m,
-            background: method === 'email' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
-            border: `1px solid ${method === 'email' ? T.color.gold500 : T.color.navyBorder}`,
-            color: method === 'email' ? T.color.gold500 : T.color.textSecondary,
-            fontFamily: T.fontSans, fontWeight: 600, cursor: 'pointer'
-          }}>Email</button>
-          <button onClick={() => setMethod('phone')} style={{
-            flex: 1, padding: '12px', borderRadius: T.radius.m,
-            background: method === 'phone' ? 'rgba(212,175,55,0.1)' : T.color.navyDeep,
-            border: `1px solid ${method === 'phone' ? T.color.gold500 : T.color.navyBorder}`,
-            color: method === 'phone' ? T.color.gold500 : T.color.textSecondary,
-            fontFamily: T.fontSans, fontWeight: 600, cursor: 'pointer'
-          }}>Phone</button>
+        <div>
+          <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your phone number</Txt>
+          <Txt variant="bodySm" color={T.color.textSecondary}>We'll send an OTP to reset your password.</Txt>
         </div>
-
-        {method === 'email' ? (
-          <>
-            <div>
-              <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your registered email</Txt>
-              <Txt variant="bodySm" color={T.color.textSecondary}>We'll send a reset link.</Txt>
-            </div>
-            <TextField label="Email" value={email} onChange={setEmail} type="email" />
-            <Banner variant="info">Check your inbox and spam folder. Link expires in 30 minutes.</Banner>
-            <PrimaryButton onClick={() => onSend('email')}>Send reset link</PrimaryButton>
-          </>
-        ) : (
-          <>
-            <div>
-              <Txt variant="subtitle" style={{ marginBottom: 4 }}>Enter your phone number</Txt>
-              <Txt variant="bodySm" color={T.color.textSecondary}>We'll send an OTP to verify.</Txt>
-            </div>
-            <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
-            <PrimaryButton onClick={() => onSend('phone')}>Send OTP</PrimaryButton>
-          </>
-        )}
-
-        <button onClick={onSwitchOtp} style={{
-          background: 'none', border: 'none', color: T.color.gold500,
-          fontFamily: T.fontSans, fontSize: 14, cursor: 'pointer',
-          textAlign: 'center', textDecoration: 'underline', marginTop: 4,
-        }}>Sign in with OTP instead</button>
+        <PhoneNumberField label="Phone number" value={phone} onChange={setPhone} />
+        <PrimaryButton onClick={() => onSend && onSend('phone')} disabled={phone.length < 10}>Send OTP</PrimaryButton>
       </div>
     </div>
   );
@@ -418,8 +405,32 @@ const PasswordResetScreen = ({ onDone, identity = 'karim@example.com' }) => {
   );
 };
 
+// ── Registration complete (verification under review) ───────
+const RegistrationCompleteScreen = ({ onContinue }) => (
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg,
+    alignItems: 'center', justifyContent: 'center', padding: 24, gap: 16 }}>
+    <div style={{
+      width: 96, height: 96, borderRadius: 48, background: 'rgba(102,187,106,0.15)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <Icon name="checkCircle" size={56} color={T.color.success} />
+    </div>
+    <Txt variant="h2" style={{ textAlign: 'center' }}>Registration complete</Txt>
+    <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
+      Welcome to Re'Loren! Your account is ready.
+    </Txt>
+    <Banner variant="warning" title="Verification under review" style={{ width: '100%' }}>
+      Your identity verification is being reviewed by our team. This usually takes less than 24 hours. You can browse and post jobs in the meantime.
+    </Banner>
+    <div style={{ width: '100%', marginTop: 'auto' }}>
+      <PrimaryButton onClick={onContinue}>Continue to dashboard</PrimaryButton>
+    </div>
+  </div>
+);
+
 Object.assign(window, {
   SplashScreen, LandingScreen, PhoneOtpEntryScreen, OtpVerifyScreen,
   RegisterFormScreen, ModeSelectOnboardingScreen,
   ForgotPasswordEntryScreen, PasswordResetScreen,
+  RegistrationCompleteScreen,
 });

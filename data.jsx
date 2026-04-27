@@ -31,7 +31,8 @@ const SAMPLE = {
       id: 'j1', title: 'Medicine delivery — Motijheel → Dhanmondi',
       tags: ['Bike delivery'], status: 'bidding',
       price: 1500, distance: '2 km', bids: 4, postedAgo: '12 min',
-      type: 'instant',
+      type: 'instant', relocate: true,
+      from: 'Motijheel, Dhaka', to: 'Dhanmondi, Dhaka',
       description: 'Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.',
     },
     {
