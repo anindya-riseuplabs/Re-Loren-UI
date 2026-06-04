@@ -19,51 +19,51 @@ const SplashScreen = ({ onDone }) => {
         <BrandLogo height={100} style={{ filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.5))' }} />
       </div>
 
-      <div style={{ zIndex: 1, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* <Txt variant="subtitle" style={{ 
-          fontSize: 26, 
+      {/* Tagline sits BELOW the world map, near the bottom of the frame */}
+      <div style={{ zIndex: 1, width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: 8 }}>
+        <Txt variant="headline" style={{
+          fontFamily: "'Allura', cursive",
+          fontWeight: 400,
+          fontSize: 54,
+          lineHeight: 0.95,
+          letterSpacing: 'normal',
+          whiteSpace: 'nowrap',
+          color: '#FDFBF7',
+          textShadow: '0 2px 12px rgba(0,0,0,0.65)',
+        }}>
+          Be the chooser,
+        </Txt>
+        <Txt variant="headline" style={{
           fontFamily: "'Playfair Display', serif",
-          color: '#FDFBF7', 
-          fontWeight: 500,
-          marginBottom: 6,
-          letterSpacing: '0.02em',
-          textShadow: '0 0 12px rgba(212,175,55,0.3), 0 2px 4px rgba(0,0,0,0.5)'
-        }}>
-          Welcome to Re'Loren
-        </Txt> */}
-        <div style={{ width: 40, height: 2, background: T.color.gold500, margin: '8px 0 16px', opacity: 0.6 }} />
-        <Txt variant="headline" style={{
-          fontSize: 26,
-          color: T.color.textHeading,
-          fontWeight: 800,
-          letterSpacing: '0.1em',
-          lineHeight: 1.2,
+          fontStyle: 'italic',
+          fontWeight: 700,
+          fontSize: 38,
+          lineHeight: 1.05,
+          letterSpacing: 'normal',
           whiteSpace: 'nowrap',
-          textShadow: '0 4px 12px rgba(0,0,0,0.9)'
+          marginTop: 4,
+          background: T.color.goldGradient,
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          color: 'transparent',
+          filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.7))',
         }}>
-          BE THE CHOOSER
+          Take the lead.
         </Txt>
-        <Txt variant="headline" style={{
-          fontSize: 26,
-          color: T.color.textHeading,
-          fontWeight: 800,
-          letterSpacing: '0.1em',
-          lineHeight: 1.2,
-          whiteSpace: 'nowrap',
-          textShadow: '0 4px 12px rgba(0,0,0,0.9)'
-        }}>
-          TAKE THE LEAD
-        </Txt>
-      </div>
-
-      <div style={{ zIndex: 1, display: 'flex', gap: 8 }}>
-        {[0, 1, 2].map(i => (
-          <div key={i} style={{
-            width: 6, height: 6, borderRadius: 3, background: T.color.gold500,
-            boxShadow: '0 0 8px rgba(212,175,55,0.8)',
-            animation: `pulseDot 1.2s ease-in-out ${i * 0.2}s infinite`,
-          }} />
-        ))}
+        <div style={{
+          width: 130, height: 3, borderRadius: 2, marginTop: 12,
+          background: T.color.goldGradient, boxShadow: '0 0 10px rgba(212,175,55,0.5)',
+        }} />
+        <div style={{ display: 'flex', gap: 8, marginTop: 28 }}>
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{
+              width: 6, height: 6, borderRadius: 3, background: T.color.gold500,
+              boxShadow: '0 0 8px rgba(212,175,55,0.8)',
+              animation: `pulseDot 1.2s ease-in-out ${i * 0.2}s infinite`,
+            }} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -228,7 +228,7 @@ const OtpVerifyScreen = ({ onBack, onVerify }) => {
 };
 
 // ── RegisterForm ─────────────────────────────────────────────
-const RegisterFormScreen = ({ onBack, onNext }) => {
+const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('1711-234567');
   const [phoneVerified, setPhoneVerified] = useState(false);
@@ -241,7 +241,28 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
 
-  const ok = name && phone.length >= 10 && phoneVerified && pw.length >= 8 && pw === cpw;
+  // Worker-only details
+  const [profession, setProfession] = useState('');
+  const [professionQuery, setProfessionQuery] = useState('');
+  const [showProfDD, setShowProfDD] = useState(false);
+  const [age, setAge] = useState('');
+  const [cert, setCert] = useState(false);
+  const [ecName, setEcName] = useState('');
+  const [ecPhone, setEcPhone] = useState('1711-234567');
+  const [ecPhoneVerified, setEcPhoneVerified] = useState(false);
+  const [ecOtpOpen, setEcOtpOpen] = useState(false);
+  const [ecOtp, setEcOtp] = useState('');
+  const [ecNid, setEcNid] = useState('');
+
+  const professions = ['Driver', 'Delivery rider', 'Domestic helper', 'Cook', 'Electrician', 'Plumber', 'Carpenter', 'Painter', 'Cleaner', 'Security guard', 'Gardener', 'Mechanic', 'Tailor', 'Mover / Loader'];
+  const filteredProfessions = professionQuery
+    ? professions.filter(p => p.toLowerCase().includes(professionQuery.toLowerCase()))
+    : professions;
+
+  const baseOk = name && phone.length >= 10 && phoneVerified && pw.length >= 8 && pw === cpw;
+  const ok = role === 'worker'
+    ? baseOk && profession && age && ecName && ecPhoneVerified
+    : baseOk;
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
@@ -304,6 +325,106 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
           error={cpw && cpw !== pw ? 'Passwords do not match' : ''}
           suffix={<IconButton name="eye" size={32} iconSize={18} onClick={() => setShow2(s => !s)} />} />
 
+        {role === 'worker' && (
+          <>
+            <Txt variant="caption" color={T.color.textMuted}>WORKER DETAILS</Txt>
+
+            <div style={{ position: 'relative' }}>
+              <TextField label="Profession type" value={profession || professionQuery}
+                onChange={(v) => { setProfession(''); setProfessionQuery(v); setShowProfDD(true); }}
+                placeholder="Type or search..."
+                suffix={
+                  <IconButton name="chevronDown" size={32} iconSize={16}
+                    onClick={() => setShowProfDD(d => !d)} />
+                } />
+              {showProfDD && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4,
+                  background: T.color.navyDeep, border: `1px solid ${T.color.navyBorder}`,
+                  borderRadius: T.radius.m, maxHeight: 180, overflow: 'auto', zIndex: 10,
+                  boxShadow: T.elevation.lg,
+                }}>
+                  {filteredProfessions.length === 0 ? (
+                    <div style={{ padding: 14 }}>
+                      <Txt variant="bodySm" color={T.color.textMuted}>
+                        No match. Use "{professionQuery}" as custom profession.
+                      </Txt>
+                      <button onClick={() => { setProfession(professionQuery); setShowProfDD(false); }} style={{
+                        marginTop: 8, background: 'none', border: 'none', color: T.color.gold500,
+                        fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
+                      }}>Use custom →</button>
+                    </div>
+                  ) : filteredProfessions.map(p => (
+                    <button key={p} onClick={() => { setProfession(p); setProfessionQuery(''); setShowProfDD(false); }} style={{
+                      display: 'block', width: '100%', textAlign: 'left',
+                      padding: 12, background: 'transparent', border: 'none', cursor: 'pointer',
+                      color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 14,
+                    }}>{p}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <TextField label="Age" value={age} onChange={(v) => setAge(v.replace(/\D/g, ''))}
+              placeholder="e.g. 28"
+              helper="Auto-verified from your NID where available — or type it in." />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <button onClick={() => setCert(c => !c)} style={{
+                width: 64, height: 64, borderRadius: T.radius.m,
+                background: cert ? `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})` : T.color.navyDeep,
+                border: `2px dashed ${cert ? T.color.success : T.color.navyBorder}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', flexShrink: 0,
+              }}>
+                <Icon name={cert ? 'checkCircle' : 'award'} size={26} color={cert ? T.color.success : T.color.gold500} />
+              </button>
+              <div>
+                <Txt variant="bodySm" style={{ fontWeight: 600 }}>Work certificate (optional)</Txt>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
+                  {cert ? 'Certificate added' : 'Tap to upload (if any)'}
+                </Txt>
+              </div>
+            </div>
+
+            <Card>
+              <Txt variant="caption" color={T.color.textMuted}>EMERGENCY CONTACT</Txt>
+              <div style={{ height: 12 }} />
+              <TextField label="Contact name" value={ecName} onChange={setEcName} placeholder="Enter contact name" />
+
+              <div style={{ marginTop: 14 }}>
+                <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Phone number</Txt>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1 }}>
+                    <PhoneNumberField value={ecPhone} onChange={(v) => { setEcPhone(v); setEcPhoneVerified(false); }} />
+                  </div>
+                  {ecPhoneVerified ? (
+                    <div style={{
+                      minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                      background: 'rgba(102,187,106,0.16)', border: `1px solid ${T.color.success}`,
+                      display: 'flex', alignItems: 'center', gap: 6,
+                    }}>
+                      <Icon name="checkCircle" size={16} color={T.color.success} />
+                      <Txt variant="caption" color={T.color.success} style={{ letterSpacing: 0, fontWeight: 600 }}>Verified</Txt>
+                    </div>
+                  ) : (
+                    <button onClick={() => setEcOtpOpen(true)} disabled={ecPhone.length < 10} style={{
+                      minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                      background: ecPhone.length < 10 ? T.color.navyDeep : T.color.gold500,
+                      border: 'none', color: ecPhone.length < 10 ? T.color.textMuted : T.color.textOnGold,
+                      fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: ecPhone.length < 10 ? 'not-allowed' : 'pointer',
+                    }}>Verify</button>
+                  )}
+                </div>
+              </div>
+
+              <div style={{ marginTop: 14 }}>
+                <TextField label="Contact NID number" value={ecNid} onChange={setEcNid} placeholder="NID / Birth reg. no." />
+              </div>
+            </Card>
+          </>
+        )}
+
         <div style={{ marginTop: 8, paddingBottom: 20 }}>
           <PrimaryButton onClick={onNext} disabled={!ok}>Create account</PrimaryButton>
           <Txt variant="caption" color={T.color.textMuted} style={{ textAlign: 'center', marginTop: 12, display: 'block', letterSpacing: 0 }}>
@@ -325,39 +446,20 @@ const RegisterFormScreen = ({ onBack, onNext }) => {
           </PrimaryButton>
         </BottomSheet>
       )}
-    </div>
-  );
-};
 
-// ── Mode select onboarding ───────────────────────────────────
-const ModeSelectOnboardingScreen = ({ onContinue }) => {
-  const [mode, setMode] = useState('employer');
-  return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Welcome, Karim" />
-      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div>
-          <Txt variant="headline" style={{ fontSize: 24, marginBottom: 4 }}>How do you want to start?</Txt>
-          <Txt variant="bodySm" color={T.color.textSecondary}>You can switch anytime from your profile.</Txt>
-        </div>
-        <Radio
-          checked={mode === 'employer'}
-          label="Employer"
-          sub="Post jobs and hire Workers. No verification needed to post."
-          onClick={() => setMode('employer')}
-        />
-        <Radio
-          checked={mode === 'worker'}
-          label="Worker"
-          sub="Get job notifications and earn. Needs identity verification."
-          onClick={() => setMode('worker')}
-        />
-        <div style={{ marginTop: 'auto' }}>
-          <PrimaryButton onClick={() => onContinue(mode)}>
-            Continue as {mode === 'worker' ? 'Worker' : 'Employer'}
+      {ecOtpOpen && (
+        <BottomSheet onClose={() => setEcOtpOpen(false)} title="Verify contact phone">
+          <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 4 }}>
+            We sent a 4-digit code to
+          </Txt>
+          <Txt variant="subtitle" style={{ marginBottom: 16 }}>+880 {ecPhone}</Txt>
+          <OtpInput length={4} value={ecOtp} onChange={setEcOtp} />
+          <div style={{ height: 16 }} />
+          <PrimaryButton onClick={() => { setEcPhoneVerified(true); setEcOtpOpen(false); setEcOtp(''); }} disabled={ecOtp.length !== 4}>
+            Verify
           </PrimaryButton>
-        </div>
-      </div>
+        </BottomSheet>
+      )}
     </div>
   );
 };
@@ -428,9 +530,53 @@ const RegistrationCompleteScreen = ({ onContinue }) => (
   </div>
 );
 
+// ── Path selection + language (first run → choose Client / Worker) ──
+// Shown after splash, before the landing page. The user picks their
+// language preference and their path; then the landing page appears.
+const PathSelectionScreen = ({ onContinue }) => {
+  const [lang, setLang] = useState('English');
+  const [path, setPath] = useState('client');
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <div style={{ padding: '20px 16px 0' }}>
+        <BrandLogo height={40} />
+      </div>
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 18, overflow: 'auto' }}>
+        <div style={{ marginTop: 8 }}>
+          <Txt variant="headline" style={{ fontSize: 24, marginBottom: 4 }}>Welcome to Re'Loren</Txt>
+          <Txt variant="bodySm" color={T.color.textSecondary}>
+            Pick your language and how you want to start. You can switch anytime from your profile.
+          </Txt>
+        </div>
+
+        <div>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>LANGUAGE PREFERENCE</Txt>
+          <Segmented
+            options={[{ value: 'Bangla', label: 'বাংলা' }, { value: 'English', label: 'English' }]}
+            value={lang} onChange={setLang} />
+        </div>
+
+        <div>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>CHOOSE YOUR PATH</Txt>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <Radio checked={path === 'client'} label="Client" sub="Post jobs and hire workers. No verification needed to post." onClick={() => setPath('client')} />
+            <Radio checked={path === 'worker'} label="Worker" sub="Find jobs and earn. Needs identity verification." onClick={() => setPath('worker')} />
+          </div>
+        </div>
+
+        <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
+          <PrimaryButton onClick={() => onContinue && onContinue({ path, lang })}>
+            Continue as {path === 'worker' ? 'Worker' : 'Client'}
+          </PrimaryButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 Object.assign(window, {
-  SplashScreen, LandingScreen, PhoneOtpEntryScreen, OtpVerifyScreen,
-  RegisterFormScreen, ModeSelectOnboardingScreen,
+  SplashScreen, PathSelectionScreen, LandingScreen, PhoneOtpEntryScreen, OtpVerifyScreen,
+  RegisterFormScreen,
   ForgotPasswordEntryScreen, PasswordResetScreen,
   RegistrationCompleteScreen,
 });

@@ -9,6 +9,7 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
   const [from, setFrom] = useState('Motijheel, Dhaka');
   const [to, setTo] = useState('Dhanmondi, Dhaka');
   const [budget, setBudget] = useState('1500');
+  const [radius, setRadius] = useState(3);
   const [priceBlock, setPriceBlock] = useState(false);
 
   const needsRoute = relocate === 'yes';
@@ -56,7 +57,7 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
               outline: 'none',
             }}>
             <option value="instant">Instant</option>
-            <option value="regular">Regular</option>
+            <option value="regular">Long duration / flexible timing</option>
           </select>
         </div>
 
@@ -95,6 +96,18 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
           prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>}
           placeholder="1,500" />
 
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Service area</Txt>
+          <MapPreview height={150} label="Motijheel, Dhaka" radiusKm={radius} caption={`Drag the pin · ${radius} km service radius`} />
+          <input type="range" min={1} max={15} value={radius} onChange={e => setRadius(Number(e.target.value))}
+            style={{ width: '100%', accentColor: T.color.gold500, marginTop: 10 }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
+            <Txt variant="caption" color={T.color.textMuted}>1 km</Txt>
+            <Txt variant="caption" color={T.color.gold500}>{`${radius} km`}</Txt>
+            <Txt variant="caption" color={T.color.textMuted}>15 km</Txt>
+          </div>
+        </div>
+
         <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
           <PrimaryButton onClick={onSubmit} disabled={!allFilled}>Post a job</PrimaryButton>
         </div>
@@ -130,7 +143,7 @@ const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
         </Card>
         <Card>
           {[
-            ['Job type', jobType === 'instant' ? 'Instant' : 'Regular'],
+            ['Job type', jobType === 'instant' ? 'Instant' : 'Long duration / flexible timing'],
             jobType === 'regular' ? ['Deadline', deadline] : null,
             ['Relocation', relocate === 'yes' ? 'Yes' : 'No'],
             needsRoute ? ['From', from] : null,
@@ -370,6 +383,12 @@ const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
           </Card>
         )}
 
+        <Card>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>LOCATION ON MAP</Txt>
+          <MapPreview height={150} label={j.from || j.location || 'Job location'} caption="Work location"
+            marker={(j.relocate && j.to) ? 'Drop-off: ' + j.to : undefined} />
+        </Card>
+
         <Card onClick={() => setReminderOpen(true)}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
@@ -423,7 +442,7 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
         <Icon name="checkCircle" size={64} color={T.color.success} style={{ marginBottom: 16 }} />
         <Txt variant="title" style={{ marginBottom: 8 }}>Bid submitted</Txt>
         <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 24 }}>
-          Your bid has been placed. You will be notified if the employer accepts.
+          Your bid has been placed. You will be notified if the client accepts.
         </Txt>
         <PrimaryButton onClick={onSubmit}>Go to dashboard</PrimaryButton>
       </Card>
@@ -441,7 +460,7 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
         <Card>
           <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>PRICE BREAKDOWN</Txt>
           {[
-            ['Gross (employer pays)', fmtBDT(parseInt(amount || '0'))],
+            ['Gross (client pays)', fmtBDT(parseInt(amount || '0'))],
             ['Platform commission 15%', '−' + fmtBDT(commission)],
           ].map(([k, v]) => (
             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
@@ -512,7 +531,7 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
             <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(net)}</Txt>
           </div>
         </Card>
-        <Banner variant="warning">Once the employer accepts, this bid locks.</Banner>
+        <Banner variant="warning">Once the client accepts, this bid locks.</Banner>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <PrimaryButton onClick={onUpdate}>Update bid</PrimaryButton>
           <DestructiveButton onClick={onWithdraw}>Withdraw bid</DestructiveButton>
@@ -526,6 +545,7 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
 const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = false, onViewAsset }) => {
   const [searching, setSearching] = useState(true);
   const [bids, setBids] = useState(SAMPLE.shortlist);
+  const [accepted, setAccepted] = useState(null);
 
   useEffect(() => {
     const t = setTimeout(() => setSearching(false), 2200);
@@ -584,7 +604,7 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
           }
         `}</style>
 
-        {!searching && bids.map(w => (
+        {!searching && !accepted && bids.map(w => (
           <Card key={w.rank}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -605,10 +625,21 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
               </div>
             </div>
 
+            {w.asset && (
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                background: T.color.navyDeep, border: `1px solid ${T.color.navyBorder}`,
+                borderRadius: T.radius.full, padding: '3px 9px', marginBottom: 10,
+              }}>
+                <Icon name="truck" size={13} color={T.color.gold500} />
+                <Txt variant="caption" color={T.color.textSecondary} style={{ letterSpacing: 0 }}>{w.asset}</Txt>
+              </div>
+            )}
+
             <button onClick={() => onViewReview && onViewReview(w)} style={{
               background: 'none', border: 'none', color: T.color.gold500,
               fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
-              textDecoration: 'underline', marginBottom: 12,
+              textDecoration: 'underline', marginBottom: 12, display: 'block',
             }}>View reviews →</button>
 
             {requireAsset && (
@@ -618,12 +649,43 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
 
             <div style={{ display: 'flex', gap: 10 }}>
               <SecondaryButton style={{ flex: 1 }} onClick={() => onDecline(w.rank)}>Decline</SecondaryButton>
-              <PrimaryButton style={{ flex: 2 }} onClick={() => onAccept && onAccept(w)}>Accept Bid</PrimaryButton>
+              <PrimaryButton style={{ flex: 2 }} onClick={() => setAccepted(w)}>Accept Bid</PrimaryButton>
             </div>
           </Card>
         ))}
 
-        {!searching && bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
+        {!searching && !accepted && bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
+
+        {accepted && (
+          <>
+            <Txt variant="subtitle">Worker on the way</Txt>
+            <Card>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 20, background: T.color.navyDeep,
+                    border: `1.5px solid ${T.color.gold500}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: T.color.gold500, fontFamily: T.fontSans, fontSize: 14, fontWeight: 700,
+                  }}>{accepted.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+                  <div>
+                    <Txt variant="body" style={{ fontWeight: 600 }}>{accepted.name}</Txt>
+                    <RatingStars value={accepted.rating} count={accepted.ratingCount} compact />
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Bid</Txt>
+                  <Txt variant="subtitle" color={T.color.gold500}>{fmtBDT(accepted.bid)}</Txt>
+                </div>
+              </div>
+            </Card>
+            <MapPreview height={180} label="Motijheel, Dhaka" marker={`${accepted.name} · ${accepted.distance}`} caption="Live worker location" />
+            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 4 }}>
+              <PrimaryButton onClick={() => onAccept && onAccept(accepted)}>Continue</PrimaryButton>
+              <SecondaryButton onClick={() => setAccepted(null)}>Back to bids</SecondaryButton>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

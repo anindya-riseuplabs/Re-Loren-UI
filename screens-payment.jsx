@@ -1,7 +1,7 @@
 // Re'Loren v2 — payment, escrow, progress, cancel flows.
 
 // ── Contact page (employer view of accepted bid) ─────────────
-const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay }) => {
+const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay, onForward, onCancel }) => {
   const [showToast, setShowToast] = useState(true);
   const [secondsLeft, setSecondsLeft] = useState(180); // 3 minutes
 
@@ -24,6 +24,12 @@ const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay }) => {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative' }}>
       <AppBarElevated title="Your worker" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+        {/* Job caption header */}
+        <Card>
+          <Txt variant="caption" color={T.color.textMuted}>ORDER</Txt>
+          <Txt variant="bodySm" style={{ fontWeight: 600 }}>Medicine delivery — Motijheel → Dhanmondi</Txt>
+        </Card>
 
         {/* 3-min timer prominent */}
         <Card style={{
@@ -63,16 +69,24 @@ const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay }) => {
           </div>
         </Card>
 
+        <MapPreview height={170} label="Motijheel, Dhaka" marker="Rahim Uddin · 600m" caption="Live worker location" />
+
         <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>JOB</Txt>
-          <Txt variant="bodySm" style={{ marginBottom: 12 }}>Medicine delivery — Motijheel → Dhanmondi</Txt>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderTop: `1px solid ${T.color.navyBorder}` }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
             <Txt variant="bodySm" color={T.color.textSecondary}>Agreed price</Txt>
             <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 600 }}>৳1,500</Txt>
           </div>
         </Card>
 
-        <div style={{ marginTop: 'auto' }}>
+        <Txt variant="bodySm" color={T.color.textSecondary} style={{ lineHeight: 1.5 }}>
+          If you are not satisfied with the worker, you can forward the order to someone else or cancel it.
+        </Txt>
+
+        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <SecondaryButton icon="forward" onClick={onForward} style={{ flex: 1 }}>Forward order</SecondaryButton>
+            <DestructiveButton onClick={onCancel} style={{ flex: 1 }}>Cancel job</DestructiveButton>
+          </div>
           <PrimaryButton onClick={onPay}>Continue</PrimaryButton>
         </div>
       </div>
@@ -244,7 +258,7 @@ const InstallmentTrackerScreen = ({ onBack, onDisburse, onCancel, onChat, onCall
               {active && (
                 <div style={{ display: 'flex', gap: 10 }}>
                   <DestructiveButton style={{ flex: 1, minHeight: 40, fontSize: 14 }} onClick={onCancel}>Cancel job</DestructiveButton>
-                  <PrimaryButton style={{ flex: 1, minHeight: 40, fontSize: 14 }} onClick={onDisburse}>Disburse amount</PrimaryButton>
+                  <PrimaryButton style={{ flex: 1, minHeight: 40, fontSize: 14 }} onClick={onDisburse}>Pay amount</PrimaryButton>
                 </div>
               )}
             </Card>
@@ -355,7 +369,7 @@ const JobStartCodeScreen = ({ onBack, onStart, onChat, onCall }) => {
 };
 
 // ── Worker contact page (offer accepted) ────────────────────
-const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart }) => {
+const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart, onForward }) => {
   const [showToast, setShowToast] = useState(true);
   const [code, setCode] = useState('');
 
@@ -368,10 +382,10 @@ const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative' }}>
-      <AppBarElevated title="Your employer" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Your client" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Banner variant="success" title="Offer accepted">
-          The employer accepted your offer. Get the 4-digit code from them to start.
+          The client accepted your offer. Get the 4-digit code from them to start.
         </Banner>
 
         <Card>
@@ -414,7 +428,9 @@ const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart
           <OtpInput length={4} value={code} onChange={setCode} />
         </div>
 
-        <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
+        <div style={{ marginTop: 'auto', paddingBottom: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, textAlign: 'center', display: 'block' }}>Can't take this job? Forward the accepted order to another available worker.</Txt>
+          <SecondaryButton icon="forward" onClick={onForward}>Forward order</SecondaryButton>
           <PrimaryButton onClick={onStart} disabled={code.length < 4}>Start Job</PrimaryButton>
         </div>
       </div>
@@ -425,6 +441,7 @@ const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart
 
 // ── Worker job progress (online — installments) ─────────────
 const WorkerJobProgressOnlineScreen = ({ onBack, onCancel, onChat, onCall }) => {
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const inst = [
     { label: 'Installment 1', pct: 20, amount: 300, status: 'paid' },
     { label: 'Installment 2', pct: 60, amount: 900, status: 'active' },
@@ -493,9 +510,10 @@ const WorkerJobProgressOnlineScreen = ({ onBack, onCancel, onChat, onCall }) => 
         })}
 
         <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
-          <DestructiveButton onClick={onCancel}>Cancel this job</DestructiveButton>
+          <DestructiveButton onClick={() => setConfirmCancel(true)}>Cancel this job</DestructiveButton>
         </div>
       </div>
+      {confirmCancel && <CancelPenaltyDialog onClose={() => setConfirmCancel(false)} onConfirm={() => { setConfirmCancel(false); onCancel && onCancel(); }} />}
     </div>
   );
 };
@@ -503,6 +521,7 @@ const WorkerJobProgressOnlineScreen = ({ onBack, onCancel, onChat, onCall }) => 
 // ── Worker job progress (cash) ──────────────────────────────
 const WorkerJobProgressCashScreen = ({ onBack, onSubmit, onCancel, onChat, onCall }) => {
   const [code, setCode] = useState('');
+  const [confirmCancel, setConfirmCancel] = useState(false);
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} />
@@ -540,9 +559,10 @@ const WorkerJobProgressCashScreen = ({ onBack, onSubmit, onCancel, onChat, onCal
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 16 }}>
           <PrimaryButton onClick={onSubmit} disabled={code.length < 4}>Submit</PrimaryButton>
-          <DestructiveButton onClick={onCancel}>Cancel this job</DestructiveButton>
+          <DestructiveButton onClick={() => setConfirmCancel(true)}>Cancel this job</DestructiveButton>
         </div>
       </div>
+      {confirmCancel && <CancelPenaltyDialog onClose={() => setConfirmCancel(false)} onConfirm={() => { setConfirmCancel(false); onCancel && onCancel(); }} />}
     </div>
   );
 };

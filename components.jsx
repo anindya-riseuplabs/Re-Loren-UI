@@ -56,6 +56,8 @@ const Icon = ({ name, size = 24, color = T.color.textPrimary, style }) => {
     micOff: <><line x1="1" y1="1" x2="23" y2="23" /><path d="M9 5a3 3 0 015.12 2.12M15 9.34V11a3 3 0 01-5.94.6" /><path d="M17 16.95A7 7 0 015 10" /><line x1="12" y1="21" x2="12" y2="18" /></>,
     keypad: <><rect x="5" y="3" width="4" height="4" rx="1" /><rect x="10" y="3" width="4" height="4" rx="1" /><rect x="15" y="3" width="4" height="4" rx="1" /><rect x="5" y="8" width="4" height="4" rx="1" /><rect x="10" y="8" width="4" height="4" rx="1" /><rect x="15" y="8" width="4" height="4" rx="1" /><rect x="5" y="13" width="4" height="4" rx="1" /><rect x="10" y="13" width="4" height="4" rx="1" /><rect x="15" y="13" width="4" height="4" rx="1" /><rect x="10" y="18" width="4" height="4" rx="1" /></>,
     volumeHigh: <><path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M15.54 8.46a5 5 0 010 7.07" /><path d="M19.07 4.93a10 10 0 010 14.14" /></>,
+    play: <path d="M8 5l11 7-11 7z" fill={color} />,
+    award: <><circle cx="12" cy="8" r="5" /><path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5" /></>,
   };
   const content = paths[name] || <circle cx="12" cy="12" r="9" />;
   return (
@@ -579,7 +581,7 @@ const ModePill = ({ mode, onToggle }) => (
       fontFamily: T.fontSans, fontSize: 12, fontWeight: 600, letterSpacing: '2%', textTransform: 'uppercase',
     }}>
     <div style={{ width: 6, height: 6, borderRadius: 3, background: T.color.gold500 }} />
-    {mode === 'worker' ? 'Worker' : 'Employer'}
+    {mode === 'worker' ? 'Worker' : 'Client'}
   </button>
 );
 
@@ -665,6 +667,81 @@ const BrandLogo = ({ height = 40, style }) => (
   <img src="logo.png" alt="Re'Loren" style={{ height, display: 'block', objectFit: 'contain', ...style }} />
 );
 
+// ── CancelPenaltyDialog (worker cancel T&C warning) ──────────
+// Some stages can't be cancelled without a penalty/warning so workers
+// can't bypass the platform. Shown before a worker confirms a cancel.
+const CancelPenaltyDialog = ({ onClose, onConfirm, title = 'Cancel order — Terms & Conditions' }) => (
+  <Dialog onClose={onClose} title={title}
+    actions={[
+      <SecondaryButton key="keep" onClick={onClose}>Keep this job</SecondaryButton>,
+      <DestructiveButton key="cancel" onClick={onConfirm}>Cancel anyway</DestructiveButton>,
+    ]}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Banner variant="warning" title="This may affect your rating">
+        Cancelling more than once a day will reduce your rating, which may affect your next wages.
+      </Banner>
+      <Txt variant="bodySm" color={T.color.textSecondary} style={{ lineHeight: 1.5 }}>
+        Frequent cancellations hurt your standing on the platform. Continue only if it's truly necessary.
+      </Txt>
+    </div>
+  </Dialog>
+);
+
+// ── MapPreview (mock Google-style map) ───────────────────────
+// Reusable map mock: job location, worker location, or radius picker.
+// Props: label (chip), caption (footer text), radiusKm (draws scaled circle),
+// marker (pill above the pin), pinColor, height.
+const MapPreview = ({ height = 160, label, caption, radiusKm = 0, marker, pinColor = T.color.gold500, style }) => {
+  const circle = radiusKm ? Math.min(230, 46 + radiusKm * 9) : 0;
+  return (
+    <div style={{
+      position: 'relative', width: '100%', height, borderRadius: T.radius.l, overflow: 'hidden',
+      border: `1px solid ${T.color.navyBorder}`, background: T.color.navyDeep, ...style,
+    }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0d2440 0%, #10325c 100%)' }} />
+      {/* faux road grid */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.6, backgroundImage:
+        `repeating-linear-gradient(0deg, transparent 0 38px, rgba(160,174,192,0.10) 38px 40px),
+         repeating-linear-gradient(90deg, transparent 0 46px, rgba(160,174,192,0.10) 46px 48px)` }} />
+      {/* highlighted arterials */}
+      <div style={{ position: 'absolute', top: '54%', left: 0, right: 0, height: 5, background: 'rgba(212,175,55,0.18)' }} />
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '38%', width: 5, background: 'rgba(15,167,163,0.20)' }} />
+      {/* park blob */}
+      <div style={{ position: 'absolute', bottom: 10, right: 14, width: 70, height: 46, borderRadius: 14, background: 'rgba(76,175,80,0.12)' }} />
+
+      {radiusKm > 0 && (
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+          width: circle, height: circle, borderRadius: '50%',
+          background: 'rgba(212,175,55,0.12)', border: `1.5px solid ${T.color.gold500}`,
+        }} />
+      )}
+
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {marker && (
+          <div style={{ marginBottom: 4, padding: '3px 8px', borderRadius: T.radius.full, background: T.color.navyDeep, border: `1px solid ${T.color.gold500}`, color: T.color.gold500, fontFamily: T.fontSans, fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap' }}>{marker}</div>
+        )}
+        <Icon name="location" size={30} color={pinColor} style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.5))' }} />
+      </div>
+
+      {label && (
+        <div style={{ position: 'absolute', top: 10, left: 10, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.navyBorder}` }}>
+          <Icon name="location" size={12} color={T.color.gold500} />
+          <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0 }}>{label}</Txt>
+        </div>
+      )}
+      {caption && (
+        <div style={{ position: 'absolute', bottom: 8, left: 10, right: 40 }}>
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{caption}</Txt>
+        </div>
+      )}
+      <div style={{ position: 'absolute', bottom: 6, right: 8 }}>
+        <Txt variant="caption" color="rgba(255,255,255,0.35)" style={{ letterSpacing: 0, fontSize: 9 }}>Google</Txt>
+      </div>
+    </div>
+  );
+};
+
 // Export
 Object.assign(window, {
   Icon, Txt, BrandLogo,
@@ -675,4 +752,5 @@ Object.assign(window, {
   BottomSheet, Dialog, Drawer, Toast, Overlay,
   AppBarElevated, BackButton, BottomNavBar, ModePill,
   Segmented, Radio, Checkbox, Toggle,
+  MapPreview, CancelPenaltyDialog,
 });

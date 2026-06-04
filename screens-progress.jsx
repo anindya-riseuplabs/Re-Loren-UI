@@ -42,6 +42,7 @@ const CancelReasonSheet = ({ onClose, onConfirm }) => {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Job Cancellation Reason" left={<BackButton onClick={onClose} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+        <Banner variant="warning" title="Cancel order — Terms & Conditions">Cancelling more than once a day will reduce your rating, which may affect your next wages.</Banner>
         <TextField label="Reason for cancellation" multiline rows={5} value={reason} onChange={setReason}
           placeholder="Tell us what happened..." />
 
@@ -193,7 +194,7 @@ const WorkerBidHistoryScreen = ({ onBack, onOpenBid }) => {
   const [seg, setSeg] = useState('active');
   const all = [
     { id: 'b1', job: 'Medicine delivery — Motijheel → Dhanmondi', employer: 'Karim Ahmed', bid: 1500, budget: 1500, status: 'active',   date: '27/04/2026 · 12 min ago' },
-    { id: 'b2', job: 'Move single sofa — Gulshan',                employer: 'Salma Begum', bid: 1900, budget: 2000, status: 'active',   date: '27/04/2026 · 38 min ago' },
+    { id: 'b2', job: 'Move single sofa — Gulshan',                employer: 'Salma Begum', bid: 1900, budget: 2000, status: 'withdrawn',date: '27/04/2026 · 38 min ago' },
     { id: 'b3', job: 'Drop documents — Agargaon',                 employer: 'Tareq Rahman',bid: 750,  budget: 800,  status: 'accepted', date: '26/04/2026' },
     { id: 'b4', job: 'Food delivery — Banani',                    employer: 'Nusrat Jahan',bid: 450,  budget: 500,  status: 'rejected', date: '25/04/2026' },
     { id: 'b5', job: 'Fix kitchen sink — Banani',                 employer: 'Imran Hossain',bid: 1100,budget: 1200, status: 'withdrawn',date: '23/04/2026' },
@@ -237,6 +238,10 @@ const WorkerBidHistoryScreen = ({ onBack, onOpenBid }) => {
             { value: 'all',    label: 'All' },
           ]}
           value={seg} onChange={setSeg} />
+
+        {seg === 'active' && (
+          <Banner variant="info">You can have only one active bid at a time. Cancel or forward your accepted job to bid on another.</Banner>
+        )}
 
         {filtered.length === 0 && (
           <EmptyState icon="briefcase" title="No bids here" body="Your bids will show up once you place them on a job." />
@@ -359,7 +364,7 @@ const TermsScreen = ({ onBack }) => (
     <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
       <Txt variant="caption" color={T.color.textMuted}>LAST UPDATED 01 JAN 2026</Txt>
       {[
-        { t: '1. Who we are', b: "Re'Loren Technologies Ltd. operates the Re'Loren app, a platform connecting employers and workers for informal, task-based work in Bangladesh." },
+        { t: '1. Who we are', b: "Re'Loren Technologies Ltd. operates the Re'Loren app, a platform connecting clients and workers for informal, task-based work in Bangladesh." },
         { t: '2. Your account', b: "You must be 18 or older, provide accurate info, and keep your phone number current. One account per person." },
         { t: '3. Payments & escrow', b: "For online payments, funds are held by our licensed escrow partner until the job is marked complete. A 15% platform fee is deducted from the worker's gross bid." },
         { t: '4. Worker verification', b: "Workers must submit a valid NID, facial photos, and (optionally) skill certificates. Verification decisions are reviewed manually within 24 hours." },
@@ -427,7 +432,7 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
           <Card>
             <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>ACTIVE MODE</Txt>
             <Segmented
-              options={[{ value: 'employer', label: 'Employer' }, { value: 'worker', label: 'Worker' }]}
+              options={[{ value: 'employer', label: 'Client' }, { value: 'worker', label: 'Worker' }]}
               value={mode} onChange={onSwitchMode} />
           </Card>
         </div>
@@ -490,7 +495,7 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
                   background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
                   color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
                   letterSpacing: '2%', textTransform: 'uppercase', lineHeight: 1.2,
-                }}>Employer</div>
+                }}>Client</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
                 <Icon name="location" size={10} color={T.color.textMuted} />

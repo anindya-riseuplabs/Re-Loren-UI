@@ -53,9 +53,12 @@ function App() {
     <div style={{ width: '100%', height: '100vh' }}>
       <DesignCanvas>
         {/* ─── 1. PRE-AUTH ─── */}
-        <DCSection id="preauth" title="1 · Pre-auth & onboarding" subtitle="Splash → slider landing → mobile+password login">
+        <DCSection id="preauth" title="1 · Pre-auth & onboarding" subtitle="Splash → path + language → slider landing → mobile+password login">
           <DCArtboard id="splash" label="Splash" width={360} height={720}>
             <SplashScreen onDone={noop} />
+          </DCArtboard>
+          <DCArtboard id="path-select" label="Path + language · Client / Worker" width={360} height={720}>
+            <Phone><PathSelectionScreen onContinue={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="landing" label="Landing · slider + CTAs" width={360} height={720}>
             <Phone><LandingScreen onSignUp={noop} onLogin={noop} /></Phone>
@@ -63,14 +66,14 @@ function App() {
           <DCArtboard id="phone-login" label="Sign in · phone + password" width={360} height={720}>
             <Phone><PhoneOtpEntryScreen onSendOtp={noop} onCreate={noop} onForgot={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="register" label="Register · with phone OTP verify" width={360} height={720}>
-            <Phone><RegisterFormScreen onBack={noop} onNext={noop} /></Phone>
+          <DCArtboard id="register" label="Register · client · phone OTP" width={360} height={720}>
+            <Phone><RegisterFormScreen role="employer" onBack={noop} onNext={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="register-worker" label="Register · worker · emergency + profession" width={360} height={720}>
+            <Phone><RegisterFormScreen role="worker" onBack={noop} onNext={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="reg-complete" label="Registration complete · review" width={360} height={720}>
             <Phone><RegistrationCompleteScreen onContinue={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="mode-select" label="Mode select onboarding" width={360} height={720}>
-            <Phone><ModeSelectOnboardingScreen onContinue={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="forgot" label="Forgot password · phone-only" width={360} height={720}>
             <Phone><ForgotPasswordEntryScreen onBack={noop} onSend={noop} /></Phone>
@@ -110,17 +113,14 @@ function App() {
           <DCArtboard id="asset-success" label="Asset added · success" width={360} height={720}>
             <Phone><AssetAddedSuccessScreen onContinue={noop} onAddAnother={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="asset-view" label="Asset details · view" width={360} height={720}>
-            <Phone><AssetDetailsViewScreen onBack={noop} /></Phone>
-          </DCArtboard>
-          <DCArtboard id="lang" label="Language preference" width={360} height={720}>
-            <Phone><LanguagePreferenceScreen onBack={noop} onSave={noop} /></Phone>
+          <DCArtboard id="asset-view" label="Asset details · view + add more" width={360} height={720}>
+            <Phone><AssetDetailsViewScreen onBack={noop} onAddAnother={noop} /></Phone>
           </DCArtboard>
         </DCSection>
 
         {/* ─── 4. EMPLOYER · POST + MATCH ─── */}
-        <DCSection id="post" title="4 · Employer · post & match" subtitle="ChatGPT-style post → review → searching → bids list">
-          <DCArtboard id="emp-home" label="Employer home · location + active job" width={360} height={720}>
+        <DCSection id="post" title="4 · Client · post & match" subtitle="ChatGPT-style post → review → searching → bids list">
+          <DCArtboard id="emp-home" label="Client home · location + active job" width={360} height={720}>
             <PhoneWithNav active="home" mode="employer">
               <EmployerHomeScreen onPost={noop} onNav={noop} onSwitchMode={noop} />
             </PhoneWithNav>
@@ -145,7 +145,7 @@ function App() {
           <DCArtboard id="worker-reviews" label="Worker reviews list" width={360} height={720}>
             <Phone><WorkerReviewListScreen onBack={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="asset-details-view" label="Asset details (employer-side view)" width={360} height={720}>
+          <DCArtboard id="asset-details-view" label="Asset details (client-side view)" width={360} height={720}>
             <Phone><AssetDetailsViewScreen onBack={noop} /></Phone>
           </DCArtboard>
         </DCSection>
@@ -178,8 +178,8 @@ function App() {
 
         {/* ─── 6. PAYMENT & ESCROW ─── */}
         <DCSection id="pay" title="6 · Payment & escrow" subtitle="Contact → payment (online/cash) → success popup → start code → progress">
-          <DCArtboard id="contact-emp" label="Employer contact · 3-min timer" width={360} height={720}>
-            <Phone><ContactPageEmployerScreen onBack={noop} onChat={noop} onCall={noop} onPay={noop} /></Phone>
+          <DCArtboard id="contact-emp" label="Client contact · live map + 3-min timer" width={360} height={720}>
+            <Phone><ContactPageEmployerScreen onBack={noop} onChat={noop} onCall={noop} onPay={noop} onForward={noop} onCancel={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="payment-page" label="Payment · Online or Cash" width={360} height={720}>
             <Phone><PaymentPageScreen onBack={noop} onSelect={noop} /></Phone>
@@ -222,7 +222,7 @@ function App() {
           <DCArtboard id="completion" label="Completion · rating + skip" width={360} height={720}>
             <Phone><JobCompletionScreen onBack={noop} onRate={noop} onSkip={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="rate-employer" label="Rate · employer view" width={360} height={720}>
+          <DCArtboard id="rate-employer" label="Rate · client view" width={360} height={720}>
             <Phone><PostJobRatingScreen role="employer" onBack={noop} onSubmit={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="rate-worker" label="Rate · worker view" width={360} height={720}>
@@ -242,7 +242,7 @@ function App() {
 
         {/* ─── 10. ACCOUNT & HELP ─── */}
         <DCSection id="account" title="10 · Account, history, payment methods, help" subtitle="Profile (edit moved here), bidded jobs, history, methods, help">
-          <DCArtboard id="profile-emp" label="Profile · employer · no verified" width={360} height={720}>
+          <DCArtboard id="profile-emp" label="Profile · client · no verified" width={360} height={720}>
             <PhoneWithNav active="profile" mode="employer">
               <ProfileHubScreen mode="employer" onNav={noop} onSwitchMode={noop} />
             </PhoneWithNav>
@@ -261,7 +261,7 @@ function App() {
           <DCArtboard id="history-worker" label="Work history · worker" width={360} height={720}>
             <Phone><WorkHistoryScreen onBack={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="history-employer" label="Work history · employer" width={360} height={720}>
+          <DCArtboard id="history-employer" label="Work history · client" width={360} height={720}>
             <Phone><EmployerWorkHistoryScreen onBack={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="payment-methods" label="Payment methods · bKash + Nagad" width={360} height={720}>

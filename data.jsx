@@ -64,19 +64,19 @@ const SAMPLE = {
     {
       rank: 2, name: 'Sabbir Hasan', rating: 4.7, ratingCount: 52,
       languages: ['Banglish'], bid: 1400, distance: '1.2 km',
-      verified: true,
+      asset: 'Bicycle', verified: true,
       chips: ['tag-match', 'language'],
     },
     {
       rank: 3, name: 'Nafis Ahmed', rating: 4.6, ratingCount: 38,
       languages: ['Bangla'], bid: 1600, distance: '1.8 km',
-      verified: true,
+      asset: 'Pickup van', verified: true,
       chips: ['tag-match', 'rating'],
     },
     {
       rank: 4, name: 'Tareq Islam', rating: 4.4, ratingCount: 21,
       languages: ['Bangla'], bid: 1550, distance: '2.4 km',
-      verified: false,
+      asset: 'Hand tools', verified: false,
       chips: ['tag-match'],
     },
   ],

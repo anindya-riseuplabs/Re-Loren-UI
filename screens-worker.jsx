@@ -97,6 +97,7 @@ const StepProgress = ({ step, total = 3 }) => (
 const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
   const [front, setFront] = useState(false);
   const [back, setBack] = useState(false);
+  const [selfie, setSelfie] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
   if (showPopup) return (
@@ -154,9 +155,40 @@ const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
             </button>
           ))}
         </div>
+
+        <button onClick={() => setSelfie(true)}
+          style={{
+            width: '100%', minHeight: 120, border: `1.5px dashed ${selfie ? T.color.gold500 : T.color.navyBorder}`,
+            background: selfie ? 'rgba(212,175,55,0.06)' : T.color.navyRaised,
+            borderRadius: T.radius.l, cursor: 'pointer',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
+            position: 'relative',
+          }}>
+          {selfie ? (
+            <>
+              <Icon name="checkCircle" size={32} color={T.color.success} />
+              <Txt variant="bodySm" color={T.color.gold500}>Selfie holding your NID</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>selfie_nid.jpg</Txt>
+              <div style={{
+                position: 'absolute', bottom: 12, right: 12,
+                padding: '4px 12px', background: 'rgba(212,175,55,0.2)', borderRadius: 12,
+                border: `1px solid ${T.color.gold500}`, color: T.color.gold500, fontSize: 10, fontWeight: 600
+              }} onClick={(e) => { e.stopPropagation(); setSelfie(false); }}>UPDATE</div>
+            </>
+          ) : (
+            <>
+              <Icon name="camera" size={28} color={T.color.gold500} />
+              <Txt variant="bodySm" color={T.color.gold500}>Selfie holding your NID</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, textAlign: 'center', padding: '0 16px' }}>
+                Hold your NID beside your face — all details must stay readable.
+              </Txt>
+            </>
+          )}
+        </button>
+
         <Banner variant="info">Accepts JPG, PNG, PDF — max 5 MB per file.</Banner>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <PrimaryButton onClick={() => setShowPopup(true)} disabled={!front || !back}>Submit NID</PrimaryButton>
+          <PrimaryButton onClick={() => setShowPopup(true)} disabled={!front || !back || !selfie}>Submit NID</PrimaryButton>
           <SecondaryButton onClick={onSkip}>Skip for later</SecondaryButton>
         </div>
       </div>
@@ -256,7 +288,7 @@ const ModeToggleScreen = ({ mode, onBack, onSwitch }) => {
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
         <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: '2%' }}>ACTIVE MODE</Txt>
         <Segmented
-          options={[{ value: 'employer', label: 'Employer' }, { value: 'worker', label: 'Worker' }]}
+          options={[{ value: 'employer', label: 'Client' }, { value: 'worker', label: 'Worker' }]}
           value={mode} onChange={onSwitch} />
         <Txt variant="bodySm" color={T.color.textSecondary}>
           {isWorker ? "You're ready to bid on jobs and earn." : "You're currently posting jobs. Switch to Worker mode to receive job notifications and place bids."}
@@ -266,7 +298,7 @@ const ModeToggleScreen = ({ mode, onBack, onSwitch }) => {
         </Banner>
         <div style={{ marginTop: 'auto' }}>
           <PrimaryButton onClick={() => onSwitch(isWorker ? 'employer' : 'worker')}>
-            Switch to {isWorker ? 'Employer' : 'Worker'} mode
+            Switch to {isWorker ? 'Client' : 'Worker'} mode
           </PrimaryButton>
         </div>
       </div>
@@ -280,6 +312,14 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
   const [search, setSearch] = useState('');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [assetPromptOpen, setAssetPromptOpen] = useState(false);
+  const [tab, setTab] = useState('guideline');
+  const [video, setVideo] = useState('idle');
+
+  React.useEffect(() => {
+    if (video !== 'playing') return;
+    const t = setTimeout(() => setVideo('ended'), 2600);
+    return () => clearTimeout(t);
+  }, [video]);
 
   const toggle = s => {
     const n = new Set(selected);
@@ -295,8 +335,10 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
   const showAddCustom = q && !exactMatch;
 
   const addSkill = (s) => {
+    const parts = String(s).split(',').map(p => p.trim()).filter(Boolean);
+    if (parts.length === 0) return;
     const n = new Set(selected);
-    n.add(s.trim());
+    parts.forEach(p => n.add(p));
     setSelected(n);
     setSearch('');
   };
@@ -305,6 +347,54 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Declare Skills" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
+        <Segmented
+          options={[{ value: 'guideline', label: 'Guideline' }, { value: 'declare', label: 'Declare skills' }]}
+          value={tab} onChange={setTab} />
+
+        {tab === 'guideline' && (
+          <>
+            <div>
+              <Txt variant="subtitle" style={{ marginBottom: 4 }}>Skill & asset declaration guide</Txt>
+              <Txt variant="bodySm" color={T.color.textSecondary}>
+                Watch this short tutorial before you declare your skills and assets.
+              </Txt>
+            </div>
+
+            <div style={{
+              width: '100%', aspectRatio: '16/9', background: T.color.navyDeep,
+              border: `1px solid ${T.color.navyBorder}`, borderRadius: T.radius.l,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              position: 'relative', overflow: 'hidden',
+            }}>
+              {video === 'idle' && (
+                <button onClick={() => setVideo('playing')} style={{
+                  width: 64, height: 64, borderRadius: 32, background: T.color.gold500,
+                  border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Icon name="play" size={28} color={T.color.textOnGold} />
+                </button>
+              )}
+              {video === 'playing' && (
+                <div style={{ width: '100%', padding: '0 24px', textAlign: 'center' }}>
+                  <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 10 }}>Playing tutorial…</Txt>
+                  <div style={{ width: '100%', height: 4, background: T.color.navyBorder, borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ width: '60%', height: '100%', background: T.color.gold500 }} />
+                  </div>
+                </div>
+              )}
+              {video === 'ended' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', padding: '0 24px' }}>
+                  <SecondaryButton icon="refresh" onClick={() => setVideo('playing')}>Replay</SecondaryButton>
+                  <PrimaryButton onClick={() => setTab('declare')}>Next</PrimaryButton>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {tab === 'declare' && (
+          <>
         <div>
           <Txt variant="subtitle" style={{ marginBottom: 4 }}>Add what you can do</Txt>
           <Txt variant="bodySm" color={T.color.textSecondary}>
@@ -313,13 +403,15 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
         </div>
 
         <input value={search} onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search or type a skill..."
+          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addSkill(search); } }}
+          placeholder="Type a skill in your own words"
           style={{
             width: '100%', minHeight: 48, background: T.color.navyRaised,
             border: `1.5px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
             color: T.color.textPrimary, padding: '0 14px', fontFamily: T.fontSans, fontSize: 15,
             outline: 'none',
           }} />
+        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>e.g. "I can drive a car, be a house maid, cook deshi/Chinese food" — add any skill you have, separated by commas (,).</Txt>
 
         <div style={{
           display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflow: 'auto',
@@ -371,6 +463,8 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
         <div style={{ marginTop: 8 }}>
           <PrimaryButton onClick={() => setConfirmOpen(true)} disabled={selected.size === 0}>Save skills</PrimaryButton>
         </div>
+          </>
+        )}
       </div>
 
       {confirmOpen && (
@@ -421,6 +515,7 @@ const AssetDeclarationScreen = ({ onBack, onSave, onAddAsset, onViewDetails }) =
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="My Assets" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 12, overflow: 'auto' }}>
+        <Banner variant="info">Earn from your assets — lend your car parking, bike, room, camera and more.</Banner>
         <Txt variant="caption" color={T.color.textMuted}>YOUR ASSETS</Txt>
 
         {assets.map(a => (
@@ -471,8 +566,11 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
   const [type, setType] = useState('');
   const [typeQuery, setTypeQuery] = useState('');
   const [showTypeDD, setShowTypeDD] = useState(false);
+  const [model, setModel] = useState('');
   const [desc, setDesc] = useState('');
+  const [location, setLocation] = useState('');
   const [pics, setPics] = useState([]);
+  const [docs, setDocs] = useState([]);
 
   const types = ['Motorbike', 'Bicycle', 'Car', 'Van', 'Truck', 'Pickup', 'Power tools', 'Hand tools', 'Sewing machine', 'Camera'];
   const filteredTypes = typeQuery
@@ -523,8 +621,13 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
           )}
         </div>
 
+        <TextField label="Model" value={model} onChange={setModel} placeholder="e.g. FZ-S V3 · 2024" />
+
         <TextField label="Description" multiline rows={3} value={desc} onChange={setDesc}
           placeholder="Make, model, registration, condition..." />
+
+        <TextField label="Asset location" value={location} onChange={setLocation} placeholder="Area / address" />
+        <MapPreview height={120} label={location || 'Pick location on map'} caption="Drag the pin to your asset location" />
 
         <div>
           <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Pictures</Txt>
@@ -555,8 +658,37 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
           </div>
         </div>
 
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Ownership documents (if any)</Txt>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {docs.map((_, i) => (
+              <div key={i} style={{
+                width: 70, height: 70, borderRadius: T.radius.m,
+                background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+                border: `1px solid ${T.color.gold500}`, position: 'relative',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon name="file" size={20} color={T.color.gold500} />
+                <button onClick={() => setDocs(docs.filter((_, j) => j !== i))} style={{
+                  position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: 10,
+                  background: T.color.error, border: 'none', cursor: 'pointer', color: '#fff',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
+                }}>×</button>
+              </div>
+            ))}
+            <button onClick={() => setDocs([...docs, 1])} style={{
+              width: 70, height: 70, borderRadius: T.radius.m,
+              background: T.color.navyRaised, border: `1.5px dashed ${T.color.navyBorder}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+            }}>
+              <Icon name="plus" size={20} color={T.color.gold500} />
+            </button>
+          </div>
+        </div>
+
         <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
-          <PrimaryButton onClick={() => onPreview && onPreview({ name, type, desc, pics: pics.length })} disabled={!ok}>
+          <PrimaryButton onClick={() => onPreview && onPreview({ name, type, model, desc, location, pics: pics.length, docs: docs.length })} disabled={!ok}>
             Preview asset
           </PrimaryButton>
         </div>
@@ -566,7 +698,7 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
 };
 
 // ── Asset preview (editable before commit) ──────────────────
-const AssetPreviewScreen = ({ asset = { name: 'Yamaha FZ', type: 'Motorbike', desc: 'Black, 2024 model, registered', pics: 2 }, onBack, onEdit, onConfirm }) => (
+const AssetPreviewScreen = ({ asset = { name: 'Yamaha FZ', type: 'Motorbike', model: 'FZ-S V3 · 2024', desc: 'Black, 2024 model, registered', location: 'Mirpur 10, Dhaka', pics: 2, docs: 1 }, onBack, onEdit, onConfirm }) => (
   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
     <AppBarElevated title="Preview Asset" left={<BackButton onClick={onBack} />} />
     <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
@@ -590,8 +722,37 @@ const AssetPreviewScreen = ({ asset = { name: 'Yamaha FZ', type: 'Motorbike', de
         <Txt variant="subtitle" style={{ marginBottom: 12 }}>{asset.name}</Txt>
         <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>TYPE</Txt>
         <Txt variant="bodySm" style={{ marginBottom: 12 }}>{asset.type}</Txt>
+        {asset.model && (
+          <>
+            <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>MODEL</Txt>
+            <Txt variant="bodySm" style={{ marginBottom: 12 }}>{asset.model}</Txt>
+          </>
+        )}
+        {asset.location && (
+          <>
+            <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>LOCATION</Txt>
+            <Txt variant="bodySm" style={{ marginBottom: 12 }}>{asset.location}</Txt>
+          </>
+        )}
         <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>DESCRIPTION</Txt>
         <Txt variant="bodySm">{asset.desc}</Txt>
+        {asset.docs > 0 && (
+          <>
+            <Txt variant="caption" color={T.color.textMuted} style={{ marginTop: 12, marginBottom: 8 }}>OWNERSHIP DOCUMENTS</Txt>
+            <div style={{ display: 'flex', gap: 8, overflowX: 'auto' }}>
+              {Array.from({ length: asset.docs }).map((_, i) => (
+                <div key={i} style={{
+                  minWidth: 100, height: 100, borderRadius: T.radius.m, flexShrink: 0,
+                  background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+                  border: `1px solid ${T.color.navyBorder}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Icon name="file" size={24} color={T.color.gold500} />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </Card>
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 20 }}>
         <PrimaryButton onClick={onConfirm}>Add to my assets</PrimaryButton>
@@ -623,7 +784,7 @@ const AssetAddedSuccessScreen = ({ onContinue, onAddAnother }) => (
 );
 
 // ── Asset details view ──────────────────────────────────────
-const AssetDetailsViewScreen = ({ asset = { name: 'Hero Honda 150cc', type: 'Motorbike', description: 'Honda CB 150 · BD-12-3456 · Black, 2023 model, regularly serviced.', pics: 2 }, onBack }) => (
+const AssetDetailsViewScreen = ({ asset = { name: 'Hero Honda 150cc', type: 'Motorbike', description: 'Honda CB 150 · BD-12-3456 · Black, 2023 model, regularly serviced.', pics: 2 }, onBack, onAddAnother }) => (
   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
     <AppBarElevated title="Asset Details" left={<BackButton onClick={onBack} />} />
     <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
@@ -649,6 +810,11 @@ const AssetDetailsViewScreen = ({ asset = { name: 'Hero Honda 150cc', type: 'Mot
         <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>DESCRIPTION</Txt>
         <Txt variant="bodySm" style={{ lineHeight: 1.6 }}>{asset.description}</Txt>
       </Card>
+      {onAddAnother && (
+        <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
+          <SecondaryButton icon="plus" onClick={onAddAnother}>Add another asset</SecondaryButton>
+        </div>
+      )}
     </div>
   </div>
 );
