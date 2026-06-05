@@ -70,7 +70,7 @@ const ChatThreadScreen = ({ onBack, onCall }) => {
         </div>
         <button style={{
           width: 44, height: 44, borderRadius: 22, flexShrink: 0,
-          background: T.color.gold500, border: 'none', cursor: 'pointer',
+          background: T.color.teal500, border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Icon name="send" size={18} color={T.color.textOnGold} />

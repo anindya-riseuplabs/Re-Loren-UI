@@ -637,7 +637,7 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
             )}
 
             <button onClick={() => onViewReview && onViewReview(w)} style={{
-              background: 'none', border: 'none', color: T.color.gold500,
+              background: 'none', border: 'none', color: T.color.teal500,
               fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
               textDecoration: 'underline', marginBottom: 12, display: 'block',
             }}>View reviews →</button>

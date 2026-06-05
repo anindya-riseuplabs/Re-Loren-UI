@@ -368,7 +368,7 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
             }}>
               {video === 'idle' && (
                 <button onClick={() => setVideo('playing')} style={{
-                  width: 64, height: 64, borderRadius: 32, background: T.color.gold500,
+                  width: 64, height: 64, borderRadius: 32, background: T.color.teal500,
                   border: 'none', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>

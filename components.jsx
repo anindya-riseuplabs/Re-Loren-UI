@@ -104,21 +104,21 @@ const btnBase = {
 };
 const PrimaryButton = ({ children, onClick, disabled, icon, style }) => (
   <button onClick={disabled ? undefined : onClick} disabled={disabled} className={disabled ? '' : 'btn-primary'}
-    style={{ ...btnBase, background: disabled ? T.color.taupe500 : T.color.goldGradient, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
+    style={{ ...btnBase, background: disabled ? T.color.taupe500 : T.color.teal500, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
     {children}
   </button>
 );
 const SecondaryButton = ({ children, onClick, icon, style }) => (
   <button onClick={onClick}
-    style={{ ...btnBase, background: 'transparent', border: `1.5px solid ${T.color.gold500}`, color: T.color.gold500, ...style }}>
-    {icon && <Icon name={icon} size={20} color={T.color.gold500} />}
+    style={{ ...btnBase, background: 'transparent', border: `1.5px solid ${T.color.teal500}`, color: T.color.teal500, ...style }}>
+    {icon && <Icon name={icon} size={20} color={T.color.teal500} />}
     {children}
   </button>
 );
 const AccentButton = ({ children, onClick, icon, style }) => (
   <button onClick={onClick} className="btn-primary"
-    style={{ ...btnBase, background: T.color.goldGradient, color: T.color.textOnGold, ...style }}>
+    style={{ ...btnBase, background: T.color.teal500, color: T.color.textOnGold, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
     {children}
   </button>

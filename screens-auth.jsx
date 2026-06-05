@@ -165,7 +165,7 @@ const PhoneOtpEntryScreen = ({ onSendOtp, onCreate, onForgot }) => {
           suffix={<IconButton name={show ? 'eye' : 'eye'} size={32} iconSize={18} onClick={() => setShow(s => !s)} />} />
         <div style={{ textAlign: 'right', marginTop: -6 }}>
           <button onClick={onForgot} style={{
-            background: 'none', border: 'none', color: T.color.gold500,
+            background: 'none', border: 'none', color: T.color.teal500,
             fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer', padding: 0,
           }}>Forgot password?</button>
         </div>
@@ -213,7 +213,7 @@ const OtpVerifyScreen = ({ onBack, onVerify }) => {
             </Txt>
           ) : (
             <button onClick={() => setCountdown(42)} style={{
-              background: 'none', border: 'none', color: T.color.gold500,
+              background: 'none', border: 'none', color: T.color.teal500,
               fontFamily: T.fontSans, fontSize: 14, fontWeight: 600, cursor: 'pointer',
             }}>Resend OTP</button>
           )}
@@ -307,7 +307,7 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
             ) : (
               <button onClick={() => setOtpOpen(true)} disabled={phone.length < 10} style={{
                 minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
-                background: phone.length < 10 ? T.color.navyDeep : T.color.gold500,
+                background: phone.length < 10 ? T.color.navyDeep : T.color.teal500,
                 border: 'none', color: phone.length < 10 ? T.color.textMuted : T.color.textOnGold,
                 fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: phone.length < 10 ? 'not-allowed' : 'pointer',
               }}>Verify</button>
@@ -350,7 +350,7 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
                         No match. Use "{professionQuery}" as custom profession.
                       </Txt>
                       <button onClick={() => { setProfession(professionQuery); setShowProfDD(false); }} style={{
-                        marginTop: 8, background: 'none', border: 'none', color: T.color.gold500,
+                        marginTop: 8, background: 'none', border: 'none', color: T.color.teal500,
                         fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
                       }}>Use custom →</button>
                     </div>
@@ -410,7 +410,7 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
                   ) : (
                     <button onClick={() => setEcOtpOpen(true)} disabled={ecPhone.length < 10} style={{
                       minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
-                      background: ecPhone.length < 10 ? T.color.navyDeep : T.color.gold500,
+                      background: ecPhone.length < 10 ? T.color.navyDeep : T.color.teal500,
                       border: 'none', color: ecPhone.length < 10 ? T.color.textMuted : T.color.textOnGold,
                       fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: ecPhone.length < 10 ? 'not-allowed' : 'pointer',
                     }}>Verify</button>

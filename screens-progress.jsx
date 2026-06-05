@@ -80,7 +80,7 @@ const JobCompletionScreen = ({ onBack, onRate, onSkip }) => {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 16px' }}>
         <button onClick={onSkip} style={{
-          background: 'none', border: 'none', color: T.color.gold500,
+          background: 'none', border: 'none', color: T.color.teal500,
           fontFamily: T.fontSans, fontSize: 14, fontWeight: 600, cursor: 'pointer', padding: 6,
         }}>Skip</button>
       </div>
@@ -524,7 +524,7 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
             Post a job and get bids in minutes.
           </Txt>
           <button onClick={onPost} style={{
-            background: T.color.navyDeep, color: T.color.gold500, border: 'none',
+            background: T.color.navyDeep, color: T.color.teal500, border: 'none',
             padding: '10px 18px', borderRadius: T.radius.m, cursor: 'pointer',
             fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
           }}>Post a job →</button>
