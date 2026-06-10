@@ -276,12 +276,151 @@ const JobCard = ({ job, onClick, onAccept, verified = true, segment = 'immediate
   </Card>
 );
 
+// ── Job-density map (worker feed) ───────────────────────────
+// Mock explore-map: worker at centre, a teal radius circle from the
+// distance filter, and "N jobs" pins per area. Pins inside the radius are
+// biddable; pins outside are view-only. Tapping a pin opens that area's
+// posts. Counts refresh on a slow cadence (≈1h) — simulated by a ticking
+// label only. radiusKm is owned by the feed (shared with the filter).
+const JOB_CLUSTERS = [
+  { id: 'hellskitchen', label: "Hell's Kitchen", jobs: 5, ang: 295, dist: 1.8 },
+  { id: 'soho',         label: 'SoHo',            jobs: 2, ang: 172, dist: 1.4 },
+  { id: 'eastvillage',  label: 'East Village',    jobs: 3, ang: 22,  dist: 2.6 },
+  { id: 'greenwich',    label: 'Greenwich Village',jobs: 3, ang: 208, dist: 2.4 },
+  { id: 'newport',      label: 'Newport',         jobs: 3, ang: 232, dist: 3.7 },
+  { id: 'hoboken',      label: 'Hoboken',         jobs: 3, ang: 196, dist: 4.6 },
+  { id: 'longisland',   label: 'Long Island City',jobs: 4, ang: 36,  dist: 5.3 },
+];
+const CLUSTER_TITLES = ['Medicine delivery', 'Move single sofa', 'Fix kitchen sink leak', 'Drop documents — rush', 'Grocery pickup', 'Furniture assembly'];
+const CLUSTER_PRICES = [1500, 2000, 1200, 800, 1100, 1750];
+
+const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter }) => {
+  const [selected, setSelected] = useState(null);
+  const pxPerKm = 18, cap = 104;
+  const circlePx = Math.min(cap, radiusKm * pxPerKm);
+  const cluster = JOB_CLUSTERS.find(c => c.id === selected);
+  const selInside = cluster && cluster.dist <= radiusKm;
+  const inRange = JOB_CLUSTERS.filter(c => c.dist <= radiusKm).reduce((n, c) => n + c.jobs, 0);
+
+  return (
+    <Card style={{ padding: 0, overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', height: 230, background: T.color.navyDeep }}>
+        {/* faux map tiles */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0d2440 0%, #10325c 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.6, backgroundImage:
+          `repeating-linear-gradient(0deg, transparent 0 38px, rgba(160,174,192,0.10) 38px 40px),
+           repeating-linear-gradient(90deg, transparent 0 46px, rgba(160,174,192,0.10) 46px 48px)` }} />
+        <div style={{ position: 'absolute', top: '52%', left: 0, right: 0, height: 5, background: 'rgba(212,175,55,0.16)' }} />
+        <div style={{ position: 'absolute', top: 0, bottom: 0, left: '40%', width: 5, background: 'rgba(15,167,163,0.18)' }} />
+
+        {/* selected-radius circle (teal, like the reference's blue) */}
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+          width: circlePx * 2, height: circlePx * 2, borderRadius: '50%',
+          background: 'rgba(15,167,163,0.16)', border: `2px solid ${T.color.teal500}`,
+          transition: 'width 0.25s, height 0.25s', pointerEvents: 'none',
+        }} />
+
+        {/* worker centre */}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' }}>
+          <div style={{ width: 14, height: 14, borderRadius: 7, background: T.color.teal500, border: '2px solid #fff', boxShadow: '0 0 0 4px rgba(15,167,163,0.3)' }} />
+        </div>
+
+        {/* area pins */}
+        {JOB_CLUSTERS.map(c => {
+          const r = c.ang * Math.PI / 180;
+          const dx = Math.cos(r) * c.dist * pxPerKm;
+          const dy = Math.sin(r) * c.dist * pxPerKm;
+          const inside = c.dist <= radiusKm;
+          return (
+            <button key={c.id} onClick={() => setSelected(c.id)} style={{
+              position: 'absolute', top: `calc(50% + ${dy}px)`, left: `calc(50% + ${dx}px)`,
+              transform: 'translate(-50%,-100%)', zIndex: selected === c.id ? 6 : 4,
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+            }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: T.radius.full,
+                background: inside ? T.color.gold500 : 'rgba(7,17,38,0.85)',
+                border: `1px solid ${inside ? T.color.gold600 : T.color.navyBorder}`,
+                color: inside ? T.color.textOnGold : T.color.textMuted,
+                fontFamily: T.fontSans, fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap',
+                opacity: inside ? 1 : 0.85,
+              }}>{c.jobs} jobs</div>
+              <Icon name="location" size={inside ? 22 : 18} color={inside ? T.color.gold500 : T.color.textMuted}
+                style={{ marginTop: -2, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))' }} />
+            </button>
+          );
+        })}
+
+        {/* radius chip */}
+        <div style={{ position: 'absolute', top: 10, left: 10, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.teal500}` }}>
+          <Icon name="location" size={12} color={T.color.teal500} />
+          <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0 }}>{radiusKm} km radius · {inRange} jobs in range</Txt>
+        </div>
+        <button onClick={onOpenFilter} style={{
+          position: 'absolute', top: 10, right: 10, display: 'inline-flex', alignItems: 'center', gap: 5,
+          padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)',
+          border: `1px solid ${T.color.navyBorder}`, cursor: 'pointer',
+        }}>
+          <Icon name="filter" size={12} color={T.color.gold500} />
+          <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0 }}>Radius</Txt>
+        </button>
+      </div>
+
+      <div style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <Icon name="clock" size={13} color={T.color.textMuted} />
+        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
+          Tap an area to see its posts · counts update hourly · bid only inside your radius
+        </Txt>
+      </div>
+
+      {cluster && (
+        <BottomSheet onClose={() => setSelected(null)} title={`${cluster.label} · ${cluster.jobs} jobs`}>
+          {!selInside && (
+            <Banner variant="warning" style={{ marginBottom: 12 }}>
+              This area is outside your {radiusKm} km radius. You can view posts but can't bid — widen your radius to bid here.
+            </Banner>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {Array.from({ length: cluster.jobs }).map((_, i) => {
+              const title = CLUSTER_TITLES[i % CLUSTER_TITLES.length];
+              const price = CLUSTER_PRICES[i % CLUSTER_PRICES.length];
+              const canBid = selInside && verified;
+              return (
+                <Card key={i} style={{ background: T.color.navyDeep }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                    <Txt variant="bodySm" style={{ fontWeight: 600, flex: 1, paddingRight: 8 }}>{title}</Txt>
+                    <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(price)}</Txt>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 10 }}>
+                    <Icon name="location" size={13} color={T.color.textMuted} />
+                    <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{cluster.label} · {cluster.dist} km away</Txt>
+                  </div>
+                  <PrimaryButton style={{ minHeight: 38, fontSize: 13, opacity: canBid ? 1 : 0.5, cursor: canBid ? 'pointer' : 'not-allowed' }}
+                    onClick={() => { if (canBid) { setSelected(null); onBid && onBid(); } }}>
+                    {canBid ? 'Place a bid' : !verified ? 'Verify to bid' : 'Out of radius'}
+                  </PrimaryButton>
+                </Card>
+              );
+            })}
+          </div>
+        </BottomSheet>
+      )}
+    </Card>
+  );
+};
+
 // ── Job feed (worker) — verified prop drives accept-button state ──
 const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
   const [seg, setSeg] = useState('immediate');
   const [filterOpen, setFilterOpen] = useState(false);
   const [sort, setSort] = useState('nearest');
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [radiusKm, setRadiusKm] = useState(3);
+  const [radiusDraft, setRadiusDraft] = useState(3);
+
+  const openFilter = () => { setRadiusDraft(radiusKm); setFilterOpen(true); };
 
   const jobs = SAMPLE.jobFeed.filter(j =>
     seg === 'immediate' ? j.type === 'instant' : j.type === 'regular'
@@ -330,11 +469,15 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
           options={[{ value: 'immediate', label: 'Immediately hiring' }, { value: 'active', label: 'Still active' }]}
           value={seg} onChange={setSeg} />
 
+        <JobAreaMap radiusKm={radiusKm} verified={verified}
+          onOpenFilter={openFilter}
+          onBid={() => onOpenJob && onOpenJob(jobs[0] || SAMPLE.jobFeed[0])} />
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
             {jobs.length} jobs available nearby
           </Txt>
-          <IconButton name="filter" onClick={() => setFilterOpen(true)} size={32} iconSize={18} />
+          <IconButton name="filter" onClick={openFilter} size={32} iconSize={18} />
         </div>
 
         {jobs.map(j => <JobCard key={j.id} job={j} verified={verified} segment={seg} onClick={() => onOpenJob && onOpenJob(j)} />)}
@@ -353,11 +496,19 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
               <Radio checked={sort === o.v} label={o.l} onClick={() => setSort(o.v)} />
             </div>
           ))}
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginTop: 18, marginBottom: 8 }}>DISTANCE RADIUS</Txt>
-          <input type="range" min={0.5} max={20} defaultValue={2} style={{ width: '100%', accentColor: T.color.gold500 }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 18, marginBottom: 8 }}>
+            <Txt variant="caption" color={T.color.textMuted}>DISTANCE RADIUS</Txt>
+            <Txt variant="caption" color={T.color.teal500} style={{ fontWeight: 700 }}>{radiusDraft} km</Txt>
+          </div>
+          <input type="range" min={1} max={8} step={0.5} value={radiusDraft}
+            onChange={e => setRadiusDraft(Number(e.target.value))}
+            style={{ width: '100%', accentColor: T.color.teal500 }} />
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 4 }}>
+            You can place bids only on jobs inside this radius. The map updates to show the area you cover.
+          </Txt>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <SecondaryButton onClick={() => setFilterOpen(false)}>Clear all</SecondaryButton>
-            <PrimaryButton onClick={() => setFilterOpen(false)}>Apply filters</PrimaryButton>
+            <SecondaryButton onClick={() => { setSort('nearest'); setRadiusDraft(3); }}>Clear all</SecondaryButton>
+            <PrimaryButton onClick={() => { setRadiusKm(radiusDraft); setFilterOpen(false); }}>Apply filters</PrimaryButton>
           </div>
         </BottomSheet>
       )}
