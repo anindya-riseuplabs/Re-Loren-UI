@@ -279,6 +279,75 @@ const FacialCaptureScreen = ({ onBack, onNext }) => {
   );
 };
 
+// ── Emergency contact + verification-under-review (worker) ──
+const EmergencyContactScreen = ({ onBack, onNext }) => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('1711-234567');
+  const [verified, setVerified] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [nid, setNid] = useState('');
+  const [relation, setRelation] = useState('');
+  const ok = name && verified && nid && relation;
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title="Emergency Contact" left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+        <Banner variant="warning" title="Verification under review">
+          Your identity verification is being reviewed by our team. This usually takes less than 24 hours. Add an emergency contact to finish.
+        </Banner>
+
+        <Txt variant="caption" color={T.color.textMuted}>EMERGENCY CONTACT</Txt>
+        <TextField label="Full name" value={name} onChange={setName} placeholder="Contact full name" />
+
+        <div>
+          <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Phone number</Txt>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+            <div style={{ flex: 1 }}>
+              <PhoneNumberField value={phone} onChange={(v) => { setPhone(v); setVerified(false); }} />
+            </div>
+            {verified ? (
+              <div style={{
+                minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                background: 'rgba(102,187,106,0.16)', border: `1px solid ${T.color.success}`,
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <Icon name="checkCircle" size={16} color={T.color.success} />
+                <Txt variant="caption" color={T.color.success} style={{ letterSpacing: 0, fontWeight: 600 }}>Verified</Txt>
+              </div>
+            ) : (
+              <button onClick={() => setOtpOpen(true)} disabled={phone.length < 10} style={{
+                minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
+                background: phone.length < 10 ? T.color.navyDeep : T.color.teal500,
+                border: 'none', color: phone.length < 10 ? T.color.textMuted : T.color.textOnGold,
+                fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: phone.length < 10 ? 'not-allowed' : 'pointer',
+              }}>Verify</button>
+            )}
+          </div>
+        </div>
+
+        <TextField label="NID number" value={nid} onChange={setNid} placeholder="NID / Birth reg. no." />
+        <TextField label="Relation with you" value={relation} onChange={setRelation} placeholder="e.g. Father, Spouse, Brother" />
+
+        <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
+          <PrimaryButton onClick={onNext} disabled={!ok}>Save & continue</PrimaryButton>
+        </div>
+      </div>
+
+      {otpOpen && (
+        <BottomSheet onClose={() => setOtpOpen(false)} title="Verify contact phone">
+          <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 4 }}>We sent a 4-digit code to</Txt>
+          <Txt variant="subtitle" style={{ marginBottom: 16 }}>+880 {phone}</Txt>
+          <OtpInput length={4} value={otp} onChange={setOtp} />
+          <div style={{ height: 16 }} />
+          <PrimaryButton onClick={() => { setVerified(true); setOtpOpen(false); setOtp(''); }} disabled={otp.length !== 4}>Verify</PrimaryButton>
+        </BottomSheet>
+      )}
+    </div>
+  );
+};
+
 // ── Mode toggle (on profile) ─────────────────────────────────
 const ModeToggleScreen = ({ mode, onBack, onSwitch }) => {
   const isWorker = mode === 'worker';
@@ -308,7 +377,7 @@ const ModeToggleScreen = ({ mode, onBack, onSwitch }) => {
 
 // ── Skill declaration ────────────────────────────────────────
 const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
-  const [selected, setSelected] = useState(new Set(['Bike delivery']));
+  const [selected, setSelected] = useState(new Set());
   const [search, setSearch] = useState('');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [assetPromptOpen, setAssetPromptOpen] = useState(false);
@@ -327,7 +396,9 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
     setSelected(n);
   };
 
-  const allItems = [...SAMPLE.skills.popular, ...SAMPLE.skills.transport, ...SAMPLE.skills.handyman];
+  // Admin-managed predefined skills (scrollable list — admins can append more).
+  const allItems = ['Ride sharing by bike', 'Ride sharing by car', 'Car driver', 'Cook', 'Electrician', 'AC technician', 'Plumber', 'Lawyer', 'Doctor'];
+  const guideDone = video === 'ended';
   const q = search.trim();
   const available = allItems.filter(s => !selected.has(s));
   const filtered = q ? available.filter(i => i.toLowerCase().includes(q.toLowerCase())) : available;
@@ -348,15 +419,18 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
       <AppBarElevated title="Declare Skills" left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflow: 'auto' }}>
         <Segmented
-          options={[{ value: 'guideline', label: 'Guideline' }, { value: 'declare', label: 'Declare skills' }]}
-          value={tab} onChange={setTab} />
+          options={[
+            { value: 'guideline', label: 'Guideline' },
+            { value: 'declare', label: 'Declare skills', disabled: !guideDone },
+          ]}
+          value={tab} onChange={(v) => { if (v === 'declare' && !guideDone) return; setTab(v); }} />
 
         {tab === 'guideline' && (
           <>
             <div>
               <Txt variant="subtitle" style={{ marginBottom: 4 }}>Skill & asset declaration guide</Txt>
               <Txt variant="bodySm" color={T.color.textSecondary}>
-                Watch this short tutorial before you declare your skills and assets.
+                Watch this tutorial fully — "Declare skills" unlocks only after the video finishes.
               </Txt>
             </div>
 
@@ -413,6 +487,7 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
           }} />
         <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>e.g. "I can drive a car, be a house maid, cook deshi/Chinese food" — add any skill you have, separated by commas (,).</Txt>
 
+        <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 600, marginTop: 4 }}>Or you can select skill from below list</Txt>
         <div style={{
           display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflow: 'auto',
           border: `1px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
@@ -572,7 +647,7 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
   const [pics, setPics] = useState([]);
   const [docs, setDocs] = useState([]);
 
-  const types = ['Motorbike', 'Bicycle', 'Car', 'Van', 'Truck', 'Pickup', 'Power tools', 'Hand tools', 'Sewing machine', 'Camera'];
+  const types = ['Motorbike', 'Bicycle', 'Car', 'Van', 'Truck', 'Pickup', 'Power tools', 'Hand tools', 'Sewing machine', 'Camera', 'Other'];
   const filteredTypes = typeQuery
     ? types.filter(t => t.toLowerCase().includes(typeQuery.toLowerCase()))
     : types;
@@ -603,12 +678,12 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
               {filteredTypes.length === 0 ? (
                 <div style={{ padding: 14 }}>
                   <Txt variant="bodySm" color={T.color.textMuted}>
-                    No match. Use "{typeQuery}" as custom type.
+                    No matching type. "{typeQuery}" will be added under <span style={{ color: T.color.gold500, fontWeight: 600 }}>Other</span> and grouped by our team after review.
                   </Txt>
                   <button onClick={() => { setType(typeQuery); setShowTypeDD(false); }} style={{
                     marginTop: 8, background: 'none', border: 'none', color: T.color.gold500,
                     fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
-                  }}>Use custom →</button>
+                  }}>Add "{typeQuery}" under Other →</button>
                 </div>
               ) : filteredTypes.map(t => (
                 <button key={t} onClick={() => { setType(t); setTypeQuery(''); setShowTypeDD(false); }} style={{
@@ -620,6 +695,9 @@ const AssetDetailFormScreen = ({ onBack, onPreview }) => {
             </div>
           )}
         </div>
+        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: -6 }}>
+          Can't find a fitting type? Type your own — it's saved under "Other" and our team groups it into the right category.
+        </Txt>
 
         <TextField label="Model" value={model} onChange={setModel} placeholder="e.g. FZ-S V3 · 2024" />
 

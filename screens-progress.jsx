@@ -521,7 +521,7 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
         }}>
           <Txt variant="h2" color={T.color.textOnGold} style={{ marginTop: 4 }}>Need help today?</Txt>
           <Txt variant="bodySm" color="rgba(15,25,45,0.8)" style={{ marginTop: 6, marginBottom: 14 }}>
-            Post a job and get bids in minutes.
+            Post a job in your own words and get bids in minutes.
           </Txt>
           <button onClick={onPost} style={{
             background: T.color.navyDeep, color: T.color.teal500, border: 'none',
@@ -529,6 +529,13 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
             fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
           }}>Post a job →</button>
         </Card>
+
+        <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginTop: -6 }}>
+          <Icon name="info" size={15} color={T.color.gold500} style={{ flexShrink: 0, marginTop: 1 }} />
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, lineHeight: 1.5 }}>
+            You are allowed to post one skill and one asset related service at a time in each post.
+          </Txt>
+        </div>
 
         {hasPostedJob && (
           <div>

@@ -22,7 +22,7 @@ const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay, onForward, o
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative' }}>
-      <AppBarElevated title="Your worker" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Your worker" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
         {/* Job caption header */}
@@ -207,7 +207,7 @@ const InstallmentTrackerScreen = ({ onBack, onDisburse, onCancel, onChat, onCall
   ];
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -274,7 +274,7 @@ const CashConfirmationScreen = ({ onBack, onConfirm, onCancel, onChat, onCall })
   const [code, setCode] = useState('');
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -319,7 +319,7 @@ const JobStartCodeScreen = ({ onBack, onStart, onChat, onCall }) => {
   const [code, setCode] = useState('4821');
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Start Job" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Start Job" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Card style={{ background: T.color.navyDeep }}>
           <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 4 }}>JOB</Txt>
@@ -382,7 +382,7 @@ const WorkerContactPageScreen = ({ onBack, onChat, onCall, onViewReview, onStart
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative' }}>
-      <AppBarElevated title="Your client" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Your client" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Banner variant="success" title="Offer accepted">
           The client accepted your offer. Get the 4-digit code from them to start.
@@ -449,7 +449,7 @@ const WorkerJobProgressOnlineScreen = ({ onBack, onCancel, onChat, onCall }) => 
   ];
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -524,7 +524,7 @@ const WorkerJobProgressCashScreen = ({ onBack, onSubmit, onCancel, onChat, onCal
   const [confirmCancel, setConfirmCancel] = useState(false);
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title="Job Progress" left={<BackButton onClick={onBack} />} right={<SosButton />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

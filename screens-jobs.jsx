@@ -11,6 +11,8 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
   const [budget, setBudget] = useState('1500');
   const [radius, setRadius] = useState(3);
   const [priceBlock, setPriceBlock] = useState(false);
+  const [fromMap, setFromMap] = useState(false);
+  const [toMap, setToMap] = useState(false);
 
   const needsRoute = relocate === 'yes';
   const allFilled = desc && budget
@@ -87,8 +89,30 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
 
         {needsRoute && (
           <>
-            <TextField label="From" value={from} onChange={setFrom} placeholder="Pickup location..." />
-            <TextField label="To" value={to} onChange={setTo} placeholder="Drop-off location..." />
+            <div>
+              <TextField label="From" value={from} onChange={setFrom} placeholder="Pickup location..."
+                suffix={<IconButton name="location" size={32} iconSize={18} onClick={() => setFromMap(m => !m)} />} />
+              <button onClick={() => setFromMap(m => !m)} style={{
+                marginTop: 6, background: 'none', border: 'none', color: T.color.teal500,
+                fontFamily: T.fontSans, fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: 0,
+              }}>{fromMap ? 'Hide map' : 'Drop pin manually on map'}</button>
+              {fromMap && (
+                <MapPreview height={130} label={from || 'Pickup'} marker="Drag to set pickup"
+                  caption="Drag the pin to set the exact pickup location" style={{ marginTop: 8 }} />
+              )}
+            </div>
+            <div>
+              <TextField label="To" value={to} onChange={setTo} placeholder="Drop-off location..."
+                suffix={<IconButton name="location" size={32} iconSize={18} onClick={() => setToMap(m => !m)} />} />
+              <button onClick={() => setToMap(m => !m)} style={{
+                marginTop: 6, background: 'none', border: 'none', color: T.color.teal500,
+                fontFamily: T.fontSans, fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: 0,
+              }}>{toMap ? 'Hide map' : 'Drop pin manually on map'}</button>
+              {toMap && (
+                <MapPreview height={130} label={to || 'Drop-off'} marker="Drag to set drop-off" pinColor={T.color.error}
+                  caption="Drag the pin to set the exact drop-off location" style={{ marginTop: 8 }} />
+              )}
+            </div>
           </>
         )}
 
@@ -342,7 +366,7 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
 };
 
 // ── Job detail ───────────────────────────────────────────────
-const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
+const JobDetailScreen = ({ job, onBack, onBid, onVerify, verified = false }) => {
   const j = job || SAMPLE.jobFeed[0];
   const [reminderOpen, setReminderOpen] = useState(false);
   const [reminder, setReminder] = useState('Never');
@@ -408,7 +432,12 @@ const JobDetailScreen = ({ job, onBack, onBid, verified = false }) => {
         </Card>
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 12, paddingBottom: 20 }}>
-          {!verified && <Banner variant="warning">You must be verified to apply for jobs.</Banner>}
+          {!verified && (
+            <>
+              <Banner variant="warning">You must be verified to apply for jobs.</Banner>
+              <PrimaryButton icon="shield" onClick={onVerify}>Verify now</PrimaryButton>
+            </>
+          )}
           <div style={{ display: 'flex', gap: 10 }}>
             <SecondaryButton style={{ flex: 1 }} onClick={onBid} disabled={!verified}>Place a bid</SecondaryButton>
             <PrimaryButton style={{ flex: 1 }} onClick={onBid} disabled={!verified}>Accept offer</PrimaryButton>
@@ -604,7 +633,65 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
           }
         `}</style>
 
-        {!searching && !accepted && bids.map(w => (
+        {/* Asset-requirement jobs use a hotel-listing style card: the asset
+            photo + asset name are primary; the owner's name is secondary. */}
+        {!searching && !accepted && requireAsset && bids.map(w => (
+          <Card key={w.rank} style={{ padding: 0, overflow: 'hidden' }}>
+            {/* Asset photo (owner-uploaded) as the hero */}
+            <div style={{
+              position: 'relative', width: '100%', height: 130,
+              background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Icon name="truck" size={48} color="rgba(212,175,55,0.45)" />
+              <div style={{
+                position: 'absolute', top: 10, right: 10,
+                background: 'rgba(7,17,38,0.82)', borderRadius: T.radius.full,
+                padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4,
+              }}>
+                <Icon name="starFill" size={12} color={T.color.gold500} />
+                <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0, fontWeight: 700 }}>{w.rating}</Txt>
+              </div>
+            </div>
+
+            <div style={{ padding: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {/* Asset name = primary */}
+                  <Txt variant="subtitle" style={{ fontWeight: 700 }}>{w.asset || 'Asset'}</Txt>
+                  <RatingStars value={w.rating} count={w.ratingCount} compact />
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Bid</Txt>
+                  <Txt variant="subtitle" color={T.color.gold500}>{fmtBDT(w.bid)}</Txt>
+                </div>
+              </div>
+
+              <button onClick={() => onViewReview && onViewReview(w)} style={{
+                background: 'none', border: 'none', color: T.color.teal500,
+                fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
+                textDecoration: 'underline', margin: '8px 0', display: 'block',
+              }}>View reviews →</button>
+
+              {/* Owner name = secondary, bottom-right, smaller */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
+                  Owner · {w.name}
+                </Txt>
+              </div>
+
+              <SecondaryButton style={{ marginBottom: 10, minHeight: 38, fontSize: 13 }}
+                onClick={() => onViewAsset && onViewAsset(w)} icon="truck">View asset details</SecondaryButton>
+
+              <div style={{ display: 'flex', gap: 10 }}>
+                <SecondaryButton style={{ flex: 1 }} onClick={() => onDecline(w.rank)}>Decline</SecondaryButton>
+                <PrimaryButton style={{ flex: 2 }} onClick={() => setAccepted(w)}>Accept Bid</PrimaryButton>
+              </div>
+            </div>
+          </Card>
+        ))}
+
+        {!searching && !accepted && !requireAsset && bids.map(w => (
           <Card key={w.rank}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -625,27 +712,11 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
               </div>
             </div>
 
-            {w.asset && (
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
-                background: T.color.navyDeep, border: `1px solid ${T.color.navyBorder}`,
-                borderRadius: T.radius.full, padding: '3px 9px', marginBottom: 10,
-              }}>
-                <Icon name="truck" size={13} color={T.color.gold500} />
-                <Txt variant="caption" color={T.color.textSecondary} style={{ letterSpacing: 0 }}>{w.asset}</Txt>
-              </div>
-            )}
-
             <button onClick={() => onViewReview && onViewReview(w)} style={{
               background: 'none', border: 'none', color: T.color.teal500,
               fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
               textDecoration: 'underline', marginBottom: 12, display: 'block',
             }}>View reviews →</button>
-
-            {requireAsset && (
-              <SecondaryButton style={{ marginBottom: 10, minHeight: 38, fontSize: 13 }}
-                onClick={() => onViewAsset && onViewAsset(w)} icon="truck">View asset details</SecondaryButton>
-            )}
 
             <div style={{ display: 'flex', gap: 10 }}>
               <SecondaryButton style={{ flex: 1 }} onClick={() => onDecline(w.rank)}>Decline</SecondaryButton>

@@ -593,15 +593,20 @@ const Segmented = ({ options, value, onChange }) => (
   }}>
     {options.map(o => {
       const active = o.value === value;
+      const locked = o.disabled;
       return (
-        <button key={o.value} onClick={() => onChange(o.value)}
+        <button key={o.value} onClick={() => { if (!locked) onChange(o.value); }} disabled={locked}
           style={{
             flex: 1, minHeight: 40, border: 'none',
             background: active ? T.color.gold500 : 'transparent',
-            color: active ? T.color.textOnGold : T.color.gold500,
-            borderRadius: T.radius.s, cursor: 'pointer',
+            color: locked ? T.color.textMuted : active ? T.color.textOnGold : T.color.gold500,
+            borderRadius: T.radius.s, cursor: locked ? 'not-allowed' : 'pointer',
             fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
-          }}>{o.label}</button>
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+          {locked && <Icon name="shield" size={13} color={T.color.textMuted} />}
+          {o.label}
+        </button>
       );
     })}
   </div>
@@ -742,6 +747,44 @@ const MapPreview = ({ height = 160, label, caption, radiusKm = 0, marker, pinCol
   );
 };
 
+// ── SosButton (emergency — shown after a job is accepted) ────
+// Compact red SOS pill, meant for the AppBar `right` slot. Tap → confirm
+// dialog with quick actions (call helpline / share live location). UI mock.
+const SosButton = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button onClick={() => setOpen(true)} aria-label="SOS"
+        style={{
+          display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0,
+          padding: '7px 12px', borderRadius: T.radius.full,
+          background: T.color.error, border: '1.5px solid rgba(255,255,255,0.8)',
+          color: '#fff', fontFamily: T.fontSans, fontSize: 13, fontWeight: 800,
+          letterSpacing: '4%', cursor: 'pointer',
+          boxShadow: '0 3px 10px rgba(239,83,80,0.45)',
+        }}>
+        <Icon name="warning" size={14} color="#fff" />
+        SOS
+      </button>
+      {open && (
+        <Dialog onClose={() => setOpen(false)} title="Emergency — SOS"
+          actions={[
+            <PrimaryButton key="call" icon="phone" onClick={() => setOpen(false)}>Call 999 helpline</PrimaryButton>,
+            <SecondaryButton key="loc" icon="location" onClick={() => setOpen(false)}>Share live location</SecondaryButton>,
+            <button key="cancel" onClick={() => setOpen(false)} style={{
+              background: 'none', border: 'none', color: T.color.textMuted,
+              fontFamily: T.fontSans, fontSize: 14, fontWeight: 600, cursor: 'pointer', padding: 8,
+            }}>Cancel</button>,
+          ]}>
+          <Txt variant="bodySm" color={T.color.textSecondary} style={{ lineHeight: 1.5 }}>
+            Use SOS only in a real emergency. Re'Loren safety team and your emergency contact will be alerted with your live location.
+          </Txt>
+        </Dialog>
+      )}
+    </>
+  );
+};
+
 // Export
 Object.assign(window, {
   Icon, Txt, BrandLogo,
@@ -752,5 +795,5 @@ Object.assign(window, {
   BottomSheet, Dialog, Drawer, Toast, Overlay,
   AppBarElevated, BackButton, BottomNavBar, ModePill,
   Segmented, Radio, Checkbox, Toggle,
-  MapPreview, CancelPenaltyDialog,
+  MapPreview, CancelPenaltyDialog, SosButton,
 });

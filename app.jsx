@@ -69,7 +69,7 @@ function App() {
           <DCArtboard id="register" label="Register · client · phone OTP" width={360} height={720}>
             <Phone><RegisterFormScreen role="employer" onBack={noop} onNext={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="register-worker" label="Register · worker · emergency + profession" width={360} height={720}>
+          <DCArtboard id="register-worker" label="Register · worker · profession" width={360} height={720}>
             <Phone><RegisterFormScreen role="worker" onBack={noop} onNext={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="reg-complete" label="Registration complete · review" width={360} height={720}>
@@ -84,7 +84,7 @@ function App() {
         </DCSection>
 
         {/* ─── 2. WORKER VERIFICATION ─── */}
-        <DCSection id="verify" title="2 · Worker verification" subtitle="Onboarding intro → NID → facial">
+        <DCSection id="verify" title="2 · Worker verification" subtitle="Onboarding intro → NID → facial → emergency contact (under review)">
           <DCArtboard id="worker-intro" label="Worker Onboarding Intro" width={360} height={720}>
             <Phone><WorkerOnboardingIntroScreen onNext={noop} onSkip={noop} /></Phone>
           </DCArtboard>
@@ -93,6 +93,9 @@ function App() {
           </DCArtboard>
           <DCArtboard id="face" label="Facial capture · 3 poses" width={360} height={720}>
             <Phone><FacialCaptureScreen onBack={noop} onNext={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="emergency" label="Emergency contact · under review" width={360} height={720}>
+            <Phone><EmergencyContactScreen onBack={noop} onNext={noop} /></Phone>
           </DCArtboard>
         </DCSection>
 
@@ -166,7 +169,7 @@ function App() {
             <Phone><JobDetailScreen onBack={noop} onBid={noop} verified={true} /></Phone>
           </DCArtboard>
           <DCArtboard id="job-detail-pending" label="Job detail · disabled bid" width={360} height={720}>
-            <Phone><JobDetailScreen onBack={noop} onBid={noop} verified={false} /></Phone>
+            <Phone><JobDetailScreen onBack={noop} onBid={noop} onVerify={noop} verified={false} /></Phone>
           </DCArtboard>
           <DCArtboard id="bid-submit" label="Bid submit · commission" width={360} height={720}>
             <Phone><BidSubmitScreen onBack={noop} onSubmit={noop} /></Phone>

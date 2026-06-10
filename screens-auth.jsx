@@ -247,21 +247,15 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
   const [showProfDD, setShowProfDD] = useState(false);
   const [age, setAge] = useState('');
   const [cert, setCert] = useState(false);
-  const [ecName, setEcName] = useState('');
-  const [ecPhone, setEcPhone] = useState('1711-234567');
-  const [ecPhoneVerified, setEcPhoneVerified] = useState(false);
-  const [ecOtpOpen, setEcOtpOpen] = useState(false);
-  const [ecOtp, setEcOtp] = useState('');
-  const [ecNid, setEcNid] = useState('');
 
-  const professions = ['Driver', 'Delivery rider', 'Domestic helper', 'Cook', 'Electrician', 'Plumber', 'Carpenter', 'Painter', 'Cleaner', 'Security guard', 'Gardener', 'Mechanic', 'Tailor', 'Mover / Loader'];
+  const professions =['Driver', 'Delivery rider', 'Domestic helper', 'Cook', 'Electrician', 'Plumber', 'Carpenter', 'Painter', 'Cleaner', 'Security guard', 'Gardener', 'Mechanic', 'Tailor', 'Mover / Loader'];
   const filteredProfessions = professionQuery
     ? professions.filter(p => p.toLowerCase().includes(professionQuery.toLowerCase()))
     : professions;
 
   const baseOk = name && phone.length >= 10 && phoneVerified && pw.length >= 8 && pw === cpw;
   const ok = role === 'worker'
-    ? baseOk && profession && age && ecName && ecPhoneVerified
+    ? baseOk && profession && age
     : baseOk;
 
   return (
@@ -386,42 +380,6 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
                 </Txt>
               </div>
             </div>
-
-            <Card>
-              <Txt variant="caption" color={T.color.textMuted}>EMERGENCY CONTACT</Txt>
-              <div style={{ height: 12 }} />
-              <TextField label="Contact name" value={ecName} onChange={setEcName} placeholder="Enter contact name" />
-
-              <div style={{ marginTop: 14 }}>
-                <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Phone number</Txt>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                  <div style={{ flex: 1 }}>
-                    <PhoneNumberField value={ecPhone} onChange={(v) => { setEcPhone(v); setEcPhoneVerified(false); }} />
-                  </div>
-                  {ecPhoneVerified ? (
-                    <div style={{
-                      minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
-                      background: 'rgba(102,187,106,0.16)', border: `1px solid ${T.color.success}`,
-                      display: 'flex', alignItems: 'center', gap: 6,
-                    }}>
-                      <Icon name="checkCircle" size={16} color={T.color.success} />
-                      <Txt variant="caption" color={T.color.success} style={{ letterSpacing: 0, fontWeight: 600 }}>Verified</Txt>
-                    </div>
-                  ) : (
-                    <button onClick={() => setEcOtpOpen(true)} disabled={ecPhone.length < 10} style={{
-                      minHeight: 48, padding: '0 14px', borderRadius: T.radius.m,
-                      background: ecPhone.length < 10 ? T.color.navyDeep : T.color.teal500,
-                      border: 'none', color: ecPhone.length < 10 ? T.color.textMuted : T.color.textOnGold,
-                      fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: ecPhone.length < 10 ? 'not-allowed' : 'pointer',
-                    }}>Verify</button>
-                  )}
-                </div>
-              </div>
-
-              <div style={{ marginTop: 14 }}>
-                <TextField label="Contact NID number" value={ecNid} onChange={setEcNid} placeholder="NID / Birth reg. no." />
-              </div>
-            </Card>
           </>
         )}
 
@@ -442,20 +400,6 @@ const RegisterFormScreen = ({ onBack, onNext, role = 'employer' }) => {
           <OtpInput length={4} value={otp} onChange={setOtp} />
           <div style={{ height: 16 }} />
           <PrimaryButton onClick={() => { setPhoneVerified(true); setOtpOpen(false); setOtp(''); }} disabled={otp.length !== 4}>
-            Verify
-          </PrimaryButton>
-        </BottomSheet>
-      )}
-
-      {ecOtpOpen && (
-        <BottomSheet onClose={() => setEcOtpOpen(false)} title="Verify contact phone">
-          <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 4 }}>
-            We sent a 4-digit code to
-          </Txt>
-          <Txt variant="subtitle" style={{ marginBottom: 16 }}>+880 {ecPhone}</Txt>
-          <OtpInput length={4} value={ecOtp} onChange={setEcOtp} />
-          <div style={{ height: 16 }} />
-          <PrimaryButton onClick={() => { setEcPhoneVerified(true); setEcOtpOpen(false); setEcOtp(''); }} disabled={ecOtp.length !== 4}>
             Verify
           </PrimaryButton>
         </BottomSheet>
@@ -519,11 +463,8 @@ const RegistrationCompleteScreen = ({ onContinue }) => (
     </div>
     <Txt variant="h2" style={{ textAlign: 'center' }}>Registration complete</Txt>
     <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
-      Welcome to Re'Loren! Your account is ready.
+      Welcome to Re'Loren! Your account is ready. Complete worker verification next to start bidding.
     </Txt>
-    <Banner variant="warning" title="Verification under review" style={{ width: '100%' }}>
-      Your identity verification is being reviewed by our team. This usually takes less than 24 hours. You can browse and post jobs in the meantime.
-    </Banner>
     <div style={{ width: '100%', marginTop: 'auto' }}>
       <PrimaryButton onClick={onContinue}>Continue to dashboard</PrimaryButton>
     </div>
