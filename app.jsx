@@ -66,6 +66,9 @@ function App() {
           <DCArtboard id="phone-login" label="Sign in · phone + password" width={360} height={720}>
             <Phone><PhoneOtpEntryScreen onSendOtp={noop} onCreate={noop} onForgot={noop} /></Phone>
           </DCArtboard>
+          <DCArtboard id="login-otp" label="Sign in · OTP verify" width={360} height={720}>
+            <Phone><OtpVerifyScreen onBack={noop} onVerify={noop} /></Phone>
+          </DCArtboard>
           <DCArtboard id="register" label="Register · client · phone OTP" width={360} height={720}>
             <Phone><RegisterFormScreen role="employer" onBack={noop} onNext={noop} /></Phone>
           </DCArtboard>
@@ -131,19 +134,28 @@ function App() {
           <DCArtboard id="post-compose" label="Post · ChatGPT free text" width={360} height={720}>
             <Phone><JobPostFreeTextScreen onBack={noop} onReview={noop} /></Phone>
           </DCArtboard>
+          <DCArtboard id="post-opportunity" label="Post · opportunity (asset, restricted)" width={360} height={720}>
+            <Phone><JobPostFreeTextScreen onBack={noop} onReview={noop} opportunity={true} /></Phone>
+          </DCArtboard>
           <DCArtboard id="post-review" label="Post · confirm details" width={360} height={720}>
             <Phone><JobPostReviewScreen
               data={{ caption: 'Medicine delivery — Motijheel → Dhanmondi', desc: 'Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.', jobType: 'instant', relocate: 'yes', from: 'Motijheel, Dhaka', to: 'Dhanmondi, Dhaka', budget: '1500' }}
               onBack={noop} onPost={noop} /></Phone>
           </DCArtboard>
-          <DCArtboard id="post-success" label="Post · success" width={360} height={720}>
-            <Phone><JobPostSuccessScreen data={{ jobType: 'instant' }} onDone={noop} /></Phone>
+          <DCArtboard id="post-success" label="Post · success + make another" width={360} height={720}>
+            <Phone><JobPostSuccessScreen data={{ jobType: 'instant' }} onDone={noop} onAnother={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="job-in-progress" label="Job in progress · search + bids" width={360} height={720}>
             <Phone><RankedShortlistScreen onBack={noop} onAccept={noop} onViewReview={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="job-in-progress-asset" label="Job in progress · asset variant" width={360} height={720}>
             <Phone><RankedShortlistScreen onBack={noop} onAccept={noop} onViewReview={noop} requireAsset={true} onViewAsset={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="job-in-progress-noresult" label="Job in progress · no worker (3 options)" width={360} height={720}>
+            <Phone><RankedShortlistScreen onBack={noop} onAccept={noop} onViewReview={noop} noResults={true} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="job-in-progress-asset-noresult" label="Job in progress · no asset service (3 options)" width={360} height={720}>
+            <Phone><RankedShortlistScreen onBack={noop} onAccept={noop} onViewReview={noop} requireAsset={true} noResults={true} onViewAsset={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="worker-reviews" label="Worker reviews list" width={360} height={720}>
             <Phone><WorkerReviewListScreen onBack={noop} /></Phone>
@@ -154,25 +166,53 @@ function App() {
         </DCSection>
 
         {/* ─── 5. WORKER · FEED + BID ─── */}
-        <DCSection id="bids" title="5 · Worker · feed & bid" subtitle="NID-verified vs pending, job detail, bid submit/edit">
-          <DCArtboard id="feed-verified" label="Job feed · NID verified" width={360} height={720}>
+        <DCSection id="bids" title="5 · Worker · feed & bid" subtitle="Home window, online + physical feeds (NID gated), detail, bid">
+          <DCArtboard id="worker-home" label="Worker home · Online / Physical entries" width={360} height={720}>
+            <PhoneWithNav active="home" mode="worker">
+              <WorkerHomeScreen onOpenOnline={noop} onOpenPhysical={noop} onNav={noop} verified={true} />
+            </PhoneWithNav>
+          </DCArtboard>
+          <DCArtboard id="worker-home-pending" label="Worker home · under review" width={360} height={720}>
+            <PhoneWithNav active="home" mode="worker">
+              <WorkerHomeScreen onOpenOnline={noop} onOpenPhysical={noop} onNav={noop} verified={false} />
+            </PhoneWithNav>
+          </DCArtboard>
+          <DCArtboard id="feed-verified" label="Physical feed · NID verified (area history map)" width={360} height={720}>
             <PhoneWithNav active="jobs" mode="worker">
               <JobFeedScreen onOpenJob={noop} onNav={noop} verified={true} />
             </PhoneWithNav>
           </DCArtboard>
-          <DCArtboard id="feed-pending" label="Job feed · NID pending" width={360} height={720}>
+          <DCArtboard id="feed-pending" label="Physical feed · NID pending" width={360} height={720}>
             <PhoneWithNav active="jobs" mode="worker">
               <JobFeedScreen onOpenJob={noop} onNav={noop} verified={false} />
             </PhoneWithNav>
           </DCArtboard>
-          <DCArtboard id="job-detail-verified" label="Job detail · verified" width={360} height={720}>
-            <Phone><JobDetailScreen onBack={noop} onBid={noop} verified={true} /></Phone>
+          <DCArtboard id="feed-opportunity" label="Physical feed · opportunity (asset only)" width={360} height={720}>
+            <PhoneWithNav active="jobs" mode="worker">
+              <JobFeedScreen onOpenJob={noop} onNav={noop} verified={true} opportunity={true} />
+            </PhoneWithNav>
+          </DCArtboard>
+          <DCArtboard id="online-feed-verified" label="Online feed · NID verified" width={360} height={720}>
+            <PhoneWithNav active="jobs" mode="worker">
+              <OnlineJobFeedScreen onOpenJob={noop} onNav={noop} verified={true} />
+            </PhoneWithNav>
+          </DCArtboard>
+          <DCArtboard id="online-feed-pending" label="Online feed · NID pending" width={360} height={720}>
+            <PhoneWithNav active="jobs" mode="worker">
+              <OnlineJobFeedScreen onOpenJob={noop} onNav={noop} verified={false} />
+            </PhoneWithNav>
+          </DCArtboard>
+          <DCArtboard id="job-detail-verified" label="Job detail · verified (route + reviews)" width={360} height={720}>
+            <Phone><JobDetailScreen onBack={noop} onBid={noop} onViewReview={noop} verified={true} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="job-detail-asset" label="Job detail · asset owner (client + asset)" width={360} height={720}>
+            <Phone><JobDetailScreen onBack={noop} onBid={noop} onViewReview={noop} verified={true} assetVariant={true} /></Phone>
           </DCArtboard>
           <DCArtboard id="job-detail-pending" label="Job detail · disabled bid" width={360} height={720}>
             <Phone><JobDetailScreen onBack={noop} onBid={noop} onVerify={noop} verified={false} /></Phone>
           </DCArtboard>
-          <DCArtboard id="bid-submit" label="Bid submit · commission" width={360} height={720}>
-            <Phone><BidSubmitScreen onBack={noop} onSubmit={noop} /></Phone>
+          <DCArtboard id="bid-submit" label="Bid submit · no commission" width={360} height={720}>
+            <Phone><BidSubmitScreen onBack={noop} onSubmit={noop} onAnother={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="bid-edit" label="Bid edit · with job details" width={360} height={720}>
             <Phone><BidEditScreen onBack={noop} onUpdate={noop} onWithdraw={noop} /></Phone>
@@ -257,6 +297,12 @@ function App() {
           </DCArtboard>
           <DCArtboard id="bid-history" label="Worker · bidded jobs (history)" width={360} height={720}>
             <Phone><WorkerBidHistoryScreen onBack={noop} onOpenBid={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="client-posted-jobs" label="Client · posted jobs (all statuses)" width={360} height={720}>
+            <Phone><ClientPostedJobsScreen onBack={noop} onOpenJob={noop} /></Phone>
+          </DCArtboard>
+          <DCArtboard id="complaints" label="Complaints & reports · message admin" width={360} height={720}>
+            <Phone><ComplaintsReportsScreen onBack={noop} /></Phone>
           </DCArtboard>
           <DCArtboard id="profile-edit" label="Profile edit · phone + name + email" width={360} height={720}>
             <Phone><ProfileEditScreen onBack={noop} onSave={noop} /></Phone>

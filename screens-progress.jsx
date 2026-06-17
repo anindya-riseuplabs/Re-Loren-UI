@@ -240,7 +240,7 @@ const WorkerBidHistoryScreen = ({ onBack, onOpenBid }) => {
           value={seg} onChange={setSeg} />
 
         {seg === 'active' && (
-          <Banner variant="info">You can have only one active bid at a time. Cancel or forward your accepted job to bid on another.</Banner>
+          <Banner variant="info">You can have one active bid for a Skill Job and one active bid for an Asset Service at a time. Cancel or complete an accepted bid before placing a new bid.</Banner>
         )}
 
         {filtered.length === 0 && (
@@ -476,6 +476,17 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
 // ── Home / feed for employer (role split) ────────────────────
 const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employer', onSwitchMode }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [jobMode, setJobMode] = useState(null); // 'online' | 'physical'
+  const [scope, setScope] = useState('country'); // 'country' | 'world'
+  const [lang, setLang] = useState('English');
+  const modeBtn = (active) => ({
+    flex: 1, minHeight: 84, borderRadius: T.radius.l, cursor: 'pointer',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
+    background: active ? 'rgba(15,167,163,0.10)' : T.color.navyRaised,
+    border: `1.5px solid ${active ? T.color.teal500 : T.color.navyBorder}`,
+    color: active ? T.color.teal500 : T.color.textSecondary,
+    fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, padding: 8, textAlign: 'center',
+  });
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <Drawer isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} onNav={onNav} />
@@ -529,6 +540,56 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
             fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
           }}>Post a job →</button>
         </Card>
+
+        <div>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>WHAT DO YOU NEED?</Txt>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button onClick={() => setJobMode('online')} style={modeBtn(jobMode === 'online')}>
+              <Icon name="globe" size={24} color={jobMode === 'online' ? T.color.teal500 : T.color.gold500} />
+              Online Job
+            </button>
+            <button onClick={() => setJobMode('physical')} style={modeBtn(jobMode === 'physical')}>
+              <Icon name="truck" size={24} color={jobMode === 'physical' ? T.color.teal500 : T.color.gold500} />
+              Physical Job / Asset Service
+            </button>
+          </div>
+
+          {jobMode === 'online' && (
+            <Card style={{ marginTop: 12 }}>
+              <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 10 }}>Where should this run?</Txt>
+              <Segmented
+                options={[{ value: 'country', label: 'Within Country' }, { value: 'world', label: 'Worldwide' }]}
+                value={scope} onChange={setScope} />
+              {scope === 'world' && (
+                <div style={{ marginTop: 12 }}>
+                  <Txt variant="bodySm" color={T.color.gold500} style={{ marginBottom: 6, fontWeight: 500 }}>Notification language</Txt>
+                  <select value={lang} onChange={(e) => setLang(e.target.value)}
+                    style={{
+                      width: '100%', minHeight: 46, background: T.color.navyRaised,
+                      border: `1.5px solid ${T.color.navyBorder}`, borderRadius: T.radius.m,
+                      color: T.color.textPrimary, padding: '0 14px', fontFamily: T.fontSans, fontSize: 15, outline: 'none',
+                    }}>
+                    {['English', 'Arabic', 'French', 'Spanish', 'Hindi', 'Bangla'].map(l => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                  <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 6 }}>
+                    Workers in countries where {lang} is the primary language will be notified.
+                  </Txt>
+                </div>
+              )}
+              <Banner variant="info" style={{ marginTop: 12 }}>Online jobs are paid online only (bKash / Nagad). Cash isn't available.</Banner>
+            </Card>
+          )}
+          {jobMode === 'physical' && (
+            <Card style={{ marginTop: 12 }}>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, lineHeight: 1.5 }}>
+                Physical jobs and asset services are matched to nearby workers on the map. Pay online or with cash.
+              </Txt>
+            </Card>
+          )}
+          {jobMode && (
+            <PrimaryButton style={{ marginTop: 12 }} onClick={() => onPost && onPost(jobMode)}>Continue to post</PrimaryButton>
+          )}
+        </div>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginTop: -6 }}>
           <Icon name="info" size={15} color={T.color.gold500} style={{ flexShrink: 0, marginTop: 1 }} />

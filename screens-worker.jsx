@@ -613,6 +613,21 @@ const AssetDeclarationScreen = ({ onBack, onSave, onAddAsset, onViewDetails }) =
 
         <SecondaryButton icon="plus" onClick={onAddAsset}>Add asset</SecondaryButton>
 
+        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>QUICK ADD — TAP TO START</Txt>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {['1 room for check-in', '2 rooms for check-in', 'Flat for check-in', 'Car', 'Bike', 'Car parking', 'Bicycle', 'Scooty', 'Camera'].map(s => (
+            <button key={s} onClick={() => onAddAsset && onAddAsset(s)} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '8px 12px', borderRadius: T.radius.full,
+              background: T.color.navyRaised, border: `1px solid ${T.color.navyBorder}`,
+              color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            }}>
+              <Icon name="plus" size={14} color={T.color.gold500} />
+              {s}
+            </button>
+          ))}
+        </div>
+
         <div style={{ marginTop: 'auto', paddingBottom: 20 }}>
           <PrimaryButton onClick={() => onSave && onSave(assets)}>Save & Continue</PrimaryButton>
         </div>

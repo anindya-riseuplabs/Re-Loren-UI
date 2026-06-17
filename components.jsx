@@ -747,6 +747,45 @@ const MapPreview = ({ height = 160, label, caption, radiusKm = 0, marker, pinCol
   );
 };
 
+// ── RouteMap (origin → destination, dashed live route) ──────
+// Mock live-route map: an origin pin (worker / client) and a destination
+// pin (job site / asset) joined by a dashed route + moving dot. Used after a
+// bid is accepted and on job detail. UI mock — no real geo.
+const RouteMap = ({ height = 180, fromLabel = 'Worker', toLabel = 'Job site', title, style }) => (
+  <div style={{
+    position: 'relative', width: '100%', height, borderRadius: T.radius.l, overflow: 'hidden',
+    border: `1px solid ${T.color.navyBorder}`, background: T.color.navyDeep, ...style,
+  }}>
+    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0d2440 0%, #10325c 100%)' }} />
+    <div style={{ position: 'absolute', inset: 0, opacity: 0.6, backgroundImage:
+      `repeating-linear-gradient(0deg, transparent 0 38px, rgba(160,174,192,0.10) 38px 40px),
+       repeating-linear-gradient(90deg, transparent 0 46px, rgba(160,174,192,0.10) 46px 48px)` }} />
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <path d="M22 74 C 42 62, 56 46, 78 30" fill="none" stroke={T.color.teal500} strokeWidth={1.4} strokeDasharray="3 2.4" strokeLinecap="round" />
+    </svg>
+    {/* origin */}
+    <div style={{ position: 'absolute', left: '22%', top: '74%', transform: 'translate(-50%,-50%)' }}>
+      <div style={{ width: 13, height: 13, borderRadius: 7, background: T.color.teal500, border: '2px solid #fff', boxShadow: '0 0 0 4px rgba(15,167,163,0.3)' }} />
+    </div>
+    {/* destination */}
+    <div style={{ position: 'absolute', left: '78%', top: '30%', transform: 'translate(-50%,-100%)' }}>
+      <Icon name="location" size={30} color={T.color.gold500} style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.5))' }} />
+    </div>
+    {title && (
+      <div style={{ position: 'absolute', top: 10, left: 10, right: 10, padding: '5px 10px', borderRadius: T.radius.m, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.navyBorder}` }}>
+        <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0 }}>{title}</Txt>
+      </div>
+    )}
+    <div style={{ position: 'absolute', bottom: 8, left: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.teal500}`, color: T.color.teal500, fontFamily: T.fontSans, fontSize: 10, fontWeight: 600 }}>● {fromLabel}</span>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.gold500}`, color: T.color.gold500, fontFamily: T.fontSans, fontSize: 10, fontWeight: 600 }}>● {toLabel}</span>
+    </div>
+    <div style={{ position: 'absolute', bottom: 6, right: 8 }}>
+      <Txt variant="caption" color="rgba(255,255,255,0.35)" style={{ letterSpacing: 0, fontSize: 9 }}>Google</Txt>
+    </div>
+  </div>
+);
+
 // ── SosButton (emergency — shown after a job is accepted) ────
 // Compact red SOS pill, meant for the AppBar `right` slot. Tap → confirm
 // dialog with quick actions (call helpline / share live location). UI mock.
@@ -795,5 +834,5 @@ Object.assign(window, {
   BottomSheet, Dialog, Drawer, Toast, Overlay,
   AppBarElevated, BackButton, BottomNavBar, ModePill,
   Segmented, Radio, Checkbox, Toggle,
-  MapPreview, CancelPenaltyDialog, SosButton,
+  MapPreview, RouteMap, CancelPenaltyDialog, SosButton,
 });

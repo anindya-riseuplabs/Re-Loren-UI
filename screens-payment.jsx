@@ -360,6 +360,14 @@ const JobStartCodeScreen = ({ onBack, onStart, onChat, onCall }) => {
           </Txt>
         </Card>
 
+        <Card>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>WORKER LIVE LOCATION</Txt>
+          <RouteMap height={150} title="Worker on the way" fromLabel="Rahim Uddin" toLabel="Job site" />
+          <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 8 }}>
+            You can track the worker's live location until the job is completed.
+          </Txt>
+        </Card>
+
         <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
           <PrimaryButton onClick={onStart}>Start Job</PrimaryButton>
         </div>

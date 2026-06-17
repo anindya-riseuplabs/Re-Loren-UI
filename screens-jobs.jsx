@@ -1,7 +1,7 @@
 // Re'Loren v2 — employer/worker job flow screens.
 
 // ── Job post composer (ChatGPT-style free text) ─────────────
-const JobPostFreeTextScreen = ({ onBack, onReview }) => {
+const JobPostFreeTextScreen = ({ onBack, onReview, opportunity = false }) => {
   const [desc, setDesc] = useState('Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.');
   const [jobType, setJobType] = useState('instant'); // 'instant' or 'regular'
   const [deadline, setDeadline] = useState('2026-05-01');
@@ -26,11 +26,17 @@ const JobPostFreeTextScreen = ({ onBack, onReview }) => {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
-      <AppBarElevated title="Post a Job" left={<BackButton onClick={onBack} />} />
+      <AppBarElevated title={opportunity ? 'Post an Opportunity' : 'Post a Job'} left={<BackButton onClick={onBack} />} />
       <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
+        {opportunity && (
+          <Banner variant="info" title="AI reminder" icon="info">
+            You already have an active Skill job. You can post one Asset Service now, but you can't post another Skill job until the current one is completed or cancelled.
+          </Banner>
+        )}
+
         <div>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>DESCRIBE YOUR JOB</Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8, display: 'block' }}>DESCRIBE YOUR JOB <span style={{ color: T.color.gold500 }}>(Don't mention price)</span></Txt>
           <div style={{
             background: T.color.navyRaised, border: `1.5px solid ${T.color.navyBorder}`,
             borderRadius: T.radius.l, padding: 14,
@@ -189,7 +195,7 @@ const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
   );
 };
 
-const JobPostSuccessScreen = ({ data = {}, onDone }) => {
+const JobPostSuccessScreen = ({ data = {}, onDone, onAnother }) => {
   const isHireNow = data.jobType === 'instant';
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg, alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}>
@@ -208,6 +214,7 @@ const JobPostSuccessScreen = ({ data = {}, onDone }) => {
         <PrimaryButton onClick={() => onDone(isHireNow ? 'processing' : 'home')}>
           {isHireNow ? 'View processing' : 'Go to Home'}
         </PrimaryButton>
+        <SecondaryButton onClick={() => onAnother ? onAnother() : onDone('opportunity')} icon="plus">Make another post</SecondaryButton>
       </div>
     </div>
   );
@@ -294,7 +301,7 @@ const JOB_CLUSTERS = [
 const CLUSTER_TITLES = ['Medicine delivery', 'Move single sofa', 'Fix kitchen sink leak', 'Drop documents — rush', 'Grocery pickup', 'Furniture assembly'];
 const CLUSTER_PRICES = [1500, 2000, 1200, 800, 1100, 1750];
 
-const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter }) => {
+const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter, historyMode = false }) => {
   const [selected, setSelected] = useState(null);
   const pxPerKm = 18, cap = 104;
   const circlePx = Math.min(cap, radiusKm * pxPerKm);
@@ -326,8 +333,24 @@ const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter }) => {
           <div style={{ width: 14, height: 14, borderRadius: 7, background: T.color.teal500, border: '2px solid #fff', boxShadow: '0 0 0 4px rgba(15,167,163,0.3)' }} />
         </div>
 
-        {/* area pins */}
-        {JOB_CLUSTERS.map(c => {
+        {/* PRIVACY history mode — diffuse 500m demand blobs, no exact pins / counts */}
+        {historyMode && JOB_CLUSTERS.map(c => {
+          const r = c.ang * Math.PI / 180;
+          const dx = Math.cos(r) * c.dist * pxPerKm;
+          const dy = Math.sin(r) * c.dist * pxPerKm;
+          const blob = 30 + (c.jobs * 6); // denser areas look bigger, not exact
+          return (
+            <div key={c.id} style={{
+              position: 'absolute', top: `calc(50% + ${dy}px)`, left: `calc(50% + ${dx}px)`,
+              transform: 'translate(-50%,-50%)', width: blob, height: blob, borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(212,175,55,0.42) 0%, rgba(212,175,55,0.10) 60%, transparent 75%)',
+              pointerEvents: 'none',
+            }} />
+          );
+        })}
+
+        {/* area pins (interactive bid map) */}
+        {!historyMode && JOB_CLUSTERS.map(c => {
           const r = c.ang * Math.PI / 180;
           const dx = Math.cos(r) * c.dist * pxPerKm;
           const dy = Math.sin(r) * c.dist * pxPerKm;
@@ -353,29 +376,44 @@ const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter }) => {
           );
         })}
 
-        {/* radius chip */}
-        <div style={{ position: 'absolute', top: 10, left: 10, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.teal500}` }}>
-          <Icon name="location" size={12} color={T.color.teal500} />
-          <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0 }}>{radiusKm} km radius · {inRange} jobs in range</Txt>
-        </div>
-        <button onClick={onOpenFilter} style={{
-          position: 'absolute', top: 10, right: 10, display: 'inline-flex', alignItems: 'center', gap: 5,
-          padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)',
-          border: `1px solid ${T.color.navyBorder}`, cursor: 'pointer',
-        }}>
-          <Icon name="filter" size={12} color={T.color.gold500} />
-          <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0 }}>Radius</Txt>
-        </button>
+        {/* history-mode title bar (privacy heatmap) */}
+        {historyMode && (
+          <div style={{ position: 'absolute', top: 10, left: 10, right: 10, padding: '6px 10px', borderRadius: T.radius.m, background: 'rgba(7,17,38,0.85)', border: `1px solid ${T.color.navyBorder}` }}>
+            <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0, lineHeight: 1.4 }}>
+              Job History Area-Wise (Updated Hourly). Zoom in/out to see demanding places.
+            </Txt>
+          </div>
+        )}
+
+        {/* radius chip + filter (interactive map only) */}
+        {!historyMode && (
+          <>
+            <div style={{ position: 'absolute', top: 10, left: 10, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)', border: `1px solid ${T.color.teal500}` }}>
+              <Icon name="location" size={12} color={T.color.teal500} />
+              <Txt variant="caption" color={T.color.textPrimary} style={{ letterSpacing: 0 }}>{radiusKm} km radius · {inRange} jobs in range</Txt>
+            </div>
+            <button onClick={onOpenFilter} style={{
+              position: 'absolute', top: 10, right: 10, display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '5px 10px', borderRadius: T.radius.full, background: 'rgba(7,17,38,0.82)',
+              border: `1px solid ${T.color.navyBorder}`, cursor: 'pointer',
+            }}>
+              <Icon name="filter" size={12} color={T.color.gold500} />
+              <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0 }}>Radius</Txt>
+            </button>
+          </>
+        )}
       </div>
 
       <div style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
         <Icon name="clock" size={13} color={T.color.textMuted} />
         <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
-          Tap an area to see its posts · counts update hourly · bid only inside your radius
+          {historyMode
+            ? 'Areas show a ~500m demand zone, not exact sites · the exact job site appears only after you accept'
+            : 'Tap an area to see its posts · counts update hourly · bid only inside your radius'}
         </Txt>
       </div>
 
-      {cluster && (
+      {!historyMode && cluster && (
         <BottomSheet onClose={() => setSelected(null)} title={`${cluster.label} · ${cluster.jobs} jobs`}>
           {!selInside && (
             <Banner variant="warning" style={{ marginBottom: 12 }}>
@@ -412,7 +450,7 @@ const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter }) => {
 };
 
 // ── Job feed (worker) — verified prop drives accept-button state ──
-const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
+const JobFeedScreen = ({ onOpenJob, onNav, verified = true, opportunity = false }) => {
   const [seg, setSeg] = useState('immediate');
   const [filterOpen, setFilterOpen] = useState(false);
   const [sort, setSort] = useState('nearest');
@@ -469,7 +507,18 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
           options={[{ value: 'immediate', label: 'Immediately hiring' }, { value: 'active', label: 'Still active' }]}
           value={seg} onChange={setSeg} />
 
-        <JobAreaMap radiusKm={radiusKm} verified={verified}
+        {opportunity && (
+          <Banner variant="info" title="AI reminder" icon="info">
+            You have an active Skill job — only Asset Service opportunities are shown. You can't take another Skill job until the current one is completed or cancelled.
+          </Banner>
+        )}
+        {!verified && (
+          <Banner variant="warning" title="Verification under review">
+            You can browse jobs, but you can't accept offers or place bids until your NID is verified.
+          </Banner>
+        )}
+
+        <JobAreaMap radiusKm={radiusKm} verified={verified} historyMode
           onOpenFilter={openFilter}
           onBid={() => onOpenJob && onOpenJob(jobs[0] || SAMPLE.jobFeed[0])} />
 
@@ -517,7 +566,7 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true }) => {
 };
 
 // ── Job detail ───────────────────────────────────────────────
-const JobDetailScreen = ({ job, onBack, onBid, onVerify, verified = false }) => {
+const JobDetailScreen = ({ job, onBack, onBid, onVerify, onViewReview, verified = false, assetVariant = false }) => {
   const j = job || SAMPLE.jobFeed[0];
   const [reminderOpen, setReminderOpen] = useState(false);
   const [reminder, setReminder] = useState('Never');
@@ -559,9 +608,22 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, verified = false }) => 
         )}
 
         <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>LOCATION ON MAP</Txt>
-          <MapPreview height={150} label={j.from || j.location || 'Job location'} caption="Work location"
-            marker={(j.relocate && j.to) ? 'Drop-off: ' + j.to : undefined} />
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>
+            {assetVariant ? 'CLIENT & ASSET LOCATION' : verified ? 'LIVE ROUTE' : 'LOCATION ON MAP'}
+          </Txt>
+          {assetVariant ? (
+            <>
+              <RouteMap height={150} title="Client → your asset" fromLabel="Client (live)" toLabel="Your asset" />
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 8 }}>
+                As the asset owner, you can see the client's live location relative to your asset.
+              </Txt>
+            </>
+          ) : verified ? (
+            <RouteMap height={150} title="Route to job site" fromLabel="You" toLabel="Job site" />
+          ) : (
+            <MapPreview height={150} label={j.from || j.location || 'Job location'} caption="Work location"
+              marker={(j.relocate && j.to) ? 'Drop-off: ' + j.to : undefined} />
+          )}
         </Card>
 
         <Card onClick={() => setReminderOpen(true)}>
@@ -575,11 +637,16 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, verified = false }) => 
         </Card>
 
         <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>POSTED BY</Txt>
+          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 8 }}>{assetVariant ? 'CLIENT' : 'POSTED BY'}</Txt>
           <div>
             <Txt variant="body" style={{ fontWeight: 600, marginBottom: 2 }}>Karim Ahmed</Txt>
             <RatingStars value={4.8} count={142} />
           </div>
+          <button onClick={() => onViewReview && onViewReview()} style={{
+            background: 'none', border: 'none', color: T.color.teal500,
+            fontFamily: T.fontSans, fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0,
+            textDecoration: 'underline', marginTop: 10, display: 'block',
+          }}>View client reviews →</button>
         </Card>
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 12, paddingBottom: 20 }}>
@@ -610,11 +677,9 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, verified = false }) => 
 };
 
 // ── Bid submit ───────────────────────────────────────────────
-const BidSubmitScreen = ({ onBack, onSubmit }) => {
+const BidSubmitScreen = ({ onBack, onSubmit, onAnother }) => {
   const [amount, setAmount] = useState('1500');
   const [showPopup, setShowPopup] = useState(false);
-  const net = Math.round(parseInt(amount || '0') * 0.85);
-  const commission = parseInt(amount || '0') - net;
 
   if (showPopup) return (
     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: T.color.navyBg, padding: 24 }}>
@@ -624,7 +689,10 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
         <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 24 }}>
           Your bid has been placed. You will be notified if the client accepts.
         </Txt>
-        <PrimaryButton onClick={onSubmit}>Go to dashboard</PrimaryButton>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <PrimaryButton onClick={onSubmit}>Go to dashboard</PrimaryButton>
+          <SecondaryButton onClick={() => onAnother ? onAnother() : onSubmit && onSubmit()} icon="plus">Place another bid</SecondaryButton>
+        </div>
       </Card>
     </div>
   );
@@ -638,20 +706,9 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
         <TextField label="Your bid amount" value={amount} onChange={v => setAmount(v.replace(/\D/g, ''))}
           prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>} />
         <Card>
-          <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 10 }}>PRICE BREAKDOWN</Txt>
-          {[
-            ['Gross (client pays)', fmtBDT(parseInt(amount || '0'))],
-            ['Platform commission 15%', '−' + fmtBDT(commission)],
-          ].map(([k, v]) => (
-            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
-              <Txt variant="bodySm" color={T.color.textSecondary}>{k}</Txt>
-              <Txt variant="bodySm">{v}</Txt>
-            </div>
-          ))}
-          <div style={{ height: 1, background: T.color.navyBorder, margin: '6px 0' }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
-            <Txt variant="bodySm" style={{ fontWeight: 600 }}>Your payout (net)</Txt>
-            <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(net)}</Txt>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Txt variant="bodySm" style={{ fontWeight: 600 }}>Your bid amount</Txt>
+            <Txt variant="subtitle" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(parseInt(amount || '0'))}</Txt>
           </div>
         </Card>
         <Banner variant="info">You can edit this bid until it's accepted.</Banner>
@@ -666,7 +723,6 @@ const BidSubmitScreen = ({ onBack, onSubmit }) => {
 // ── Bid edit ─────────────────────────────────────────────────
 const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
   const [amount, setAmount] = useState('1400');
-  const net = Math.round(parseInt(amount || '0') * 0.85);
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Edit Your Bid" left={<BackButton onClick={onBack} />} />
@@ -696,21 +752,6 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
 
         <TextField label="Your bid amount" value={amount} onChange={v => setAmount(v.replace(/\D/g, ''))}
           prefix={<span style={{ color: T.color.gold500, fontWeight: 600 }}>৳</span>} />
-        <Card>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-            <Txt variant="bodySm" color={T.color.textSecondary}>Gross</Txt>
-            <Txt variant="bodySm">{fmtBDT(parseInt(amount || '0'))}</Txt>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-            <Txt variant="bodySm" color={T.color.textSecondary}>Commission 15%</Txt>
-            <Txt variant="bodySm">−{fmtBDT(parseInt(amount || '0') - net)}</Txt>
-          </div>
-          <div style={{ height: 1, background: T.color.navyBorder, margin: '6px 0' }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-            <Txt variant="bodySm" style={{ fontWeight: 600 }}>Net payout</Txt>
-            <Txt variant="bodySm" color={T.color.gold500} style={{ fontWeight: 700 }}>{fmtBDT(net)}</Txt>
-          </div>
-        </Card>
         <Banner variant="warning">Once the client accepts, this bid locks.</Banner>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <PrimaryButton onClick={onUpdate}>Update bid</PrimaryButton>
@@ -721,11 +762,48 @@ const BidEditScreen = ({ onBack, onUpdate, onWithdraw }) => {
   );
 };
 
+// ── Asset photo carousel (hero on asset-service bid cards) ──
+// Owner-uploaded asset photos with ‹ › browse controls + dots. Mock images.
+const AssetPhotoCarousel = ({ rating, total = 3 }) => {
+  const [i, setI] = useState(0);
+  const navBtn = (side) => ({
+    position: 'absolute', top: '50%', [side]: 8, transform: 'translateY(-50%)',
+    width: 30, height: 30, borderRadius: 15, background: 'rgba(7,17,38,0.75)',
+    border: `1px solid ${T.color.navyBorder}`, cursor: 'pointer', zIndex: 2,
+    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
+  });
+  return (
+    <div style={{
+      position: 'relative', width: '100%', height: 130,
+      background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <Icon name="truck" size={48} color="rgba(212,175,55,0.45)" />
+      <button onClick={() => setI(p => (p - 1 + total) % total)} style={navBtn('left')}><Icon name="back" size={16} color={T.color.textPrimary} /></button>
+      <button onClick={() => setI(p => (p + 1) % total)} style={navBtn('right')}><Icon name="chevron" size={16} color={T.color.textPrimary} /></button>
+      <div style={{
+        position: 'absolute', top: 10, right: 10, background: 'rgba(7,17,38,0.82)',
+        borderRadius: T.radius.full, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4,
+      }}>
+        <Icon name="starFill" size={12} color={T.color.gold500} />
+        <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0, fontWeight: 700 }}>{rating}</Txt>
+      </div>
+      <div style={{ position: 'absolute', bottom: 8, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 5 }}>
+        {Array.from({ length: total }).map((_, d) => (
+          <div key={d} style={{ width: d === i ? 16 : 6, height: 6, borderRadius: 3, background: d === i ? T.color.gold500 : 'rgba(255,255,255,0.4)', transition: 'width 0.2s' }} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // ── Job in progress (was Manage Bids) — uber-style search → bids list ──
-const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = false, onViewAsset }) => {
+const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = false, onViewAsset, noResults = false }) => {
   const [searching, setSearching] = useState(true);
   const [bids, setBids] = useState(SAMPLE.shortlist);
   const [accepted, setAccepted] = useState(null);
+  const [offer, setOffer] = useState(1500);
+  const entity = requireAsset ? 'asset service' : 'worker';
 
   useEffect(() => {
     const t = setTimeout(() => setSearching(false), 2200);
@@ -769,10 +847,18 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
           </div>
           <div>
             <Txt variant="bodySm" style={{ fontWeight: 600 }}>
-              {searching ? 'Searching for workers nearby' : 'Workers found nearby'}
+              {searching
+                ? (requireAsset ? 'Searching for asset service nearby' : 'Searching for workers nearby')
+                : noResults
+                  ? (requireAsset ? 'No asset service found yet' : 'No worker found yet')
+                  : (requireAsset ? 'Asset Service Found Nearby' : 'Workers found nearby')}
             </Txt>
             <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>
-              {searching ? 'Finding the best matches for your job' : 'Pick the worker you want to hire'}
+              {searching
+                ? 'Finding the best matches for your job'
+                : noResults
+                  ? 'No match in time — try one of the options below'
+                  : (requireAsset ? 'Pick the asset service you want to hire' : 'Pick the worker you want to hire')}
             </Txt>
           </div>
         </div>
@@ -786,24 +872,10 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
 
         {/* Asset-requirement jobs use a hotel-listing style card: the asset
             photo + asset name are primary; the owner's name is secondary. */}
-        {!searching && !accepted && requireAsset && bids.map(w => (
+        {!searching && !accepted && !noResults && requireAsset && bids.map(w => (
           <Card key={w.rank} style={{ padding: 0, overflow: 'hidden' }}>
-            {/* Asset photo (owner-uploaded) as the hero */}
-            <div style={{
-              position: 'relative', width: '100%', height: 130,
-              background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Icon name="truck" size={48} color="rgba(212,175,55,0.45)" />
-              <div style={{
-                position: 'absolute', top: 10, right: 10,
-                background: 'rgba(7,17,38,0.82)', borderRadius: T.radius.full,
-                padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 4,
-              }}>
-                <Icon name="starFill" size={12} color={T.color.gold500} />
-                <Txt variant="caption" color={T.color.gold500} style={{ letterSpacing: 0, fontWeight: 700 }}>{w.rating}</Txt>
-              </div>
-            </div>
+            {/* Asset photos (owner-uploaded) as the hero — browse with ‹ › */}
+            <AssetPhotoCarousel rating={w.rating} />
 
             <div style={{ padding: 14 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
@@ -842,7 +914,7 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
           </Card>
         ))}
 
-        {!searching && !accepted && !requireAsset && bids.map(w => (
+        {!searching && !accepted && !noResults && !requireAsset && bids.map(w => (
           <Card key={w.rank}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -876,11 +948,53 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
           </Card>
         ))}
 
-        {!searching && !accepted && bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
+        {!searching && !accepted && !noResults && bids.length === 0 && <EmptyState icon="briefcase" title="No more bids" body="Wait for more workers to bid or repost the job." />}
+
+        {/* No match within the admin-defined window → 3 recovery options */}
+        {!searching && !accepted && noResults && (
+          <>
+            <Banner variant="warning" title={`No ${entity} found in time`}>
+              We couldn't match {requireAsset ? 'an asset service' : 'a worker'} for your job yet. Choose how you'd like to continue.
+            </Banner>
+
+            <Card>
+              <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 4 }}>1 · Change your offer</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginBottom: 12 }}>
+                A higher offer attracts more {requireAsset ? 'asset owners' : 'workers'}.
+              </Txt>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 14 }}>
+                <IconButton name="minus" size={40} iconSize={20} color={T.color.gold500}
+                  onClick={() => setOffer(o => Math.max(100, o - 100))}
+                  style={{ border: `1.5px solid ${T.color.gold500}` }} />
+                <Txt variant="h2" color={T.color.gold500} style={{ minWidth: 110, textAlign: 'center' }}>{fmtBDT(offer)}</Txt>
+                <IconButton name="plus" size={40} iconSize={20} color={T.color.gold500}
+                  onClick={() => setOffer(o => o + 100)}
+                  style={{ border: `1.5px solid ${T.color.gold500}` }} />
+              </div>
+              <PrimaryButton onClick={onBack}>Submit revised offer</PrimaryButton>
+            </Card>
+
+            <Card>
+              <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 4 }}>2 · Switch to Long Duration / Time Flexible</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginBottom: 12 }}>
+                The job moves to your Posted Jobs and shows in the worker feed under "Still active".
+              </Txt>
+              <SecondaryButton onClick={onBack}>Switch to long duration</SecondaryButton>
+            </Card>
+
+            <Card>
+              <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 4 }}>3 · Try again later</Txt>
+              <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginBottom: 12 }}>
+                Pause matching now — restart it any time from Posted Jobs.
+              </Txt>
+              <SecondaryButton onClick={onBack}>Try again later</SecondaryButton>
+            </Card>
+          </>
+        )}
 
         {accepted && (
           <>
-            <Txt variant="subtitle">Worker on the way</Txt>
+            {!requireAsset && <Txt variant="subtitle">Worker on the way</Txt>}
             <Card>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -889,10 +1003,12 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
                     border: `1.5px solid ${T.color.gold500}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: T.color.gold500, fontFamily: T.fontSans, fontSize: 14, fontWeight: 700,
-                  }}>{accepted.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+                  }}>{requireAsset ? <Icon name="truck" size={20} color={T.color.gold500} /> : accepted.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
                   <div>
-                    <Txt variant="body" style={{ fontWeight: 600 }}>{accepted.name}</Txt>
-                    <RatingStars value={accepted.rating} count={accepted.ratingCount} compact />
+                    <Txt variant="body" style={{ fontWeight: 600 }}>{requireAsset ? (accepted.asset || 'Asset') : accepted.name}</Txt>
+                    {requireAsset
+                      ? <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Owner · {accepted.name}</Txt>
+                      : <RatingStars value={accepted.rating} count={accepted.ratingCount} compact />}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -901,7 +1017,9 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
                 </div>
               </div>
             </Card>
-            <MapPreview height={180} label="Motijheel, Dhaka" marker={`${accepted.name} · ${accepted.distance}`} caption="Live worker location" />
+            {requireAsset
+              ? <RouteMap height={180} title="Asset Live Location" fromLabel="You" toLabel={accepted.asset || 'Asset'} />
+              : <RouteMap height={180} title="Worker Live Location" fromLabel={accepted.name} toLabel="Job site" />}
             <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 4 }}>
               <PrimaryButton onClick={() => onAccept && onAccept(accepted)}>Continue</PrimaryButton>
               <SecondaryButton onClick={() => setAccepted(null)}>Back to bids</SecondaryButton>
