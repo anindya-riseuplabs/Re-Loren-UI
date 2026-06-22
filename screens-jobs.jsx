@@ -1077,10 +1077,56 @@ const WorkerReviewListScreen = ({ worker = { name: 'Rahim Uddin', rating: 4.9, r
   );
 };
 
+const EmployerReviewListScreen = ({ employer = { name: 'Karim Ahmed', sub: 'Motijheel · 142 jobs posted', rating: 4.8, ratingCount: 142 }, onBack }) => {
+  const reviews = [
+    { id: 1, worker: 'Rahim Uddin', workerSub: 'Mover · 87 jobs done', stars: 5, date: '24/04/2026', text: 'Clear instructions and paid promptly. Great client.' },
+    { id: 2, worker: 'Jahidul Islam', workerSub: 'Electrician · 53 jobs done', stars: 5, date: '19/04/2026', text: 'Respectful and fair on price. Would work for again.' },
+    { id: 3, worker: 'Sumon Mia', workerSub: 'Cleaner · 31 jobs done', stars: 4, date: '11/04/2026', text: 'Good job overall, scope changed a bit on site but sorted it out.' },
+    { id: 4, worker: 'Arif Hossain', workerSub: 'Plumber · 18 jobs done', stars: 5, date: '06/04/2026', text: 'On-time payment, friendly. Recommended client.' },
+  ];
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
+      <AppBarElevated title={`${employer.name} · Reviews`} left={<BackButton onClick={onBack} />} />
+      <div style={{ flex: 1, padding: 16, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Card style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: 28, background: T.color.navyDeep,
+            border: `1.5px solid ${T.color.gold500}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: T.color.gold500, fontFamily: T.fontSans, fontSize: 18, fontWeight: 700,
+          }}>{employer.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+          <div style={{ flex: 1 }}>
+            <Txt variant="subtitle">{employer.name}</Txt>
+            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2, marginBottom: 4 }}>{employer.sub}</Txt>
+            <RatingStars value={employer.rating} count={employer.ratingCount} compact />
+          </div>
+        </Card>
+        {reviews.map(r => (
+          <Card key={r.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+              <div>
+                <Txt variant="bodySm" style={{ fontWeight: 600 }}>{r.worker}</Txt>
+                <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 2 }}>{r.workerSub}</Txt>
+              </div>
+              <div style={{ display: 'flex', gap: 1 }}>
+                {[1,2,3,4,5].map(i => (
+                  <span key={i} style={{ color: i <= r.stars ? T.color.gold500 : T.color.navyBorder, fontSize: 14 }}>★</span>
+                ))}
+              </div>
+            </div>
+            <Txt variant="bodySm" color={T.color.textSecondary} style={{ lineHeight: 1.5, marginTop: 8 }}>"{r.text}"</Txt>
+            <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginTop: 8 }}>{r.date}</Txt>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 Object.assign(window, {
   JobPostFreeTextScreen, JobPostReviewScreen, JobPostSuccessScreen,
   InstantCancelPromptDialog,
   JobCard, JobFeedScreen, JobDetailScreen,
   BidSubmitScreen, BidEditScreen,
-  RankedShortlistScreen, WorkerReviewListScreen,
+  RankedShortlistScreen, WorkerReviewListScreen, EmployerReviewListScreen,
 });

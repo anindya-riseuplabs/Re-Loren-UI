@@ -160,6 +160,9 @@ function App() {
           <DCArtboard id="worker-reviews" label="Worker reviews list" width={360} height={720}>
             <Phone><WorkerReviewListScreen onBack={noop} /></Phone>
           </DCArtboard>
+          <DCArtboard id="employer-reviews" label="Employer/client reviews list" width={360} height={720}>
+            <Phone><EmployerReviewListScreen onBack={noop} /></Phone>
+          </DCArtboard>
           <DCArtboard id="asset-details-view" label="Asset details (client-side view)" width={360} height={720}>
             <Phone><AssetDetailsViewScreen onBack={noop} /></Phone>
           </DCArtboard>
