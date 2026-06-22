@@ -15,7 +15,7 @@ const Phone = ({ children, title, keyboard }) => (
   <AndroidDevice width={360} height={720} dark>
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
       {/* Luxury light flares */}
-      <div style={{ position: 'absolute', top: '-10%', left: '-20%', width: '140%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(212, 175, 55, 0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'absolute', top: '-10%', left: '-20%', width: '140%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(255, 255, 255, 0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'absolute', bottom: '-20%', right: '-20%', width: '120%', height: '60%', background: 'radial-gradient(circle at bottom right, rgba(15, 167, 163, 0.05) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'auto' }}>
         {children}
@@ -32,7 +32,7 @@ const Phone = ({ children, title, keyboard }) => (
 const PhoneWithNav = ({ children, active = 'home', mode = 'employer' }) => (
   <AndroidDevice width={360} height={720} dark>
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: T.color.navyBg, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
-      <div style={{ position: 'absolute', top: '-10%', left: '-20%', width: '140%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(212, 175, 55, 0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'absolute', top: '-10%', left: '-20%', width: '140%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(255, 255, 255, 0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'absolute', bottom: '-20%', right: '-20%', width: '120%', height: '60%', background: 'radial-gradient(circle at bottom right, rgba(15, 167, 163, 0.05) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'auto' }}>
         {children}

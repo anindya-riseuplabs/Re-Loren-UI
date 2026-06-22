@@ -13,7 +13,7 @@ const WorkerOnboardingIntroScreen = ({ onNext, onSkip }) => {
       <div style={{ flex: 1, padding: 24, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ textAlign: 'center', marginTop: 12 }}>
           <div style={{ 
-            width: 80, height: 80, borderRadius: 40, background: 'rgba(212,175,55,0.1)',
+            width: 80, height: 80, borderRadius: 40, background: 'rgba(255, 255, 255,0.1)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
             border: `1.5px solid ${T.color.gold500}`
           }}>
@@ -30,7 +30,7 @@ const WorkerOnboardingIntroScreen = ({ onNext, onSkip }) => {
               background: T.color.navyDeep, borderRadius: T.radius.l, border: `1px solid ${T.color.navyBorder}`
             }}>
               <div style={{ 
-                width: 44, height: 44, borderRadius: 22, background: 'rgba(212,175,55,0.06)',
+                width: 44, height: 44, borderRadius: 22, background: 'rgba(255, 255, 255,0.06)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 'none'
               }}>
                 <Icon name={s.icon} size={22} color={T.color.gold500} />
@@ -130,7 +130,7 @@ const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
             <button key={s.k} onClick={() => s.set(true)}
               style={{
                 flex: 1, aspectRatio: '3/4', border: `1.5px dashed ${s.filled ? T.color.gold500 : T.color.navyBorder}`,
-                background: s.filled ? 'rgba(212,175,55,0.06)' : T.color.navyRaised,
+                background: s.filled ? 'rgba(255, 255, 255,0.06)' : T.color.navyRaised,
                 borderRadius: T.radius.l, cursor: 'pointer',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
               }}>
@@ -141,7 +141,7 @@ const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
                   <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>nid_{s.k}.jpg</Txt>
                   <div style={{ 
                     position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)',
-                    padding: '4px 12px', background: 'rgba(212,175,55,0.2)', borderRadius: 12,
+                    padding: '4px 12px', background: 'rgba(255, 255, 255,0.2)', borderRadius: 12,
                     border: `1px solid ${T.color.gold500}`, color: T.color.gold500, fontSize: 10, fontWeight: 600
                   }} onClick={(e) => { e.stopPropagation(); s.set(false); }}>UPDATE</div>
                 </div>
@@ -159,7 +159,7 @@ const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
         <button onClick={() => setSelfie(true)}
           style={{
             width: '100%', minHeight: 120, border: `1.5px dashed ${selfie ? T.color.gold500 : T.color.navyBorder}`,
-            background: selfie ? 'rgba(212,175,55,0.06)' : T.color.navyRaised,
+            background: selfie ? 'rgba(255, 255, 255,0.06)' : T.color.navyRaised,
             borderRadius: T.radius.l, cursor: 'pointer',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8,
             position: 'relative',
@@ -171,7 +171,7 @@ const NidUploadScreen = ({ onBack, onNext, onSkip }) => {
               <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>selfie_nid.jpg</Txt>
               <div style={{
                 position: 'absolute', bottom: 12, right: 12,
-                padding: '4px 12px', background: 'rgba(212,175,55,0.2)', borderRadius: 12,
+                padding: '4px 12px', background: 'rgba(255, 255, 255,0.2)', borderRadius: 12,
                 border: `1px solid ${T.color.gold500}`, color: T.color.gold500, fontSize: 10, fontWeight: 600
               }} onClick={(e) => { e.stopPropagation(); setSelfie(false); }}>UPDATE</div>
             </>
@@ -237,7 +237,7 @@ const FacialCaptureScreen = ({ onBack, onNext }) => {
           background: 'radial-gradient(circle, rgba(30,40,60,0.6), rgba(0,0,0,0.8))',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <Icon name="user" size={96} color="rgba(212,175,55,0.2)" />
+          <Icon name="user" size={96} color="rgba(255, 255, 255,0.2)" />
         </div>
         <div style={{ textAlign: 'center', padding: '0 24px' }}>
           <Txt variant="body" color={T.color.gold500} style={{ fontWeight: 600 }}>
@@ -513,7 +513,7 @@ const SkillDeclarationScreen = ({ onBack, onSave, onDeclareAssets }) => {
             <button onClick={() => addSkill(q)} style={{
               display: 'flex', alignItems: 'center', gap: 10,
               padding: '12px 14px', margin: 4,
-              background: 'rgba(212,175,55,0.08)', border: `1.5px dashed ${T.color.gold500}`,
+              background: 'rgba(255, 255, 255,0.08)', border: `1.5px dashed ${T.color.gold500}`,
               borderRadius: T.radius.s, cursor: 'pointer',
               color: T.color.gold500, fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
               textAlign: 'left',

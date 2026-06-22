@@ -20,18 +20,19 @@ const T = {
     navyRaised:  'rgba(26, 44, 80, 0.7)', // Slightly more blue glassmorphism
     navyDeep:    '#071126', // deep blue for modals/deepest
     navyHover:   'rgba(40, 60, 100, 0.5)',
-    navyBorder:  'rgba(212, 175, 55, 0.18)', // subtle gold border
-    navyDivider: 'rgba(212, 175, 55, 0.1)',
+    navyBorder:  'rgba(255, 255, 255, 0.18)', // subtle white border
+    navyDivider: 'rgba(255, 255, 255, 0.1)',
 
-    // Secondary — Gold (text + CTA on navy)
-    gold50:  '#FAF4DC',
-    gold100: '#F3E4A8',
-    gold300: '#E5C869',
-    gold500: '#D4AF37',
-    gold600: '#C9A227', // Rich gold accent
-    gold700: '#E8C566',
-    gold900: '#F5DCA0',
-    goldGradient: 'linear-gradient(90deg, #8C5A17 0%, #C89533 20%, #FDE48F 50%, #C49130 80%, #875514 100%)',
+    // Secondary — White/Silver accent (text + CTA on navy). Names kept `gold*`
+    // for compatibility; values swapped to white-like tones. (Splash + logo stay gold.)
+    gold50:  '#FFFFFF',
+    gold100: '#F5F7FA',
+    gold300: '#E2E8F0',
+    gold500: '#FFFFFF',
+    gold600: '#E2E8F0', // soft white (hover/darker state)
+    gold700: '#EDF2F7',
+    gold900: '#F7FAFC',
+    goldGradient: 'linear-gradient(90deg, #8C5A17 0%, #C89533 20%, #FDE48F 50%, #C49130 80%, #875514 100%)', // splash-only, kept gold
 
     // Accent — Teal/Cyan (complementary to blue, adds visual sophistication)
     teal50:   '#E0F7F6',
@@ -85,7 +86,7 @@ const T = {
   elevation: {
     sm: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 6px rgba(0, 0, 0, 0.2)', // soft inner shadow
     md: 'inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 16px rgba(0, 0, 0, 0.3)',
-    lg: 'inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.15)', // with soft gold glow
+    lg: 'inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.15)', // with soft white glow
   },
   type: {
     display:  { size: 36, lh: 1.3, w: 700, ls: '-0.5%' },

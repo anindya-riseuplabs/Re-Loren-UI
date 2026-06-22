@@ -84,7 +84,7 @@ const JobPostFreeTextScreen = ({ onBack, onReview, opportunity = false }) => {
             {[{ v: 'yes', l: 'Yes' }, { v: 'no', l: 'No' }].map(o => (
               <button key={o.v} onClick={() => setRelocate(o.v)} style={{
                 flex: 1, minHeight: 44, borderRadius: T.radius.m, cursor: 'pointer',
-                background: relocate === o.v ? 'rgba(212,175,55,0.10)' : T.color.navyRaised,
+                background: relocate === o.v ? 'rgba(255, 255, 255,0.10)' : T.color.navyRaised,
                 border: `1.5px solid ${relocate === o.v ? T.color.gold500 : T.color.navyBorder}`,
                 color: relocate === o.v ? T.color.gold500 : T.color.textSecondary,
                 fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
@@ -160,7 +160,7 @@ const JobPostReviewScreen = ({ data = {}, onBack, onPost }) => {
             <Txt variant="caption" color={T.color.textMuted}>CAPTION</Txt>
             <div style={{
               padding: '1px 6px', borderRadius: T.radius.full,
-              background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+              background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
               color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
               letterSpacing: '2%', textTransform: 'uppercase',
             }}>Auto-generated</div>
@@ -317,7 +317,7 @@ const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter, historyMode = fal
         <div style={{ position: 'absolute', inset: 0, opacity: 0.6, backgroundImage:
           `repeating-linear-gradient(0deg, transparent 0 38px, rgba(160,174,192,0.10) 38px 40px),
            repeating-linear-gradient(90deg, transparent 0 46px, rgba(160,174,192,0.10) 46px 48px)` }} />
-        <div style={{ position: 'absolute', top: '52%', left: 0, right: 0, height: 5, background: 'rgba(212,175,55,0.16)' }} />
+        <div style={{ position: 'absolute', top: '52%', left: 0, right: 0, height: 5, background: 'rgba(255, 255, 255,0.16)' }} />
         <div style={{ position: 'absolute', top: 0, bottom: 0, left: '40%', width: 5, background: 'rgba(15,167,163,0.18)' }} />
 
         {/* selected-radius circle (teal, like the reference's blue) */}
@@ -343,7 +343,7 @@ const JobAreaMap = ({ radiusKm, verified, onBid, onOpenFilter, historyMode = fal
             <div key={c.id} style={{
               position: 'absolute', top: `calc(50% + ${dy}px)`, left: `calc(50% + ${dx}px)`,
               transform: 'translate(-50%,-50%)', width: blob, height: blob, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(212,175,55,0.42) 0%, rgba(212,175,55,0.10) 60%, transparent 75%)',
+              background: 'radial-gradient(circle, rgba(255, 255, 255,0.42) 0%, rgba(255, 255, 255,0.10) 60%, transparent 75%)',
               pointerEvents: 'none',
             }} />
           );
@@ -480,7 +480,7 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true, opportunity = false 
                 </div>
                 <div style={{
                   padding: '2px 6px', borderRadius: T.radius.full,
-                  background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+                  background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
                   color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
                   letterSpacing: '2%', textTransform: 'uppercase', lineHeight: 1.2,
                 }}>Worker</div>
@@ -778,7 +778,7 @@ const AssetPhotoCarousel = ({ rating, total = 3 }) => {
       background: `linear-gradient(135deg, ${T.color.navyDeep}, ${T.color.navyHover})`,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
-      <Icon name="truck" size={48} color="rgba(212,175,55,0.45)" />
+      <Icon name="truck" size={48} color="rgba(255, 255, 255,0.45)" />
       <button onClick={() => setI(p => (p - 1 + total) % total)} style={navBtn('left')}><Icon name="back" size={16} color={T.color.textPrimary} /></button>
       <button onClick={() => setI(p => (p + 1) % total)} style={navBtn('right')}><Icon name="chevron" size={16} color={T.color.textPrimary} /></button>
       <div style={{

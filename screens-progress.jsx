@@ -16,7 +16,7 @@ const ProgressSteps = ({ steps, currentIdx }) => (
           )}
           <div style={{
             width: 28, height: 28, borderRadius: 14, flexShrink: 0, zIndex: 1,
-            background: done ? T.color.gold500 : active ? 'rgba(212,175,55,0.15)' : T.color.navyRaised,
+            background: done ? T.color.gold500 : active ? 'rgba(255, 255, 255,0.15)' : T.color.navyRaised,
             border: `2px solid ${done || active ? T.color.gold500 : T.color.navyBorder}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: done ? T.color.textOnGold : T.color.gold500,
@@ -444,7 +444,7 @@ const ProfileHubScreen = ({ mode, onNav, onSwitchMode }) => {
                 display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
               }}>
               <div style={{
-                width: 32, height: 32, borderRadius: 16, background: 'rgba(212,175,55,0.08)',
+                width: 32, height: 32, borderRadius: 16, background: 'rgba(255, 255, 255,0.08)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <Icon name={i.icon} size={16} color={T.color.gold500} />
@@ -503,7 +503,7 @@ const EmployerHomeScreen = ({ onPost, onNav, hasPostedJob = true, mode = 'employ
                 </div>
                 <div style={{
                   padding: '2px 6px', borderRadius: T.radius.full,
-                  background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+                  background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
                   color: T.color.gold500, fontFamily: T.fontSans, fontSize: 9, fontWeight: 700,
                   letterSpacing: '2%', textTransform: 'uppercase', lineHeight: 1.2,
                 }}>Client</div>

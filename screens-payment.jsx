@@ -118,7 +118,7 @@ const PaymentPageScreen = ({ onBack, onSelect }) => {
             <button key={o.id} onClick={() => setChoice(o.id)}
               style={{
                 padding: 14, borderRadius: T.radius.m, cursor: 'pointer', textAlign: 'left',
-                background: choice === o.id ? 'rgba(212,175,55,0.08)' : T.color.navyRaised,
+                background: choice === o.id ? 'rgba(255, 255, 255,0.08)' : T.color.navyRaised,
                 border: `1.5px solid ${choice === o.id ? T.color.gold500 : T.color.navyBorder}`,
               }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -242,7 +242,7 @@ const InstallmentTrackerScreen = ({ onBack, onDisburse, onCancel, onChat, onCall
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: active ? 14 : 0 }}>
                 <div style={{
                   width: 36, height: 36, borderRadius: 18, flexShrink: 0,
-                  background: active ? 'rgba(212,175,55,0.15)' : T.color.navyRaised,
+                  background: active ? 'rgba(255, 255, 255,0.15)' : T.color.navyRaised,
                   border: `1.5px solid ${active ? T.color.gold500 : T.color.navyBorder}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   color: active ? T.color.gold500 : T.color.textMuted, fontFamily: T.fontSans, fontSize: 13, fontWeight: 700,
@@ -497,7 +497,7 @@ const WorkerJobProgressOnlineScreen = ({ onBack, onCancel, onChat, onCall }) => 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{
                   width: 36, height: 36, borderRadius: 18, flexShrink: 0,
-                  background: isPaid ? 'rgba(102,187,106,0.15)' : x.status === 'active' ? 'rgba(212,175,55,0.15)' : T.color.navyRaised,
+                  background: isPaid ? 'rgba(102,187,106,0.15)' : x.status === 'active' ? 'rgba(255, 255, 255,0.15)' : T.color.navyRaised,
                   border: `1.5px solid ${isPaid ? T.color.success : x.status === 'active' ? T.color.gold500 : T.color.navyBorder}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
@@ -627,7 +627,7 @@ const AddPaymentMethodPickerScreen = ({ onBack, onProceed }) => {
         {opts.map(o => (
           <button key={o.id} onClick={() => setPick(o.id)} style={{
             padding: 16, borderRadius: T.radius.m, cursor: 'pointer', textAlign: 'left',
-            background: pick === o.id ? 'rgba(212,175,55,0.08)' : T.color.navyRaised,
+            background: pick === o.id ? 'rgba(255, 255, 255,0.08)' : T.color.navyRaised,
             border: `1.5px solid ${pick === o.id ? T.color.gold500 : T.color.navyBorder}`,
             display: 'flex', alignItems: 'center', gap: 12,
           }}>

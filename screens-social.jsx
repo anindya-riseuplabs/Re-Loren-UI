@@ -97,7 +97,7 @@ const NotificationsScreen = ({ onBack, onTap }) => {
                 style={{
                   padding: '14px 16px', borderBottom: `1px solid ${T.color.navyBorder}`,
                   display: 'flex', gap: 12, alignItems: 'flex-start',
-                  background: n.unread ? 'rgba(212,175,55,0.04)' : 'transparent',
+                  background: n.unread ? 'rgba(255, 255, 255,0.04)' : 'transparent',
                   cursor: 'pointer', position: 'relative',
                 }}>
                 {n.unread && <div style={{
@@ -193,7 +193,7 @@ const PostJobRatingScreen = ({ onBack, onSubmit, role = 'employer' }) => {
                   <button key={t} onClick={() => toggle(t)}
                     style={{
                       minHeight: 36, padding: '0 14px', borderRadius: 18,
-                      background: on ? 'rgba(212,175,55,0.15)' : 'transparent',
+                      background: on ? 'rgba(255, 255, 255,0.15)' : 'transparent',
                       border: `1px solid ${on ? T.color.gold500 : T.color.navyBorder}`,
                       color: on ? T.color.gold500 : T.color.textSecondary,
                       fontFamily: T.fontSans, fontSize: 13, fontWeight: 500, cursor: 'pointer',

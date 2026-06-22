@@ -58,7 +58,7 @@ const SplashScreen = ({ onDone }) => {
         <div style={{ display: 'flex', gap: 8, marginTop: 28 }}>
           {[0, 1, 2].map(i => (
             <div key={i} style={{
-              width: 6, height: 6, borderRadius: 3, background: T.color.gold500,
+              width: 6, height: 6, borderRadius: 3, background: '#D4AF37',
               boxShadow: '0 0 8px rgba(212,175,55,0.8)',
               animation: `pulseDot 1.2s ease-in-out ${i * 0.2}s infinite`,
             }} />

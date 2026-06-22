@@ -269,13 +269,13 @@ const Banner = ({ variant = 'info', children, icon, title, style }) => {
 const StatusPill = ({ children, variant = 'neutral' }) => {
   const map = {
     posted:     { bg: 'rgba(41,182,246,0.18)', fg: T.color.info },
-    bidding:    { bg: 'rgba(212,175,55,0.16)', fg: T.color.gold500 },
+    bidding:    { bg: 'rgba(255, 255, 255,0.16)', fg: T.color.gold500 },
     accepted:   { bg: 'rgba(102,187,106,0.18)', fg: T.color.success },
     in_progress:{ bg: 'rgba(102,187,106,0.18)', fg: T.color.success },
     complete:   { bg: 'rgba(102,187,106,0.22)', fg: T.color.success },
     cancelled:  { bg: 'rgba(239,83,80,0.18)', fg: T.color.error },
     pending:    { bg: 'rgba(255,167,38,0.16)', fg: T.color.warning },
-    neutral:    { bg: 'rgba(212,175,55,0.14)', fg: T.color.gold500 },
+    neutral:    { bg: 'rgba(255, 255, 255,0.14)', fg: T.color.gold500 },
   };
   const c = map[variant] || map.neutral;
   return (
@@ -293,7 +293,7 @@ const CapabilityTag = ({ children, inherited, onRemove }) => (
   <span style={{
     display: 'inline-flex', alignItems: 'center', gap: 6,
     padding: '6px 12px', borderRadius: T.radius.full,
-    background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+    background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
     color: T.color.gold500, fontFamily: T.fontSans, fontSize: 13, fontWeight: 500,
   }}>
     {inherited && <Icon name="chevron" size={12} color={T.color.gold500} />}
@@ -558,9 +558,9 @@ const BottomNavBar = ({ active, onNav, mode = 'employer' }) => {
               flex: 1, minHeight: 52, background: 'transparent', border: 'none', cursor: 'pointer',
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: 0,
             }}>
-            <Icon name={t.icon} size={22} color={isActive ? T.color.gold500 : T.color.textMuted} style={{ filter: isActive ? 'drop-shadow(0 0 6px rgba(212, 175, 55, 0.6))' : 'none', transition: 'filter 0.2s' }} />
+            <Icon name={t.icon} size={22} color={isActive ? T.color.gold500 : T.color.textMuted} style={{ filter: isActive ? 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.6))' : 'none', transition: 'filter 0.2s' }} />
             <Txt variant="caption" color={isActive ? T.color.gold500 : T.color.textMuted}
-              style={{ letterSpacing: 0, fontWeight: isActive ? 600 : 500, textShadow: isActive ? '0 0 8px rgba(212, 175, 55, 0.4)' : 'none', transition: 'text-shadow 0.2s' }}>
+              style={{ letterSpacing: 0, fontWeight: isActive ? 600 : 500, textShadow: isActive ? '0 0 8px rgba(255, 255, 255, 0.4)' : 'none', transition: 'text-shadow 0.2s' }}>
               {t.label}
             </Txt>
           </button>
@@ -576,7 +576,7 @@ const ModePill = ({ mode, onToggle }) => (
     style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '6px 10px', borderRadius: T.radius.full,
-      background: 'rgba(212,175,55,0.10)', border: `1px solid ${T.color.gold500}`,
+      background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
       color: T.color.gold500, cursor: 'pointer',
       fontFamily: T.fontSans, fontSize: 12, fontWeight: 600, letterSpacing: '2%', textTransform: 'uppercase',
     }}>
@@ -617,7 +617,7 @@ const Radio = ({ checked, label, sub, onClick }) => (
   <button onClick={onClick}
     style={{
       display: 'flex', alignItems: 'flex-start', gap: 12, width: '100%',
-      background: checked ? 'rgba(212,175,55,0.06)' : 'transparent',
+      background: checked ? 'rgba(255, 255, 255,0.06)' : 'transparent',
       border: `1px solid ${checked ? T.color.gold500 : T.color.navyBorder}`,
       borderRadius: T.radius.m, padding: 14, cursor: 'pointer', textAlign: 'left',
     }}>
@@ -709,7 +709,7 @@ const MapPreview = ({ height = 160, label, caption, radiusKm = 0, marker, pinCol
         `repeating-linear-gradient(0deg, transparent 0 38px, rgba(160,174,192,0.10) 38px 40px),
          repeating-linear-gradient(90deg, transparent 0 46px, rgba(160,174,192,0.10) 46px 48px)` }} />
       {/* highlighted arterials */}
-      <div style={{ position: 'absolute', top: '54%', left: 0, right: 0, height: 5, background: 'rgba(212,175,55,0.18)' }} />
+      <div style={{ position: 'absolute', top: '54%', left: 0, right: 0, height: 5, background: 'rgba(255, 255, 255,0.18)' }} />
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: '38%', width: 5, background: 'rgba(15,167,163,0.20)' }} />
       {/* park blob */}
       <div style={{ position: 'absolute', bottom: 10, right: 14, width: 70, height: 46, borderRadius: 14, background: 'rgba(76,175,80,0.12)' }} />
@@ -718,7 +718,7 @@ const MapPreview = ({ height = 160, label, caption, radiusKm = 0, marker, pinCol
         <div style={{
           position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
           width: circle, height: circle, borderRadius: '50%',
-          background: 'rgba(212,175,55,0.12)', border: `1.5px solid ${T.color.gold500}`,
+          background: 'rgba(255, 255, 255,0.12)', border: `1.5px solid ${T.color.gold500}`,
         }} />
       )}
 

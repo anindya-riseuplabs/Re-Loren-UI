@@ -241,7 +241,7 @@ const ClientPostedJobsScreen = ({ onBack, onOpenJob }) => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 9px', borderRadius: T.radius.full,
-                      background: j.kind === 'Asset' ? 'rgba(15,167,163,0.12)' : 'rgba(212,175,55,0.10)',
+                      background: j.kind === 'Asset' ? 'rgba(15,167,163,0.12)' : 'rgba(255, 255, 255,0.10)',
                       border: `1px solid ${j.kind === 'Asset' ? T.color.teal500 : T.color.gold500}`,
                       color: j.kind === 'Asset' ? T.color.teal500 : T.color.gold500,
                       fontFamily: T.fontSans, fontSize: 11, fontWeight: 700,
