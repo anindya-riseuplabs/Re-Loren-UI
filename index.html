@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,700;1,900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,700;1,900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <!-- Splash script font kept in its own request — combining it above silently drops it -->
   <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet" />
   <style>
@@ -68,6 +68,9 @@
   <!-- Tokens + data (must load first, populate window.T / window.SAMPLE) -->
   <script type="text/babel" src="tokens.jsx"></script>
   <script type="text/babel" src="data.jsx"></script>
+
+  <!-- Bangla localization layer (LangContext/useLang/window.tr) — before components -->
+  <script type="text/babel" src="i18n.jsx"></script>
 
   <!-- Device frame + canvas -->
   <script type="text/babel" src="android-frame.jsx"></script>

@@ -43,7 +43,7 @@ const ContactPageEmployerScreen = ({ onBack, onChat, onCall, onPay, onForward, o
             </Txt>
           </div>
           <Txt variant="bodySm" color={T.color.error} style={{ fontWeight: 600 }}>
-            Continue within {fmtTime(secondsLeft)}
+            {window.getLang() === 'bn' ? `${fmtTime(secondsLeft)} এর মধ্যে চালিয়ে যান` : `Continue within ${fmtTime(secondsLeft)}`}
           </Txt>
           <Txt variant="caption" color={T.color.textSecondary} style={{ letterSpacing: 0, marginTop: 6, lineHeight: 1.5 }}>
             If you do not continue within the time, this job will be automatically cancelled.
@@ -647,7 +647,7 @@ const AddPaymentMethodPickerScreen = ({ onBack, onProceed }) => {
         ))}
         <Banner variant="info">You will be redirected to the provider's portal to authorize.</Banner>
         <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
-          <PrimaryButton onClick={() => onProceed && onProceed(pick)}>Proceed to {opts.find(o => o.id === pick).name}</PrimaryButton>
+          <PrimaryButton onClick={() => onProceed && onProceed(pick)}>{window.getLang() === 'bn' ? `${opts.find(o => o.id === pick).name}-এ যান` : `Proceed to ${opts.find(o => o.id === pick).name}`}</PrimaryButton>
         </div>
       </div>
     </div>
@@ -666,7 +666,9 @@ const PaymentMethodAddedSuccessScreen = ({ provider = 'bKash', onDone }) => (
     </div>
     <Txt variant="h2" style={{ textAlign: 'center' }}>Payment method added</Txt>
     <Txt variant="body" color={T.color.textSecondary} style={{ textAlign: 'center', maxWidth: 280 }}>
-      Your {provider} account is now linked. You can use it for payments and disbursements.
+      {window.getLang() === 'bn'
+        ? `আপনার ${provider} অ্যাকাউন্ট এখন যুক্ত হয়েছে। আপনি এটি পেমেন্ট ও পরিশোধের জন্য ব্যবহার করতে পারবেন।`
+        : `Your ${provider} account is now linked. You can use it for payments and disbursements.`}
     </Txt>
     <div style={{ width: '100%', marginTop: 'auto' }}>
       <PrimaryButton onClick={onDone}>Done</PrimaryButton>

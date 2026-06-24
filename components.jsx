@@ -77,10 +77,12 @@ const Icon = ({ name, size = 24, color = T.color.textPrimary, style }) => {
 
 // ── Text helpers ─────────────────────────────────────────────
 const Txt = ({ variant = 'body', children, color, style, as: As = 'div', bn = false }) => {
+  const lang = useLang();
+  const isBn = lang === 'bn';
   const t = T.type[variant] || T.type.body;
   const isHeading = ['display', 'headline', 'title', 'subtitle'].includes(variant);
   const s = {
-    fontFamily: bn ? T.fontBangla : T.fontSans,
+    fontFamily: (bn || isBn) ? T.fontBangla : T.fontSans,
     fontSize: t.size,
     lineHeight: t.lh,
     fontWeight: t.w,
@@ -90,7 +92,7 @@ const Txt = ({ variant = 'body', children, color, style, as: As = 'div', bn = fa
     textWrap: 'pretty',
     ...style,
   };
-  return <As style={s}>{children}</As>;
+  return <As style={s}>{window.locNode(children, lang)}</As>;
 };
 
 // ── Buttons ───────────────────────────────────────────────────
@@ -102,34 +104,47 @@ const btnBase = {
   cursor: 'pointer', width: '100%',
   transition: 'background 150ms ease-out, transform 150ms ease-out, box-shadow 150ms ease-out',
 };
-const PrimaryButton = ({ children, onClick, disabled, icon, style }) => (
+const btnFont = (lang) => (lang === 'bn' ? T.fontBangla : T.fontSans);
+const PrimaryButton = ({ children, onClick, disabled, icon, style }) => {
+  const lang = useLang();
+  return (
   <button onClick={disabled ? undefined : onClick} disabled={disabled} className={disabled ? '' : 'btn-primary'}
-    style={{ ...btnBase, background: disabled ? T.color.taupe500 : T.color.teal500, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
+    style={{ ...btnBase, fontFamily: btnFont(lang), background: disabled ? T.color.taupe500 : T.color.teal500, color: T.color.textOnGold, opacity: disabled ? 0.5 : 1, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
-    {children}
+    {window.locNode(children, lang)}
   </button>
-);
-const SecondaryButton = ({ children, onClick, icon, style }) => (
+  );
+};
+const SecondaryButton = ({ children, onClick, icon, style }) => {
+  const lang = useLang();
+  return (
   <button onClick={onClick}
-    style={{ ...btnBase, background: 'transparent', border: `1.5px solid ${T.color.teal500}`, color: T.color.teal500, ...style }}>
+    style={{ ...btnBase, fontFamily: btnFont(lang), background: 'transparent', border: `1.5px solid ${T.color.teal500}`, color: T.color.teal500, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.teal500} />}
-    {children}
+    {window.locNode(children, lang)}
   </button>
-);
-const AccentButton = ({ children, onClick, icon, style }) => (
+  );
+};
+const AccentButton = ({ children, onClick, icon, style }) => {
+  const lang = useLang();
+  return (
   <button onClick={onClick} className="btn-primary"
-    style={{ ...btnBase, background: T.color.teal500, color: T.color.textOnGold, ...style }}>
+    style={{ ...btnBase, fontFamily: btnFont(lang), background: T.color.teal500, color: T.color.textOnGold, ...style }}>
     {icon && <Icon name={icon} size={20} color={T.color.textOnGold} />}
-    {children}
+    {window.locNode(children, lang)}
   </button>
-);
-const DestructiveButton = ({ children, onClick, icon, style }) => (
+  );
+};
+const DestructiveButton = ({ children, onClick, icon, style }) => {
+  const lang = useLang();
+  return (
   <button onClick={onClick}
-    style={{ ...btnBase, background: T.color.error, color: '#fff', ...style }}>
+    style={{ ...btnBase, fontFamily: btnFont(lang), background: T.color.error, color: '#fff', ...style }}>
     {icon && <Icon name={icon} size={20} color="#fff" />}
-    {children}
+    {window.locNode(children, lang)}
   </button>
-);
+  );
+};
 const IconButton = ({ name, onClick, size = 48, iconSize = 24, color = T.color.textPrimary, label, style }) => (
   <button onClick={onClick} aria-label={label || name}
     style={{
@@ -145,6 +160,7 @@ const IconButton = ({ name, onClick, size = 48, iconSize = 24, color = T.color.t
 // ── TextField ────────────────────────────────────────────────
 const TextField = ({ label, value, onChange, placeholder, multiline, rows = 1, prefix, suffix, helper, error, type = 'text', style }) => {
   const [focused, setFocused] = useState(false);
+  const lang = useLang();
   const As = multiline ? 'textarea' : 'input';
   return (
     <label style={{ display: 'block', ...style }}>
@@ -160,11 +176,11 @@ const TextField = ({ label, value, onChange, placeholder, multiline, rows = 1, p
       }}>
         {prefix && <Txt variant="body" color={T.color.textMuted} style={{ marginRight: 8 }}>{prefix}</Txt>}
         <As type={type} value={value || ''} onChange={e => onChange && onChange(e.target.value)}
-          placeholder={placeholder} rows={multiline ? rows : undefined}
+          placeholder={window.tr(placeholder, lang)} rows={multiline ? rows : undefined}
           onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
           style={{
             flex: 1, minWidth: 0, background: 'transparent', border: 'none', outline: 'none',
-            color: T.color.textPrimary, fontFamily: T.fontSans, fontSize: 16, fontWeight: 400,
+            color: T.color.textPrimary, fontFamily: lang === 'bn' ? T.fontBangla : T.fontSans, fontSize: 16, fontWeight: 400,
             resize: multiline ? 'vertical' : 'none', padding: multiline ? 0 : '12px 0',
             lineHeight: 1.5,
           }} />
@@ -278,41 +294,48 @@ const StatusPill = ({ children, variant = 'neutral' }) => {
     neutral:    { bg: 'rgba(255, 255, 255,0.14)', fg: T.color.gold500 },
   };
   const c = map[variant] || map.neutral;
+  const lang = useLang();
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '4px 10px', borderRadius: T.radius.full,
       background: c.bg, color: c.fg,
-      fontFamily: T.fontSans, fontSize: 12, fontWeight: 600,
-      letterSpacing: '2%', textTransform: 'uppercase',
-    }}>{children}</span>
+      fontFamily: lang === 'bn' ? T.fontBangla : T.fontSans, fontSize: 12, fontWeight: 600,
+      letterSpacing: '2%', textTransform: lang === 'bn' ? 'none' : 'uppercase',
+    }}>{window.locNode(children, lang)}</span>
   );
 };
 
-const CapabilityTag = ({ children, inherited, onRemove }) => (
+const CapabilityTag = ({ children, inherited, onRemove }) => {
+  const lang = useLang();
+  return (
   <span style={{
     display: 'inline-flex', alignItems: 'center', gap: 6,
     padding: '6px 12px', borderRadius: T.radius.full,
     background: 'rgba(255, 255, 255,0.10)', border: `1px solid ${T.color.gold500}`,
-    color: T.color.gold500, fontFamily: T.fontSans, fontSize: 13, fontWeight: 500,
+    color: T.color.gold500, fontFamily: lang === 'bn' ? T.fontBangla : T.fontSans, fontSize: 13, fontWeight: 500,
   }}>
     {inherited && <Icon name="chevron" size={12} color={T.color.gold500} />}
-    {children}
+    {window.locNode(children, lang)}
     {onRemove && <button onClick={onRemove} style={{ background: 'none', border: 'none', color: T.color.gold500, cursor: 'pointer', padding: 0, display: 'flex' }}><Icon name="close" size={14} color={T.color.gold500} /></button>}
   </span>
-);
+  );
+};
 
-const VerifiedBadge = ({ label = 'Verified' }) => (
+const VerifiedBadge = ({ label = 'Verified' }) => {
+  const lang = useLang();
+  return (
   <span style={{
     display: 'inline-flex', alignItems: 'center', gap: 4,
     padding: '2px 8px', borderRadius: T.radius.full,
     background: 'rgba(102,187,106,0.16)', color: T.color.success,
-    fontFamily: T.fontSans, fontSize: 11, fontWeight: 600, letterSpacing: '2%', textTransform: 'uppercase',
+    fontFamily: lang === 'bn' ? T.fontBangla : T.fontSans, fontSize: 11, fontWeight: 600, letterSpacing: '2%', textTransform: lang === 'bn' ? 'none' : 'uppercase',
   }}>
     <Icon name="shield" size={12} color={T.color.success} />
-    {label}
+    {window.tr(label, lang)}
   </span>
-);
+  );
+};
 
 const ExplanationChip = ({ kind, children }) => {
   const labels = {
@@ -586,7 +609,9 @@ const ModePill = ({ mode, onToggle }) => (
 );
 
 // ── Segmented control ────────────────────────────────────────
-const Segmented = ({ options, value, onChange }) => (
+const Segmented = ({ options, value, onChange }) => {
+  const lang = useLang();
+  return (
   <div style={{
     display: 'flex', background: T.color.navyDeep, borderRadius: T.radius.m,
     padding: 4, border: `1px solid ${T.color.navyBorder}`,
@@ -601,16 +626,17 @@ const Segmented = ({ options, value, onChange }) => (
             background: active ? T.color.gold500 : 'transparent',
             color: locked ? T.color.textMuted : active ? T.color.textOnGold : T.color.gold500,
             borderRadius: T.radius.s, cursor: locked ? 'not-allowed' : 'pointer',
-            fontFamily: T.fontSans, fontSize: 14, fontWeight: 600,
+            fontFamily: lang === 'bn' ? T.fontBangla : T.fontSans, fontSize: 14, fontWeight: 600,
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
           }}>
           {locked && <Icon name="shield" size={13} color={T.color.textMuted} />}
-          {o.label}
+          {window.locNode(o.label, lang)}
         </button>
       );
     })}
   </div>
-);
+  );
+};
 
 // ── Radio / Checkbox ─────────────────────────────────────────
 const Radio = ({ checked, label, sub, onClick }) => (

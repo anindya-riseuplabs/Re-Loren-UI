@@ -173,7 +173,7 @@ const OnlineJobFeedScreen = ({ onOpenJob, onNav, onBack, verified = true }) => {
           </Banner>
         )}
 
-        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{jobs.length} online jobs available</Txt>
+        <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{window.getLang() === 'bn' ? `${jobs.length}টি অনলাইন কাজ উপলব্ধ` : `${jobs.length} online jobs available`}</Txt>
         {jobs.map(j => (
           <OnlineJobCard key={j.id} job={j} verified={verified}
             onClick={() => onOpenJob && onOpenJob(j)} onAccept={() => onOpenJob && onOpenJob(j)} />

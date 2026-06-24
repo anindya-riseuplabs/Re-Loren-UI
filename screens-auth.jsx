@@ -109,8 +109,8 @@ const LandingScreen = ({ onSignUp, onLogin }) => {
 
         <div style={{ position: 'absolute', bottom: 32, left: 0, right: 0, padding: '0 24px', zIndex: 2 }}>
           <div style={{ transform: `translateY(${0}px)`, transition: 'all 0.5s ease' }}>
-            <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 700, marginBottom: 8, display: 'block', letterSpacing: '0.1em' }}>
-              {s.eyebrow.toUpperCase()}
+            <Txt variant="caption" color={T.color.gold500} style={{ fontWeight: 700, marginBottom: 8, display: 'block', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              {s.eyebrow}
             </Txt>
             <Txt variant="headline" style={{ marginBottom: 8, fontSize: 26, lineHeight: 1.2 }}>{s.title}</Txt>
             <Txt variant="body" color={T.color.textSecondary}>{s.body}</Txt>
@@ -209,7 +209,9 @@ const OtpVerifyScreen = ({ onBack, onVerify }) => {
         <div style={{ textAlign: 'center' }}>
           {countdown > 0 ? (
             <Txt variant="bodySm" color={T.color.textSecondary}>
-              Resend OTP in 00:{String(countdown).padStart(2, '0')}
+              {window.getLang() === 'bn'
+                ? `00:${String(countdown).padStart(2, '0')} পরে OTP আবার পাঠান`
+                : `Resend OTP in 00:${String(countdown).padStart(2, '0')}`}
             </Txt>
           ) : (
             <button onClick={() => setCountdown(42)} style={{
@@ -437,7 +439,7 @@ const PasswordResetScreen = ({ onDone, identity = 'karim@example.com' }) => {
       <div style={{ flex: 1, padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div style={{ marginBottom: 8 }}>
           <Txt variant="headline" style={{ fontSize: 24, marginBottom: 4 }}>Create new password</Txt>
-          <Txt variant="bodySm" color={T.color.textSecondary}>For: {identity}</Txt>
+          <Txt variant="bodySm" color={T.color.textSecondary}>{window.getLang() === 'bn' ? `এর জন্য: ${identity}` : `For: ${identity}`}</Txt>
         </div>
         <TextField label="New password" value={pw} onChange={setPw} type="password" placeholder="Min 8 characters" />
         <TextField label="Confirm password" value={cpw} onChange={setCpw} type="password"
@@ -475,7 +477,10 @@ const RegistrationCompleteScreen = ({ onContinue }) => (
 // Shown after splash, before the landing page. The user picks their
 // language preference and their path; then the landing page appears.
 const PathSelectionScreen = ({ onContinue }) => {
-  const [lang, setLang] = useState('English');
+  // Drive the global language from this picker, and reflect external changes.
+  const uiLang = useLang();
+  const lang = uiLang === 'bn' ? 'Bangla' : 'English';
+  const setLang = (v) => window.setLang(v === 'Bangla' ? 'bn' : 'en');
   const [path, setPath] = useState('client');
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
@@ -507,7 +512,9 @@ const PathSelectionScreen = ({ onContinue }) => {
 
         <div style={{ marginTop: 'auto', paddingBottom: 16 }}>
           <PrimaryButton onClick={() => onContinue && onContinue({ path, lang })}>
-            Continue as {path === 'worker' ? 'Worker' : 'Client'}
+            {window.getLang() === 'bn'
+              ? `${path === 'worker' ? 'কর্মী' : 'ক্লায়েন্ট'} হিসেবে চালিয়ে যান`
+              : `Continue as ${path === 'worker' ? 'Worker' : 'Client'}`}
           </PrimaryButton>
         </div>
       </div>

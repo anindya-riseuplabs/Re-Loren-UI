@@ -163,7 +163,7 @@ const PostJobRatingScreen = ({ onBack, onSubmit, role = 'employer' }) => {
         </Card>
         <div style={{ textAlign: 'center' }}>
           <Txt variant="bodySm" color={T.color.textSecondary} style={{ marginBottom: 14 }}>
-            How was {role === 'employer' ? 'Rahim' : 'Karim'}?
+            {window.getLang() === 'bn' ? `${role === 'employer' ? 'Rahim' : 'Karim'} কেমন ছিল?` : `How was ${role === 'employer' ? 'Rahim' : 'Karim'}?`}
           </Txt>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
             {[1, 2, 3, 4, 5].map(i => (

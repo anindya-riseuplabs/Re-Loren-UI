@@ -914,7 +914,10 @@ const AssetDetailsViewScreen = ({ asset = { name: 'Hero Honda 150cc', type: 'Mot
 
 // ── Language preference ──────────────────────────────────────
 const LanguagePreferenceScreen = ({ onBack, onSave }) => {
-  const [lang, setLang] = useState('English');
+  // Drive the global language from this picker, and reflect external changes.
+  const uiLang = useLang();
+  const lang = uiLang === 'bn' ? 'Bangla' : 'English';
+  const setLang = (v) => window.setLang(v === 'Bangla' ? 'bn' : 'en');
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: T.color.navyBg }}>
       <AppBarElevated title="Language" left={<BackButton onClick={onBack} />} />

@@ -46,15 +46,60 @@ const PhoneWithNav = ({ children, active = 'home', mode = 'employer' }) => (
 
 const noop = () => {};
 
+// ── Global language toggle ───────────────────────────────────
+// Floating EN / বাংলা switch. Flips window.setLang(), which notifies the
+// LangProvider and re-renders every artboard. The whole gallery (except the
+// splash island) reflects the chosen language. Also kept in sync by the in-app
+// Language-preference and Path-selection screens.
+function LangToggle() {
+  const lang = useLang();
+  const opt = (value, label, font) => (
+    <button
+      onClick={() => window.setLang(value)}
+      style={{
+        border: 'none', cursor: 'pointer', borderRadius: 999,
+        padding: '8px 16px', minWidth: 64,
+        fontFamily: font, fontSize: 14, fontWeight: 700,
+        background: lang === value ? T.color.gold500 : 'transparent',
+        color: lang === value ? T.color.textOnGold : '#E8EAED',
+        transition: 'background 150ms, color 150ms',
+      }}>
+      {label}
+    </button>
+  );
+  return (
+    <div style={{
+      position: 'fixed', bottom: 20, right: 20, zIndex: 9999,
+      display: 'flex', gap: 4, padding: 4, borderRadius: 999,
+      background: 'rgba(20,29,45,0.92)', border: '1px solid rgba(212,175,55,0.35)',
+      boxShadow: '0 8px 24px rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)',
+    }}>
+      {opt('en', 'EN', T.fontSans)}
+      {opt('bn', 'বাংলা', T.fontBangla)}
+    </div>
+  );
+}
+
 // ── Screen artboards ─────────────────────────────────────────
 
 function App() {
+  // Re-render the ENTIRE tree on language change. LangProvider alone only
+  // re-renders context consumers (Txt/buttons); raw <div>/<span> text lives in
+  // referentially-stable child elements that React would otherwise bail out of.
+  // Forcing App to re-render rebuilds every element so the createElement
+  // translation override fires across the whole gallery.
+  const [, setLangTick] = useState(0);
+  useEffect(() => window.onLangChange(() => setLangTick((t) => t + 1)), []);
   return (
+    <LangProvider>
     <div style={{ width: '100%', height: '100vh' }}>
+      <LangToggle />
       <DesignCanvas>
         {/* ─── 1. PRE-AUTH ─── */}
         <DCSection id="preauth" title="1 · Pre-auth & onboarding" subtitle="Splash → path + language → slider landing → mobile+password login">
           <DCArtboard id="splash" label="Splash" width={360} height={720}>
+            {/* Splash stays English by design: its taglines are deliberately
+                kept out of the BN dictionary, so they fall through untranslated. */}
             <SplashScreen onDone={noop} />
           </DCArtboard>
           <DCArtboard id="path-select" label="Path + language · Client / Worker" width={360} height={720}>
@@ -335,6 +380,7 @@ function App() {
 
       </DesignCanvas>
     </div>
+    </LangProvider>
   );
 }
 

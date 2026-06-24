@@ -524,7 +524,7 @@ const JobFeedScreen = ({ onOpenJob, onNav, verified = true, opportunity = false 
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
-            {jobs.length} jobs available nearby
+            {window.getLang() === 'bn' ? `কাছাকাছি ${jobs.length}টি কাজ উপলব্ধ` : `${jobs.length} jobs available nearby`}
           </Txt>
           <IconButton name="filter" onClick={openFilter} size={32} iconSize={18} />
         </div>
@@ -578,7 +578,7 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, onViewReview, verified 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ flex: 1 }}>
             <Txt variant="h2" style={{ marginBottom: 4 }}>{j.title}</Txt>
-            <Txt variant="bodySm" color={T.color.textSecondary}>Posted {j.postedAgo || '2h'} ago</Txt>
+            <Txt variant="bodySm" color={T.color.textSecondary}>{window.getLang() === 'bn' ? `${j.postedAgo || '2h'} আগে পোস্ট` : `Posted ${j.postedAgo || '2h'} ago`}</Txt>
           </div>
           <div style={{ textAlign: 'right' }}>
             <Txt variant="h2" color={T.color.gold500}>{fmtBDT(j.price)}</Txt>
@@ -597,7 +597,7 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, onViewReview, verified 
             <Txt variant="caption" color={T.color.textMuted} style={{ marginBottom: 12 }}>ROUTE & LOCATION</Txt>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
               <div style={{ width: 8, height: 8, borderRadius: 4, background: T.color.success }} />
-              <Txt variant="bodySm">From: {j.from}</Txt>
+              <Txt variant="bodySm">{window.getLang() === 'bn' ? `থেকে: ${j.from}` : `From: ${j.from}`}</Txt>
             </div>
             <div style={{ height: 20, width: 2, background: T.color.navyBorder, marginLeft: 3, marginBottom: 8 }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -622,7 +622,7 @@ const JobDetailScreen = ({ job, onBack, onBid, onVerify, onViewReview, verified 
             <RouteMap height={150} title="Route to job site" fromLabel="You" toLabel="Job site" />
           ) : (
             <MapPreview height={150} label={j.from || j.location || 'Job location'} caption="Work location"
-              marker={(j.relocate && j.to) ? 'Drop-off: ' + j.to : undefined} />
+              marker={(j.relocate && j.to) ? (window.getLang() === 'bn' ? 'পৌঁছানো: ' : 'Drop-off: ') + j.to : undefined} />
           )}
         </Card>
 
@@ -899,7 +899,7 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
               {/* Owner name = secondary, bottom-right, smaller */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
                 <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>
-                  Owner · {w.name}
+                  {window.getLang() === 'bn' ? `মালিক · ${w.name}` : `Owner · ${w.name}`}
                 </Txt>
               </div>
 
@@ -954,13 +954,17 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
         {!searching && !accepted && noResults && (
           <>
             <Banner variant="warning" title={`No ${entity} found in time`}>
-              We couldn't match {requireAsset ? 'an asset service' : 'a worker'} for your job yet. Choose how you'd like to continue.
+              {window.getLang() === 'bn'
+                ? `আমরা এখনও আপনার কাজের জন্য ${requireAsset ? 'একটি সম্পদ সেবা' : 'একজন কর্মী'} মেলাতে পারিনি। আপনি কীভাবে এগোতে চান তা বেছে নিন।`
+                : `We couldn't match ${requireAsset ? 'an asset service' : 'a worker'} for your job yet. Choose how you'd like to continue.`}
             </Banner>
 
             <Card>
               <Txt variant="bodySm" style={{ fontWeight: 600, marginBottom: 4 }}>1 · Change your offer</Txt>
               <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0, marginBottom: 12 }}>
-                A higher offer attracts more {requireAsset ? 'asset owners' : 'workers'}.
+                {window.getLang() === 'bn'
+                  ? `বেশি অফার আরও বেশি ${requireAsset ? 'সম্পদ মালিক' : 'কর্মী'} আকর্ষণ করে।`
+                  : `A higher offer attracts more ${requireAsset ? 'asset owners' : 'workers'}.`}
               </Txt>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 14 }}>
                 <IconButton name="minus" size={40} iconSize={20} color={T.color.gold500}
@@ -1007,7 +1011,7 @@ const RankedShortlistScreen = ({ onBack, onAccept, onViewReview, requireAsset = 
                   <div>
                     <Txt variant="body" style={{ fontWeight: 600 }}>{requireAsset ? (accepted.asset || 'Asset') : accepted.name}</Txt>
                     {requireAsset
-                      ? <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>Owner · {accepted.name}</Txt>
+                      ? <Txt variant="caption" color={T.color.textMuted} style={{ letterSpacing: 0 }}>{window.getLang() === 'bn' ? `মালিক · ${accepted.name}` : `Owner · ${accepted.name}`}</Txt>
                       : <RatingStars value={accepted.rating} count={accepted.ratingCount} compact />}
                   </div>
                 </div>
