@@ -5,6 +5,7 @@ const WorkerOnboardingIntroScreen = ({ onNext, onSkip }) => {
   const steps = [
     { title: 'National ID', sub: 'Front and back photo of your NID card', icon: 'file' },
     { title: 'Face Verification', sub: 'Live photos to confirm your identity', icon: 'user' },
+    { title: 'Emergency Contact', sub: 'A person we can reach in an emergency', icon: 'phone' },
     { title: 'Skill Selection', sub: 'Tell us what you can do best', icon: 'star' },
   ];
   return (

@@ -239,6 +239,7 @@
   "Email (optional)": "ইমেইল (ঐচ্ছিক)",
   "EMERGENCY CONTACT": "জরুরি যোগাযোগ",
   "Emergency Contact": "জরুরি যোগাযোগ",
+  "A person we can reach in an emergency": "জরুরি অবস্থায় যাঁর সাথে যোগাযোগ করা যাবে",
   "Emergency — SOS": "জরুরি — SOS",
   "ENTER 4-DIGIT CODE FROM EMPLOYER": "নিয়োগকর্তার দেওয়া 4-সংখ্যার কোড দিন",
   "ENTER 4-DIGIT CODE FROM WORKER": "কর্মীর দেওয়া 4-সংখ্যার কোড দিন",
