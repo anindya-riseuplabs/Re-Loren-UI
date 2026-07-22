@@ -771,9 +771,20 @@ textarea.input{padding:11px 13px}
         <input class="otp-box fill" value="3" maxlength="1">
         <input class="otp-box fill" value="4" maxlength="1">
       </div>
+      <div class="hidden" data-pane="otpst:bad">
+        <div class="banner err mt24"><svg class="ic"><use href="#i-warning"/></svg>
+          <div><div class="bt">Wrong code</div>
+          <div class="bbody">Incorrect code — try again.</div></div></div>
+      </div>
       <div class="t-sm t-sec2 t-c mt24">Resend OTP in 00:42</div>
-      <button class="btn btn-primary mt24" data-go="register-complete">Verify</button>
+      <div data-pane="otpst:ok">
+        <button class="btn btn-primary mt24" data-go="register-complete">Verify</button>
+      </div>
+      <div class="hidden" data-pane="otpst:bad">
+        <button class="btn btn-primary mt24" data-tab="otpst:ok">Verify</button>
+      </div>
       <button class="btn btn-secondary mt24" data-back>Change number</button>
+      <div class="t-cap t-teal t-c mt12" data-tab="otpst:bad">Preview wrong-code state →</div>
     </div>
   </div></div>
 </article>
@@ -951,7 +962,7 @@ textarea.input{padding:11px 13px}
       <div class="banner info mt16"><svg class="ic"><use href="#i-info"/></svg>
         <div><div class="bbody">Your data is encrypted and only used for identity verification.</div></div></div>
       <button class="btn btn-primary mt16" data-go="nid">Start Verification</button>
-      <button class="btn btn-secondary mt8" data-go="worker-home">Skip for now</button>
+      <button class="btn btn-secondary mt8" data-go="worker-home-unverified">Skip for now</button>
     </div>
   </div></div>
 </article>
@@ -1148,7 +1159,18 @@ textarea.input{padding:11px 13px}
         </div>
         <div class="row gap8 mt16">
           <button class="btn btn-secondary grow" data-dismiss>Update</button>
-          <button class="btn btn-primary grow" data-go="asset-list">Confirm</button>
+          <button class="btn btn-primary grow" data-sheet="declare-assets">Confirm</button>
+        </div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="declare-assets">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Declare your assets?</div>
+        <div class="t-sm t-sec2 mt8">Adding assets (motorbike, tools, etc.) helps you match more jobs. You can add them later from your profile.</div>
+        <div class="row gap8 mt16">
+          <button class="btn btn-secondary grow" data-go="asset-list">Skip for now</button>
+          <button class="btn btn-primary grow" data-go="asset-list">Declare assets</button>
         </div>
       </div>
     </div>
@@ -1569,6 +1591,49 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-post-opportunity" data-title="Post an Opportunity · parallel job" data-sec="4">
+  <div class="flabel"><span class="fname">Post an Opportunity · parallel job</span><span class="froute" data-en-lock>/employer/post</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Post an Opportunity</div></div>
+    </div>
+    <div class="body">
+      <div class="banner info anim-fadeUp"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bt">AI reminder</div>
+        <div class="bbody">You already have an active Skill job. You can post one Asset Service now, but you can't post another Skill job until the current one is completed or cancelled.</div></div></div>
+      <div class="mb8 mt16"><span class="t-cap t-mut">DESCRIBE YOUR JOB </span><span class="t-cap t-gold">(Don't mention price)</span></div>
+      <textarea class="input" rows="5" placeholder="Describe what needs to be done...">Need a car for an airport drop early tomorrow morning.</textarea>
+      <div class="t-cap t-mut mt8">Workers will bid on your job — prices happen in bids, not descriptions.</div>
+      <label class="field mt16"><span class="flab t-gold">Job type</span>
+        <span class="input" data-sheet="jobtype-opp"><input value="Asset Service" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
+      <label class="field mt16"><span class="flab">Budget</span>
+        <span class="input"><span class="prefix">৳</span><input value="1800" placeholder="1,800"></span></label>
+      <div class="mt16">
+        <div class="t-sm t-gold mb8">Job location</div>
+        <div class="mapmock" style="height:120px">
+          <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
+            <path d="M0 80 C90 50 180 100 300 60" stroke="rgba(255,255,255,.12)" stroke-width="7" fill="none"/>
+            <path d="M70 0 C90 90 50 150 90 210" stroke="rgba(255,255,255,.09)" stroke-width="5" fill="none"/>
+          </svg>
+          <span class="pin gold" style="left:50%;top:50%"><svg class="ic"><use href="#i-location"/></svg></span>
+          <span class="mtag">Drop the job location pin</span>
+        </div>
+      </div>
+      <button class="btn btn-primary mt24" data-go="post-review">Confirm &amp; post</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="jobtype-opp">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Job type</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Asset Service</div><div class="t-cap t-sec2">Lend a vehicle, room, tool or gear</div></div></div>
+        <div class="radiotile mt8" style="opacity:.5"><span class="rdot"></span><div class="grow"><div class="lt t-sm">Skill Job</div><div class="t-cap t-sec2">Blocked — you already have an active Skill job</div></div></div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-shortlist" data-title="Ranked shortlist" data-sec="4">
   <div class="flabel"><span class="fname">Ranked shortlist</span><span class="froute" data-en-lock>/employer/shortlist</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -1585,6 +1650,14 @@ textarea.input{padding:11px 13px}
             <div class="t-cap t-mut">Pick the worker you want to hire</div></div>
         </div>
       </div>
+      <div class="hidden" data-pane="sl:none">
+        <div class="t-c" style="padding:32px 16px">
+          <div class="hero-ic gold anim-fadeUp" style="margin:0 auto"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+          <div class="t-subtitle t-c mt16 anim-fadeUp d1">No more bids</div>
+          <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">Wait for more workers to bid or repost the job.</div>
+        </div>
+      </div>
+      <div data-pane="sl:list">
       <div class="glass mt12 anim-fadeUp d1">
         <div class="row top between gap8">
           <div class="row gap8 grow"><span class="avatar gold">RU</span>
@@ -1634,8 +1707,155 @@ textarea.input{padding:11px 13px}
         </div>
         <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
         <div class="row gap8 mt8">
-          <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+          <button class="btn btn-secondary grow" data-toast="Bid declined" data-tab="sl:none">Decline</button>
           <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer">Accept Bid</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-shortlist-asset" data-title="Ranked shortlist · asset service" data-sec="4">
+  <div class="flabel"><span class="fname">Ranked shortlist · asset service</span><span class="froute" data-en-lock>/employer/shortlist</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job in progress</div><div class="asub">3 offers received</div></div>
+    </div>
+    <div class="body">
+      <div class="glass anim-fadeUp">
+        <div class="row gap12">
+          <div class="hero-ic gold pulse-gold" style="width:56px;height:56px"><svg class="ic"><use href="#i-search"/></svg></div>
+          <div class="grow"><div class="t-sm t-b">Asset Service Found Nearby</div>
+            <div class="t-cap t-mut">Pick the asset service you want to hire</div></div>
+        </div>
+      </div>
+
+      <div class="glass pad0 mt12 anim-fadeUp d1" style="overflow:hidden">
+        <div style="position:relative;height:130px">
+          <div class="photo" data-pane="a1:1" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a1:3" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a1:2" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.9</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i class="on" data-tab="a1:1"></i><i data-tab="a1:2"></i><i data-tab="a1:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a1:2" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a1:1" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a1:3" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.9</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a1:1"></i><i class="on" data-tab="a1:2"></i><i data-tab="a1:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a1:3" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a1:2" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a1:1" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.9</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a1:1"></i><i data-tab="a1:2"></i><i class="on" data-tab="a1:3"></i></div>
+          </div>
+        </div>
+        <div style="padding:14px">
+          <div class="row top between gap8">
+            <div class="grow">
+              <div class="t-subtitle t-b7">Motorbike</div>
+              <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.9</span><span class="t-cap t-mut">(87)</span></div>
+            </div>
+            <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,500</div></div>
+          </div>
+          <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Rahim Uddin</div>
+          <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
+          <div class="row gap8 mt8">
+            <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+            <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer">Accept Bid</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass pad0 mt12 anim-fadeUp d2" style="overflow:hidden">
+        <div style="position:relative;height:130px">
+          <div class="photo" data-pane="a2:1" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-bike"/></svg>
+            <button class="iconbtn" data-tab="a2:3" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a2:2" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.7</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i class="on" data-tab="a2:1"></i><i data-tab="a2:2"></i><i data-tab="a2:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a2:2" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-bike"/></svg>
+            <button class="iconbtn" data-tab="a2:1" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a2:3" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.7</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a2:1"></i><i class="on" data-tab="a2:2"></i><i data-tab="a2:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a2:3" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-bike"/></svg>
+            <button class="iconbtn" data-tab="a2:2" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a2:1" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.7</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a2:1"></i><i data-tab="a2:2"></i><i class="on" data-tab="a2:3"></i></div>
+          </div>
+        </div>
+        <div style="padding:14px">
+          <div class="row top between gap8">
+            <div class="grow">
+              <div class="t-subtitle t-b7">Bicycle</div>
+              <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.7</span><span class="t-cap t-mut">(52)</span></div>
+            </div>
+            <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,400</div></div>
+          </div>
+          <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Sabbir Hasan</div>
+          <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
+          <div class="row gap8 mt8">
+            <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+            <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer">Accept Bid</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass pad0 mt12 anim-fadeUp d3" style="overflow:hidden">
+        <div style="position:relative;height:130px">
+          <div class="photo" data-pane="a3:1" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a3:3" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a3:2" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.6</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i class="on" data-tab="a3:1"></i><i data-tab="a3:2"></i><i data-tab="a3:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a3:2" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a3:1" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a3:3" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.6</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a3:1"></i><i class="on" data-tab="a3:2"></i><i data-tab="a3:3"></i></div>
+          </div>
+          <div class="photo hidden" data-pane="a3:3" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <svg class="ic" style="width:44px;height:44px;color:var(--gold500);position:relative;z-index:1"><use href="#i-truck"/></svg>
+            <button class="iconbtn" data-tab="a3:2" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-back"/></svg></button>
+            <button class="iconbtn" data-tab="a3:1" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(7,17,38,.75);border:1px solid var(--navy-border);z-index:2"><svg class="ic"><use href="#i-chevron"/></svg></button>
+            <span class="pill" style="position:absolute;top:10px;right:10px;background:rgba(7,17,38,.82);color:var(--gold500);z-index:2"><svg class="ic fill"><use href="#i-starFill"/></svg>4.6</span>
+            <div class="pgdots" style="position:absolute;bottom:8px;left:0;right:0;z-index:2"><i data-tab="a3:1"></i><i data-tab="a3:2"></i><i class="on" data-tab="a3:3"></i></div>
+          </div>
+        </div>
+        <div style="padding:14px">
+          <div class="row top between gap8">
+            <div class="grow">
+              <div class="t-subtitle t-b7">Pickup van</div>
+              <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.6</span><span class="t-cap t-mut">(38)</span></div>
+            </div>
+            <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,600</div></div>
+          </div>
+          <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Nafis Ahmed</div>
+          <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
+          <div class="row gap8 mt8">
+            <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+            <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer">Accept Bid</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1872,6 +2092,66 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-worker-home-unverified" data-title="Worker home · unverified" data-sec="5">
+  <div class="flabel"><span class="fname">Worker home · unverified</span><span class="froute">/worker/home</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <span class="avatar sm gold">RU</span>
+      <div class="atitles">
+        <div class="atitle">Rahim Uddin <svg class="ic fill" style="width:10px;height:10px;color:var(--gold500)"><use href="#i-starFill"/></svg><span class="t-cap t-gold">4.9</span></div>
+        <div class="asub"><svg class="ic" style="width:10px;height:10px"><use href="#i-location"/></svg> Motijheel, Dhaka</div>
+      </div>
+      <span class="modepill" data-go="employer-home">WORKER</span>
+      <button class="iconbtn" data-go="notifications"><svg class="ic"><use href="#i-bell"/></svg><i class="bdot"></i></button>
+      <button class="iconbtn" data-sheet="menu-unv"><svg class="ic"><use href="#i-menu"/></svg></button>
+    </div>
+    <div class="body">
+      <div class="glass md anim-fadeUp">
+        <div class="row gap12">
+          <span class="avatar lg gold">RU</span>
+          <div class="grow">
+            <div class="t-subtitle">Rahim Uddin</div>
+            <div class="row gap4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b7 t-gold">4.9</span><span class="t-cap t-mut">(87)</span></div>
+          </div>
+          <span class="pill warn">Under review</span>
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="grow t-c"><div class="t-sm t-b7 t-gold">0</div><div class="t-cap t-mut">Jobs done</div></div>
+          <div class="grow t-c" style="border-left:1px solid rgba(255,255,255,.1)"><div class="t-sm t-b7 t-gold">৳0</div><div class="t-cap t-mut">Earned</div></div>
+          <div class="grow t-c" style="border-left:1px solid rgba(255,255,255,.1)"><div class="t-sm t-b7 t-gold">0</div><div class="t-cap t-mut">Active bids</div></div>
+        </div>
+      </div>
+      <div class="banner warn mt16 anim-fadeUp d1"><svg class="ic"><use href="#i-warning"/></svg>
+        <div><div class="bt">Verification under review</div>
+        <div class="bbody">Your NID is being reviewed. You can browse jobs but can't accept offers or bid until it's approved.</div></div></div>
+      <div class="t-label mt16">FIND WORK</div>
+      <div class="row gap12 mt12">
+        <div class="glass tap grow t-c anim-fadeUp d2" data-go="online-feed" style="position:relative;min-height:110px">
+          <span class="chip gold" style="position:absolute;top:8px;right:8px">12</span>
+          <svg class="ic" style="width:30px;height:30px;color:var(--gold500);margin-top:16px"><use href="#i-globe"/></svg>
+          <div class="t-sm t-b7 mt8">Online</div>
+        </div>
+        <div class="glass tap grow t-c anim-fadeUp d3" data-go="job-feed" style="position:relative;min-height:110px">
+          <span class="chip gold" style="position:absolute;top:8px;right:8px">8</span>
+          <svg class="ic" style="width:30px;height:30px;color:var(--gold500);margin-top:16px"><use href="#i-truck"/></svg>
+          <div class="t-sm t-b7 mt8">Physical Job / Asset Service</div>
+        </div>
+      </div>
+      <button class="btn btn-primary mt16" data-go="worker-intro"><svg class="ic"><use href="#i-shield"/></svg>Verify now</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="menu-unv">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Rahim Uddin</div>
+        <div class="lrow mt8" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg><div class="lmain"><div class="lt">Profile</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
+        <div class="lrow" data-go="worker-intro"><svg class="ic"><use href="#i-shield"/></svg><div class="lmain"><div class="lt">Complete verification</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-job-feed" data-title="Job feed · physical" data-sec="5">
   <div class="flabel"><span class="fname">Job feed · physical</span><span class="froute" data-en-lock>/worker/feed</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -1946,6 +2226,18 @@ textarea.input{padding:11px 13px}
             <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
           </div>
         </div>
+        <div class="glass tap mt12 anim-fadeUp d3" data-go="job-detail-asset">
+          <div class="row top between gap8"><div class="t-subtitle t-b7 grow">Need a car for airport drop</div><div class="t-subtitle t-gold">৳1,800</div></div>
+          <div class="row wrap gap12 mt8">
+            <span class="row gap4 t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg>Banani</span>
+            <span class="row gap4 t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-truck"/></svg>1.2 km</span>
+          </div>
+          <div class="chiprow mt8"><span class="chip on"><svg class="ic"><use href="#i-truck"/></svg>Asset Service</span></div>
+          <div class="row gap8 mt12">
+            <button class="btn btn-secondary grow" data-go="job-detail-asset">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-asset">Accept offer</button>
+          </div>
+        </div>
       </div>
       <div class="mt12 hidden" data-pane="seg:active">
         <div class="row between">
@@ -2001,6 +2293,47 @@ textarea.input{padding:11px 13px}
           <button class="btn btn-secondary grow" data-toast="Filters cleared">Clear all</button>
           <button class="btn btn-primary grow" data-dismiss>Apply filters</button>
         </div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-job-feed-empty" data-title="Job feed · no matches" data-sec="5">
+  <div class="flabel"><span class="fname">Job feed · no matches</span><span class="froute">/worker/feed</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Physical Job / Asset Service</div></div>
+      <button class="iconbtn" data-sheet="filters-empty"><svg class="ic"><use href="#i-filter"/></svg></button>
+    </div>
+    <div class="body">
+      <div class="seg">
+        <button class="sopt on" data-tab="sege:immediate">Immediately hiring</button>
+        <button class="sopt" data-tab="sege:active">Still active</button>
+      </div>
+      <div class="row between mt16">
+        <span class="t-cap t-mut">0 jobs available nearby</span>
+        <button class="iconbtn" data-sheet="filters-empty"><svg class="ic"><use href="#i-filter"/></svg></button>
+      </div>
+      <div class="t-c" style="padding:32px 16px">
+        <div class="hero-ic gold anim-fadeUp" style="margin:0 auto"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d1">No jobs match right now</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">Try adjusting your filters or check back soon.</div>
+      </div>
+    </div>
+    <div class="bottomnav">
+      <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Jobs</button>
+      <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="filters-empty">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Sort by</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Nearest first</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Highest budget</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Newest first</div></div></div>
       </div>
     </div>
   </div></div>
@@ -2090,6 +2423,35 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-online-feed-empty" data-title="Online job feed · empty" data-sec="5">
+  <div class="flabel"><span class="fname">Online job feed · empty</span><span class="froute">/worker/feed/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Online Jobs</div></div>
+      <button class="iconbtn" data-go="notifications"><svg class="ic"><use href="#i-bell"/></svg></button>
+    </div>
+    <div class="body">
+      <div class="seg">
+        <button class="sopt" data-tab="oe:immediate">Immediately Hiring</button>
+        <button class="sopt on" data-tab="oe:active">Still Active</button>
+      </div>
+      <div class="t-cap t-mut mt12">0 online jobs available</div>
+      <div class="t-c" style="padding:32px 16px">
+        <div class="hero-ic gold anim-fadeUp" style="margin:0 auto"><svg class="ic"><use href="#i-globe"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d1">No online jobs here</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">Check the other tab or come back soon.</div>
+      </div>
+    </div>
+    <div class="bottomnav">
+      <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Jobs</button>
+      <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-job-detail" data-title="Job detail" data-sec="5">
   <div class="flabel"><span class="fname">Job detail</span><span class="froute" data-en-lock>/job/detail</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -2153,6 +2515,140 @@ textarea.input{padding:11px 13px}
       </div>
     </div>
     <div class="sheetwrap" data-sheet-id="reminder">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Set a reminder</div>
+        <div class="radiotile" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">1 hour</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">2 hours</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">3 hours</div></div></div>
+        <div class="radiotile on mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Never</div></div></div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-job-detail-unverified" data-title="Job detail · unverified worker" data-sec="5">
+  <div class="flabel"><span class="fname">Job detail · unverified worker</span><span class="froute" data-en-lock>/job/detail</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job Detail</div></div>
+    </div>
+    <div class="body">
+      <div class="row top between gap8 anim-fadeUp">
+        <div class="grow">
+          <div class="t-title t-b7">Medicine delivery — Motijheel → Dhanmondi</div>
+          <div class="t-sm t-sec2 mt4">Posted 12 min ago</div>
+        </div>
+        <div style="text-align:right">
+          <div class="t-title t-b7 t-gold">৳1,500</div>
+          <div class="t-cap t-mut">BUDGET</div>
+        </div>
+      </div>
+      <div class="mt12 anim-fadeUp d1"><span class="chip gold">600m away</span></div>
+      <div class="t-body mt12">Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.</div>
+      <div class="glass mt12 anim-fadeUp d2">
+        <div class="t-cap t-mut mb8">LOCATION ON MAP</div>
+        <div class="mapmock">
+          <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
+            <path d="M0 66 C80 46 160 96 300 74" stroke="rgba(255,255,255,.12)" stroke-width="7" fill="none"/>
+            <path d="M50 0 C70 80 40 140 80 210" stroke="rgba(255,255,255,.09)" stroke-width="5" fill="none"/>
+            <path d="M0 155 L300 136" stroke="rgba(255,255,255,.07)" stroke-width="4"/>
+          </svg>
+          <span class="pin gold" style="left:60%;top:44%"><svg class="ic"><use href="#i-location"/></svg></span>
+          <span class="mtag">Job site</span>
+        </div>
+        <div class="t-cap t-mut mt8">Live route unlocks after your NID is verified.</div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">POSTED BY</div>
+        <div class="t-body t-b mt8">Karim Ahmed</div>
+        <div class="row gap4 mt4">
+          <span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg></span>
+          <span class="t-sm t-gold t-b">4.8</span><span class="t-cap t-mut">(142)</span>
+        </div>
+        <div class="t-sm t-teal t-b mt8" data-go="employer-reviews" style="text-decoration:underline">View client reviews →</div>
+      </div>
+      <div class="banner warn mt24"><svg class="ic"><use href="#i-warning"/></svg>
+        <div><div class="bbody">You must be verified to apply for jobs.</div></div></div>
+      <button class="btn btn-primary mt12" data-go="worker-intro"><svg class="ic"><use href="#i-shield"/></svg>Verify now</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-job-detail-asset" data-title="Job detail · asset service" data-sec="5">
+  <div class="flabel"><span class="fname">Job detail · asset service</span><span class="froute" data-en-lock>/job/detail</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job Detail</div></div>
+    </div>
+    <div class="body">
+      <div class="row top between gap8 anim-fadeUp">
+        <div class="grow">
+          <div class="t-title t-b7">Need a car for airport drop</div>
+          <div class="t-sm t-sec2 mt4">Posted 40 min ago</div>
+        </div>
+        <div style="text-align:right">
+          <div class="t-title t-b7 t-gold">৳1,800</div>
+          <div class="t-cap t-mut">BUDGET</div>
+        </div>
+      </div>
+      <div class="mt12 anim-fadeUp d1">
+        <span class="chip gold">1.2 km away</span>
+        <span class="chip on"><svg class="ic"><use href="#i-truck"/></svg>Asset Service</span>
+      </div>
+      <div class="t-body mt12">Need a private car with driver for an airport drop from Banani to Hazrat Shahjalal International. Pick-up at 5:30 AM, one passenger with two suitcases.</div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">ASSET REQUIRED</div>
+        <div class="row gap12 mt12">
+          <span class="avatar t-gold"><svg class="ic"><use href="#i-truck"/></svg></span>
+          <div class="grow">
+            <div class="t-sm t-b">Car — sedan or larger</div>
+            <div class="t-cap t-mut mt4">Boot space for 2 suitcases · AC required</div>
+          </div>
+        </div>
+        <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+          <div><div class="bbody">Only workers with a matching declared asset can bid on this job.</div></div></div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d2">
+        <div class="t-cap t-mut mb8">CLIENT &amp; ASSET LOCATION</div>
+        <div class="mapmock">
+          <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
+            <path d="M0 66 C80 46 160 96 300 74" stroke="rgba(255,255,255,.12)" stroke-width="7" fill="none"/>
+            <path d="M50 0 C70 80 40 140 80 210" stroke="rgba(255,255,255,.09)" stroke-width="5" fill="none"/>
+            <path d="M0 155 L300 136" stroke="rgba(255,255,255,.07)" stroke-width="4"/>
+            <path d="M72 147 C120 120 180 110 216 63" stroke="#0FA7A3" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+          </svg>
+          <span class="pin" style="left:24%;top:70%"><svg class="ic"><use href="#i-location"/></svg></span>
+          <span class="pin gold" style="left:72%;top:30%"><svg class="ic"><use href="#i-location"/></svg></span>
+          <span class="mtag">Your asset → client</span>
+        </div>
+        <div class="row gap8 mt8"><span class="pill teal">● Your asset</span><span class="pill mut">● Client</span></div>
+      </div>
+      <div class="glass tap mt12" data-sheet="reminder-asset">
+        <div class="row between">
+          <div><div class="t-cap t-mut">REMIND ME IN</div><div class="t-sm t-b mt4">Never</div></div>
+          <span class="t-gold"><svg class="ic"><use href="#i-clock"/></svg></span>
+        </div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">POSTED BY</div>
+        <div class="t-body t-b mt8">Karim Ahmed</div>
+        <div class="row gap4 mt4">
+          <span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg></span>
+          <span class="t-sm t-gold t-b">4.8</span><span class="t-cap t-mut">(142)</span>
+        </div>
+        <div class="t-sm t-teal t-b mt8" data-go="employer-reviews" style="text-decoration:underline">View client reviews →</div>
+      </div>
+      <div class="row gap8 mt24">
+        <button class="btn btn-secondary grow" data-go="bid-submit">Place a bid</button>
+        <button class="btn btn-primary grow" data-go="bid-submit">Accept offer</button>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="reminder-asset">
       <div class="sdim"></div>
       <div class="sheet"><div class="grab"></div>
         <div class="t-subtitle mb12">Set a reminder</div>
@@ -2316,6 +2812,7 @@ textarea.input{padding:11px 13px}
       <div class="glass t-c anim-fadeUp">
         <div class="t-cap t-mut">AMOUNT TO BE PAID</div>
         <div class="t-display t-gold mt4">৳1,500</div>
+        <div class="t-cap t-teal t-b mt8" data-go="payment-selection">Change payment option →</div>
       </div>
       <div class="t-cap t-mut mt16">PAYMENT METHOD</div>
       <div class="radiotile on mt12" data-tab="pay:bkash" role="button">
@@ -2567,8 +3064,19 @@ textarea.input{padding:11px 13px}
       </div>
     </div>
     <div class="footpad">
-      <button class="btn btn-primary" data-go="completion">Complete this Job</button>
+      <button class="btn btn-primary" data-sheet="opp-client">Complete this Job</button>
       <button class="btn btn-destructive mt8" data-go="cancel-reason">Cancel job</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="opp-client">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Opportunity job</div>
+        <div class="t-sm t-sec2 mt8">Do you need an asset service while your physical job is on progress?</div>
+        <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+          <div><div class="bbody">This is a separate opportunity job. Your original job stays active — finish or cancel this one to return to it.</div></div></div>
+        <button class="btn btn-primary mt16" data-go="post-opportunity">Yes</button>
+        <button class="btn btn-secondary mt8" data-go="completion">No</button>
+      </div>
     </div>
     <div class="sheetwrap" data-sheet-id="sos">
       <div class="sdim"></div>
@@ -2743,8 +3251,19 @@ textarea.input{padding:11px 13px}
       </div>
     </div>
     <div class="footpad">
-      <button class="btn btn-primary" data-go="completion">Submit</button>
+      <button class="btn btn-primary" data-sheet="opp-worker">Submit</button>
       <button class="btn btn-destructive mt8" data-sheet="cancel">Cancel this job</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="opp-worker">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Opportunity job</div>
+        <div class="t-sm t-sec2 mt8">Do you want to lend an asset while doing your ongoing physical job?</div>
+        <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+          <div><div class="bbody">This is a separate opportunity job. Your original job stays active — finish or cancel this one to return to it.</div></div></div>
+        <button class="btn btn-primary mt16" data-go="job-feed">Switch to asset job</button>
+        <button class="btn btn-secondary mt8" data-go="completion">No</button>
+      </div>
     </div>
     <div class="sheetwrap" data-sheet-id="cancel">
       <div class="sdim"></div>
@@ -2819,6 +3338,29 @@ textarea.input{padding:11px 13px}
         <div class="t-sm t-gold t-b mt12">Image (optional)</div>
         <div class="dropzone mt8" data-toast="Image attached"><svg class="ic"><use href="#i-camera"/></svg><div class="t-sm mt4">Tap to add an image</div></div>
         <button class="btn btn-primary mt16" data-toast="Job cancelled" data-go="employer-home">Submit</button>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-instant-cancel" data-title="Cancel instant job · reason prompt" data-sec="8">
+  <div class="flabel"><span class="fname">Cancel instant job · reason prompt</span><span class="froute" data-en-lock>/job/cancel</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="body center">
+      <div class="glass lg anim-fadeUp" style="width:100%">
+        <div class="t-title t-b7">Cancel this instant job?</div>
+        <div class="t-sm t-sec2 mt12">Why are you cancelling?</div>
+        <div class="radiotile mt12" data-tab="icr:mind"><span class="rdot"></span><div class="grow"><div class="lt t-sm">Changed my mind</div></div></div>
+        <div class="radiotile mt8" data-tab="icr:offline"><span class="rdot"></span><div class="grow"><div class="lt t-sm">Found worker offline</div></div></div>
+        <div class="radiotile on mt8" data-tab="icr:other"><span class="rdot"></span><div class="grow"><div class="lt t-sm">Other</div></div></div>
+        <div data-pane="icr:other">
+          <textarea class="input mt8" rows="2" placeholder="Tell us more (optional)"></textarea>
+        </div>
+        <div class="hidden" data-pane="icr:mind"></div>
+        <div class="hidden" data-pane="icr:offline"></div>
+        <button class="btn btn-secondary mt20" data-back>Keep job</button>
+        <button class="btn btn-destructive mt8" data-go="employer-home" data-toast="Job cancelled">Cancel job</button>
       </div>
     </div>
   </div></div>
@@ -3028,7 +3570,10 @@ textarea.input{padding:11px 13px}
       </div>
       <div style="padding:16px">
         <div class="glass anim-fadeUp d1">
-          <div class="t-cap t-mut">ACTIVE MODE</div>
+          <div class="row between">
+            <div class="t-cap t-mut">ACTIVE MODE</div>
+            <span class="t-cap t-teal t-b" data-go="mode-toggle">Manage mode →</span>
+          </div>
           <div class="seg mt8">
             <button class="sopt on" data-tab="mode:client">Client</button>
             <button class="sopt" data-tab="mode:worker">Worker</button>
@@ -3227,6 +3772,36 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-bid-history-empty" data-title="Worker bid history · empty" data-sec="10">
+  <div class="flabel"><span class="fname">Worker bid history · empty</span><span class="froute" data-en-lock>/profile/bids</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">My Bidded Jobs</div></div>
+    </div>
+    <div class="body">
+      <div class="glass anim-fadeUp">
+        <div class="row between top">
+          <div class="col"><span class="t-cap t-mut">ACTIVE BIDS</span><span class="t-title t-gold">0</span></div>
+          <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">PAST BIDS</span><span class="t-title t-gold">0</span></div>
+        </div>
+      </div>
+      <div class="seg mt12">
+        <button class="sopt on" data-tab="bideseg:active">Active</button>
+        <button class="sopt" data-tab="bideseg:past">Past</button>
+        <button class="sopt" data-tab="bideseg:all">All</button>
+      </div>
+      <div class="t-c" style="padding:32px 16px">
+        <div class="hero-ic gold anim-fadeUp" style="margin:0 auto"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d1">No bids here</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">Your bids will show up once you place them on a job.</div>
+      </div>
+      <button class="btn btn-secondary mt12" data-go="job-feed"><svg class="ic"><use href="#i-search"/></svg>Browse jobs</button>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-posted-jobs" data-title="Client posted jobs" data-sec="10">
   <div class="flabel"><span class="fname">Client posted jobs</span><span class="froute">/profile/posted-jobs</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -3242,7 +3817,7 @@ textarea.input{padding:11px 13px}
         <div class="row between mt8"><span class="chip gold"><svg class="ic"><use href="#i-briefcase"/></svg>Skill</span><span class="t-sm t-b7 t-gold">৳1,500</span></div>
         <div class="t-cap t-mut mt8">4 bids · posted 12 min ago</div>
       </div>
-      <div class="glass tap mt8 anim-fadeUp d2" data-go="shortlist">
+      <div class="glass tap mt8 anim-fadeUp d2" data-go="shortlist-asset">
         <div class="row between top gap8"><div class="t-sm t-b7 grow">Need a car for airport drop</div><span class="pill mut">Bidding</span></div>
         <div class="row between mt8"><span class="chip on"><svg class="ic"><use href="#i-truck"/></svg>Asset</span><span class="t-sm t-b7 t-gold">৳1,800</span></div>
         <div class="t-cap t-mut mt8">2 bids · posted 40 min ago</div>
@@ -3366,7 +3941,7 @@ textarea.input{padding:11px 13px}
         <hr class="divider">
         <div class="row between">
           <span class="t-cap t-b t-mut">INACTIVE</span>
-          <button class="btn btn-ghost inline sm t-err" data-toast="Method removed">Remove</button>
+          <button class="btn btn-ghost inline sm t-err" data-toast="Method removed" data-go="cash-warning">Remove</button>
         </div>
       </div>
       <button class="btn btn-secondary mt12" data-go="add-method"><svg class="ic"><use href="#i-plus"/></svg>Add payment method</button>
@@ -4148,7 +4723,16 @@ const BN = {
 "Do you want to do a physical job while your asset service is on progress?": "আপনার সম্পদ সেবা চলাকালীন কি আপনি একটি শারীরিক কাজ করতে চান?",
 "This is a separate opportunity job. Your original job stays active — finish or cancel this one to return to it.": "এটি একটি পৃথক সুযোগের কাজ। আপনার মূল কাজ সক্রিয় থাকে — এতে ফিরে যেতে এটি শেষ বা বাতিল করুন।",
 "You already have an active Asset Service on going — only Skill jobs are shown now. You can't provide another Asset Service until the current one is completed or cancelled.": "আপনার ইতিমধ্যে একটি সক্রিয় সম্পদ সেবা চলছে — এখন শুধু দক্ষতার কাজ দেখানো হচ্ছে। বর্তমানটি সম্পন্ন বা বাতিল না হওয়া পর্যন্ত আপনি আরেকটি সম্পদ সেবা দিতে পারবেন না।",
-"You have an active Asset Service on going — only Skill jobs are shown now. You can't provide another Asset Service until the current one is completed or cancelled.": "আপনার একটি সক্রিয় সম্পদ সেবা চলছে — এখন শুধু দক্ষতার কাজ দেখানো হচ্ছে। বর্তমানটি সম্পন্ন বা বাতিল না হওয়া পর্যন্ত আপনি আরেকটি সম্পদ সেবা দিতে পারবেন না।"
+"You have an active Asset Service on going — only Skill jobs are shown now. You can't provide another Asset Service until the current one is completed or cancelled.": "আপনার একটি সক্রিয় সম্পদ সেবা চলছে — এখন শুধু দক্ষতার কাজ দেখানো হচ্ছে। বর্তমানটি সম্পন্ন বা বাতিল না হওয়া পর্যন্ত আপনি আরেকটি সম্পদ সেবা দিতে পারবেন না।",
+"Posted 40 min ago": "40 মিনিট আগে পোস্ট করা হয়েছে",
+"1.2 km away": "1.2 কিমি দূরে",
+"ASSET REQUIRED": "প্রয়োজনীয় সম্পদ",
+"Car — sedan or larger": "গাড়ি — সেডান বা বড়",
+"Boot space for 2 suitcases · AC required": "2টি স্যুটকেসের জায়গা · এসি প্রয়োজন",
+"Only workers with a matching declared asset can bid on this job.": "শুধু মিলে যাওয়া ঘোষিত সম্পদ আছে এমন কর্মীরাই এই কাজে বিড করতে পারবেন।",
+"Your asset → client": "আপনার সম্পদ → ক্লায়েন্ট",
+"Manage mode →": "মোড পরিচালনা →",
+"Change payment option →": "পেমেন্ট অপশন পরিবর্তন →"
 };
 </script>
 <script>
