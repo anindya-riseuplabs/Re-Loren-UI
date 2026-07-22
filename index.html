@@ -1498,7 +1498,20 @@ textarea.input{padding:11px 13px}
       <div class="atitles"><div class="atitle">Post a Job</div></div>
     </div>
     <div class="body">
-      <div class="mb8"><span class="t-cap t-mut">DESCRIBE YOUR JOB </span><span class="t-cap t-gold">(Don't mention price)</span></div>
+      <div class="t-cap t-mut mb8">WHAT DO YOU NEED?</div>
+      <div class="row gap8">
+        <div class="glass tap grow t-c sel" style="padding:12px 8px">
+          <svg class="ic" style="width:22px;height:22px;color:var(--gold500)"><use href="#i-briefcase"/></svg>
+          <div class="t-sm t-b7 mt4">Skill</div>
+          <div class="t-cap t-mut">A worker's time &amp; skill</div>
+        </div>
+        <div class="glass tap grow t-c" style="padding:12px 8px" data-go="post-compose-asset">
+          <svg class="ic" style="width:22px;height:22px;color:var(--gold500)"><use href="#i-truck"/></svg>
+          <div class="t-sm t-b7 mt4">Asset</div>
+          <div class="t-cap t-mut">A vehicle, room, tool or gear</div>
+        </div>
+      </div>
+      <div class="mb8 mt16"><span class="t-cap t-mut">DESCRIBE YOUR JOB </span><span class="t-cap t-gold">(Don't mention price)</span></div>
       <textarea class="input" rows="5" placeholder="Describe what needs to be done...">Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.</textarea>
       <label class="field mt16"><span class="flab t-gold">Job type</span>
         <span class="input" data-sheet="jobtype"><input value="Instant" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
@@ -1537,6 +1550,142 @@ textarea.input{padding:11px 13px}
         <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Instant</div></div></div>
         <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Long duration / flexible timing</div></div></div>
       </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-compose-asset" data-title="Post job · asset service" data-sec="4">
+  <div class="flabel"><span class="fname">Post job · asset service</span><span class="froute" data-en-lock>/employer/post</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Post a Job</div></div>
+    </div>
+    <div class="body">
+      <div class="t-cap t-mut mb8">WHAT DO YOU NEED?</div>
+      <div class="row gap8">
+        <div class="glass tap grow t-c" style="padding:12px 8px" data-go="post-compose">
+          <svg class="ic" style="width:22px;height:22px;color:var(--gold500)"><use href="#i-briefcase"/></svg>
+          <div class="t-sm t-b7 mt4">Skill</div>
+          <div class="t-cap t-mut">A worker's time &amp; skill</div>
+        </div>
+        <div class="glass tap grow t-c sel" style="padding:12px 8px">
+          <svg class="ic" style="width:22px;height:22px;color:var(--gold500)"><use href="#i-truck"/></svg>
+          <div class="t-sm t-b7 mt4">Asset</div>
+          <div class="t-cap t-mut">A vehicle, room, tool or gear</div>
+        </div>
+      </div>
+      <label class="field mt16"><span class="flab t-gold">Asset type</span>
+        <span class="input" data-sheet="assettype"><input value="Car" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
+      <div class="banner info mt8"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Only workers with a matching declared asset can bid on this job.</div></div></div>
+      <div class="mb8 mt16"><span class="t-cap t-mut">DESCRIBE WHAT YOU NEED </span><span class="t-cap t-gold">(Don't mention price)</span></div>
+      <textarea class="input" rows="4" placeholder="Describe what needs to be done...">Need a private car with driver for an airport drop from Banani. Pick-up at 5:30 AM, two suitcases.</textarea>
+      <div class="t-cap t-mut mt8">Workers will bid on your job — prices happen in bids, not descriptions.</div>
+      <label class="field mt16"><span class="flab t-gold">Job type</span>
+        <span class="input" data-sheet="jobtype-asset"><input value="Instant" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
+      <label class="field mt16"><span class="flab">Work location</span>
+        <span class="input"><input value="Banani, Dhaka" placeholder="Area / address"><svg class="ic"><use href="#i-location"/></svg></span></label>
+      <label class="field mt16"><span class="flab">Budget</span>
+        <span class="input"><span class="prefix">৳</span><input value="1800" placeholder="1,800"></span></label>
+      <div class="mt16">
+        <div class="row between mb8"><span class="t-sm t-gold">Service area</span><span class="t-cap t-mut">Radius · <span class="t-gold t-b">3 km</span></span></div>
+        <div class="mapmock" style="height:150px">
+          <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
+            <path d="M0 50 C90 30 170 80 300 60" stroke="rgba(255,255,255,.12)" stroke-width="7" fill="none"/>
+            <path d="M50 0 C70 90 40 150 80 210" stroke="rgba(255,255,255,.09)" stroke-width="5" fill="none"/>
+            <path d="M0 160 L300 140" stroke="rgba(255,255,255,.07)" stroke-width="4"/>
+            <circle cx="150" cy="100" r="62" fill="rgba(15,167,163,.13)" stroke="var(--teal500)" stroke-width="2" stroke-dasharray="6 4"/>
+          </svg>
+          <span class="pin gold" style="left:50%;top:48%"><svg class="ic"><use href="#i-location"/></svg></span>
+          <span class="mtag">Drag the pin · 3 km service radius</span>
+        </div>
+        <div class="chiprow mt8">
+          <span class="chip on">3 km</span>
+          <span class="chip">5 km</span>
+          <span class="chip">15 km</span>
+        </div>
+      </div>
+      <button class="btn btn-primary mt24" data-go="post-review-asset">Post a job</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="assettype">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Asset type</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Car</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Motorbike</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Pickup van</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Room / flat for check-in</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Camera</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Other</div></div></div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="jobtype-asset">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Job type</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Instant</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Long duration / flexible timing</div></div></div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-review-asset" data-title="Post review · asset service" data-sec="4">
+  <div class="flabel"><span class="fname">Post review · asset service</span><span class="froute" data-en-lock>/employer/post/review</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Confirm your job</div></div>
+    </div>
+    <div class="body">
+      <div class="banner info"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Please review the details before posting.</div></div></div>
+      <div class="glass mt12">
+        <div class="row gap8"><span class="t-cap t-mut">CAPTION</span><span class="chip gold">Auto-generated</span></div>
+        <div class="t-subtitle t-gold mt4">Need a car for airport drop — Banani</div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">DESCRIPTION</div>
+        <div class="t-body mt8">"Need a private car with driver for an airport drop from Banani. Pick-up at 5:30 AM, two suitcases."</div>
+      </div>
+      <div class="glass mt12">
+        <div class="row between"><span class="t-sm t-sec2">You need</span><span class="chip on"><svg class="ic"><use href="#i-truck"/></svg>Asset</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Asset type</span><span class="t-sm t-b">Car</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Job type</span><span class="t-sm t-b">Instant</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Work location</span><span class="t-sm t-b">Banani, Dhaka</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Service area</span><span class="t-sm t-b">3 km radius</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Budget</span><span class="t-sm t-b">৳1,800</span></div>
+      </div>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Only workers with a matching declared asset can bid on this job.</div></div></div>
+      <button class="btn btn-primary mt24" data-go="post-success-asset">Confirm &amp; post</button>
+      <button class="btn btn-secondary mt8" data-back>Edit</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-success-asset" data-title="Post success · asset service" data-sec="4">
+  <div class="flabel"><span class="fname">Post success · asset service</span><span class="froute" data-en-lock>/employer/post/success</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="body center">
+      <div class="okring pulse anim-pop"><svg class="ic"><use href="#i-check"/></svg></div>
+      <div class="t-title t-b7 t-c mt24 anim-fadeUp d1">Job Posted!</div>
+      <div class="t-body t-sec2 t-c mt12 anim-fadeUp d2">Your job has been successfully published. We are now matching you with nearby asset services.</div>
+      <div class="chiprow mt16 anim-fadeUp d2" style="justify-content:center">
+        <span class="chip on"><svg class="ic"><use href="#i-truck"/></svg>Asset: Car</span>
+        <span class="chip"><svg class="ic"><use href="#i-location"/></svg>3 km radius</span>
+      </div>
+      <button class="btn btn-primary mt32 anim-fadeUp d3" data-go="shortlist-asset">View processing</button>
+      <button class="btn btn-secondary mt12 anim-fadeUp d4" data-go="post-compose"><svg class="ic"><use href="#i-plus"/></svg>Make another post</button>
     </div>
   </div></div>
 </article>
@@ -4732,7 +4881,18 @@ const BN = {
 "Only workers with a matching declared asset can bid on this job.": "শুধু মিলে যাওয়া ঘোষিত সম্পদ আছে এমন কর্মীরাই এই কাজে বিড করতে পারবেন।",
 "Your asset → client": "আপনার সম্পদ → ক্লায়েন্ট",
 "Manage mode →": "মোড পরিচালনা →",
-"Change payment option →": "পেমেন্ট অপশন পরিবর্তন →"
+"Change payment option →": "পেমেন্ট অপশন পরিবর্তন →",
+"A worker's time & skill": "কর্মীর সময় ও দক্ষতা",
+"A vehicle, room, tool or gear": "যানবাহন, রুম, যন্ত্র বা সরঞ্জাম",
+"DESCRIBE WHAT YOU NEED": "আপনার কী দরকার লিখুন",
+"You need": "আপনার দরকার",
+"3 km": "3 কিমি",
+"5 km": "5 কিমি",
+"3 km radius": "3 কিমি ব্যাসার্ধ",
+"Room / flat for check-in": "চেক-ইনের জন্য রুম / ফ্ল্যাট",
+"Camera": "ক্যামেরা",
+"Other": "অন্যান্য",
+"Your job has been successfully published. We are now matching you with nearby asset services.": "আপনার কাজ সফলভাবে প্রকাশিত হয়েছে। আমরা এখন কাছাকাছি সম্পদ সেবার সাথে মেলাচ্ছি।"
 };
 </script>
 <script>
