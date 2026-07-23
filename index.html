@@ -1467,7 +1467,7 @@ textarea.input{padding:11px 13px}
       <div class="sdim"></div>
       <div class="sheet"><div class="grab"></div>
         <div class="t-title mb12">What kind of job?</div>
-        <div class="radiotile" data-go="post-compose"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Online Job</div><div class="t-sm t-sec2">Done remotely · paid online (bKash / Nagad)</div></div></div>
+        <div class="radiotile" data-go="post-compose-online"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Online Job</div><div class="t-sm t-sec2">Done remotely · paid online (bKash / Nagad)</div></div></div>
         <div class="radiotile mt8 mb8" data-go="post-compose"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Physical Job / Asset Service</div><div class="t-sm t-sec2">On-site work matched to nearby workers · cash or online</div></div></div>
       </div>
     </div>
@@ -1686,6 +1686,79 @@ textarea.input{padding:11px 13px}
       </div>
       <button class="btn btn-primary mt32 anim-fadeUp d3" data-go="shortlist-asset">View processing</button>
       <button class="btn btn-secondary mt12 anim-fadeUp d4" data-go="post-compose"><svg class="ic"><use href="#i-plus"/></svg>Make another post</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-compose-online" data-title="Post job · online (no map)" data-sec="4">
+  <div class="flabel"><span class="fname">Post job · online (no map)</span><span class="froute" data-en-lock>/employer/post</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Post a Job</div></div>
+    </div>
+    <div class="body">
+      <div class="chiprow"><span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Online Job</span></div>
+      <div class="mb8 mt16"><span class="t-cap t-mut">DESCRIBE YOUR JOB </span><span class="t-cap t-gold">(Don't mention price)</span></div>
+      <textarea class="input" rows="5" placeholder="Describe what needs to be done...">Design a logo for a Dhaka cafe — modern, minimal, 3 concepts.</textarea>
+      <div class="t-cap t-mut mt8">Workers will bid on your job — prices happen in bids, not descriptions.</div>
+      <label class="field mt16"><span class="flab t-gold">Job type</span>
+        <span class="input" data-sheet="jobtype-online"><input value="Instant" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
+      <div class="mt16">
+        <div class="t-sm t-gold mb8">Where should this run?</div>
+        <div class="radiotile on" data-tab="reach:country"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Within Country</div></div></div>
+        <div class="radiotile mt8" data-tab="reach:world"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Worldwide</div></div></div>
+      </div>
+      <label class="field mt16"><span class="flab">Budget</span>
+        <span class="input"><span class="prefix">৳</span><input value="4500" placeholder="4,500"></span></label>
+      <div class="banner info mt16"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Online jobs are paid online only (bKash / Nagad). Cash isn't available.</div></div></div>
+      <button class="btn btn-primary mt24" data-go="post-review-online">Post a job</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="jobtype-online">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Job type</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Instant</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Long duration / flexible timing</div></div></div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-review-online" data-title="Post review · online" data-sec="4">
+  <div class="flabel"><span class="fname">Post review · online</span><span class="froute" data-en-lock>/employer/post/review</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Confirm your job</div></div>
+    </div>
+    <div class="body">
+      <div class="banner info"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Please review the details before posting.</div></div></div>
+      <div class="glass mt12">
+        <div class="row gap8"><span class="t-cap t-mut">CAPTION</span><span class="chip gold">Auto-generated</span></div>
+        <div class="t-subtitle t-gold mt4">Logo design for a Dhaka cafe</div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">DESCRIPTION</div>
+        <div class="t-body mt8">"Design a logo for a Dhaka cafe — modern, minimal, 3 concepts."</div>
+      </div>
+      <div class="glass mt12">
+        <div class="row between"><span class="t-sm t-sec2">You need</span><span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Online Job</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Job type</span><span class="t-sm t-b">Instant</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Where should this run?</span><span class="t-sm t-b">Within Country</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Budget</span><span class="t-sm t-b">৳4,500</span></div>
+      </div>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Online jobs are paid online only (bKash / Nagad). Cash isn't available.</div></div></div>
+      <button class="btn btn-primary mt24" data-go="post-success">Confirm &amp; post</button>
+      <button class="btn btn-secondary mt8" data-back>Edit</button>
     </div>
   </div></div>
 </article>
@@ -4892,7 +4965,8 @@ const BN = {
 "Room / flat for check-in": "চেক-ইনের জন্য রুম / ফ্ল্যাট",
 "Camera": "ক্যামেরা",
 "Other": "অন্যান্য",
-"Your job has been successfully published. We are now matching you with nearby asset services.": "আপনার কাজ সফলভাবে প্রকাশিত হয়েছে। আমরা এখন কাছাকাছি সম্পদ সেবার সাথে মেলাচ্ছি।"
+"Your job has been successfully published. We are now matching you with nearby asset services.": "আপনার কাজ সফলভাবে প্রকাশিত হয়েছে। আমরা এখন কাছাকাছি সম্পদ সেবার সাথে মেলাচ্ছি।",
+"Done remotely · paid online (bKash / Nagad)": "দূর থেকে সম্পন্ন · অনলাইনে পরিশোধ (বিকাশ / নগদ)"
 };
 </script>
 <script>
