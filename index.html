@@ -1707,8 +1707,31 @@ textarea.input{padding:11px 13px}
         <span class="input" data-sheet="jobtype-online"><input value="Instant" readonly><svg class="ic"><use href="#i-chevronDown"/></svg></span></label>
       <div class="mt16">
         <div class="t-sm t-gold mb8">Where should this run?</div>
-        <div class="radiotile on" data-tab="reach:country"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Within Country</div></div></div>
-        <div class="radiotile mt8" data-tab="reach:world"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Worldwide</div></div></div>
+        <div class="radiotile on" data-tab="reach:country"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Within Country</div><div class="t-sm t-sec2">Only workers inside Bangladesh can bid</div></div></div>
+        <div class="radiotile mt8" data-tab="reach:world"><span class="rdot"></span><div class="grow"><div class="lt t-subtitle">Worldwide</div><div class="t-sm t-sec2">Workers from any country can bid</div></div></div>
+      </div>
+      <div data-pane="reach:country">
+        <div class="banner info"><svg class="ic"><use href="#i-info"/></svg>
+          <div><div class="bbody">Only workers inside Bangladesh will be notified about this job.</div></div></div>
+      </div>
+      <div data-pane="reach:world" class="hidden">
+        <div class="t-cap t-mut">WORKER LANGUAGE</div>
+        <div class="t-cap t-mut mt4">Workers are notified in the languages you pick — in the countries where those languages are spoken.</div>
+        <span class="input mt8"><svg class="ic"><use href="#i-search"/></svg><input placeholder="Search a language..."></span>
+        <div class="checktile on mt12" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">Bangla</div><div class="t-cap t-mut mt4">Bangladesh · India</div></div></div>
+        <div class="checktile on" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">English</div><div class="t-cap t-mut mt4">Worldwide</div></div></div>
+        <div class="checktile" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">Arabic</div><div class="t-cap t-mut mt4">UAE · Saudi Arabia · Qatar</div></div></div>
+        <div class="checktile" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">Hindi</div><div class="t-cap t-mut mt4">India</div></div></div>
+        <div class="checktile" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">Malay</div><div class="t-cap t-mut mt4">Malaysia</div></div></div>
+        <div class="checktile" data-toggle><span class="cbox"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="lt t-sm t-b">French</div><div class="t-cap t-mut mt4">France · Canada</div></div></div>
+        <div class="banner info"><svg class="ic"><use href="#i-globe"/></svg>
+          <div><div class="bbody">You pay in ৳ from bKash / Nagad. Foreign workers withdraw in their own currency — Re'Loren converts it.</div></div></div>
       </div>
       <label class="field mt16"><span class="flab">Budget</span>
         <span class="input"><span class="prefix">৳</span><input value="4500" placeholder="4,500"></span></label>
@@ -1751,13 +1774,18 @@ textarea.input{padding:11px 13px}
         <hr class="divider">
         <div class="row between"><span class="t-sm t-sec2">Job type</span><span class="t-sm t-b">Instant</span></div>
         <hr class="divider">
-        <div class="row between"><span class="t-sm t-sec2">Where should this run?</span><span class="t-sm t-b">Within Country</span></div>
+        <div class="row between"><span class="t-sm t-sec2">Where should this run?</span><span class="t-sm t-b">Worldwide</span></div>
+        <hr class="divider">
+        <div class="row between top gap8"><span class="t-sm t-sec2">Worker language</span>
+          <span class="chiprow" style="justify-content:flex-end"><span class="chip on">Bangla</span><span class="chip on">English</span><span class="chip on">Arabic</span></span></div>
         <hr class="divider">
         <div class="row between"><span class="t-sm t-sec2">Budget</span><span class="t-sm t-b">৳4,500</span></div>
       </div>
-      <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-globe"/></svg>
+        <div><div class="bbody">Workers in Bangladesh, UAE, Saudi Arabia and Qatar will be notified in their own language.</div></div></div>
+      <div class="banner info mt8"><svg class="ic"><use href="#i-info"/></svg>
         <div><div class="bbody">Online jobs are paid online only (bKash / Nagad). Cash isn't available.</div></div></div>
-      <button class="btn btn-primary mt24" data-go="post-success">Confirm &amp; post</button>
+      <button class="btn btn-primary mt24" data-go="post-success-online">Confirm &amp; post</button>
       <button class="btn btn-secondary mt8" data-back>Edit</button>
     </div>
   </div></div>
@@ -1795,6 +1823,98 @@ textarea.input{padding:11px 13px}
       </div>
       <button class="btn btn-primary mt24" data-go="post-success">Confirm &amp; post</button>
       <button class="btn btn-secondary mt8" data-back>Edit</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-post-success-online" data-title="Post success · online" data-sec="4">
+  <div class="flabel"><span class="fname">Post success · online</span><span class="froute" data-en-lock>/employer/post/success</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="body center">
+      <div class="okring pulse anim-pop"><svg class="ic"><use href="#i-globe"/></svg></div>
+      <div class="t-title t-b7 t-c mt24 anim-fadeUp d1">Online Job Posted!</div>
+      <div class="t-body t-sec2 t-c mt12 anim-fadeUp d2">Your job is live worldwide. Workers who speak Bangla, English or Arabic are being notified now.</div>
+      <div class="chiprow mt16 anim-fadeUp d2" style="justify-content:center">
+        <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Worldwide</span>
+        <span class="chip gold">3 languages</span>
+      </div>
+      <button class="btn btn-primary mt32 anim-fadeUp d3" data-go="shortlist-online">View bids</button>
+      <button class="btn btn-secondary mt12 anim-fadeUp d4" data-go="post-compose-online"><svg class="ic"><use href="#i-plus"/></svg>Make another post</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-shortlist-online" data-title="Ranked shortlist · online" data-sec="4">
+  <div class="flabel"><span class="fname">Ranked shortlist · online</span><span class="froute" data-en-lock>/employer/shortlist/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job in progress</div><div class="asub">3 bids received</div></div>
+    </div>
+    <div class="body">
+      <div class="glass anim-fadeUp">
+        <div class="row gap12">
+          <div class="hero-ic gold pulse-gold" style="width:56px;height:56px"><svg class="ic"><use href="#i-globe"/></svg></div>
+          <div class="grow"><div class="t-sm t-b">Collecting bids worldwide</div>
+            <div class="t-cap t-mut">Remote job — no location matching. Pick the worker you want to hire.</div></div>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d1">
+        <div class="row top between gap8">
+          <div class="row gap8 grow"><span class="avatar gold">RU</span>
+            <div><div class="t-body t-b">Rahim Uddin</div>
+              <div class="row gap4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.9</span><span class="t-cap t-mut">(87)</span></div></div></div>
+          <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳4,200</div></div>
+        </div>
+        <div class="chiprow mt8">
+          <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>Bangladesh</span>
+          <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>Bangla · English</span>
+          <span class="chip on"><svg class="ic"><use href="#i-check"/></svg>Logo design</span>
+        </div>
+        <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+        <div class="row gap8 mt8">
+          <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+          <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer-online">Accept Bid</button>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d2">
+        <div class="row top between gap8">
+          <div class="row gap8 grow"><span class="avatar gold">AH</span>
+            <div><div class="t-body t-b">Ayesha Hassan</div>
+              <div class="row gap4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.8</span><span class="t-cap t-mut">(64)</span></div></div></div>
+          <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳4,800</div></div>
+        </div>
+        <div class="chiprow mt8">
+          <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>UAE</span>
+          <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>Arabic · English</span>
+          <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Pays out in AED</span>
+        </div>
+        <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+        <div class="row gap8 mt8">
+          <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+          <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer-online">Accept Bid</button>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d3">
+        <div class="row top between gap8">
+          <div class="row gap8 grow"><span class="avatar gold">LM</span>
+            <div><div class="t-body t-b">Lucie Martin</div>
+              <div class="row gap4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.7</span><span class="t-cap t-mut">(31)</span></div></div></div>
+          <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳5,100</div></div>
+        </div>
+        <div class="chiprow mt8">
+          <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>France</span>
+          <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>French · English</span>
+          <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Pays out in EUR</span>
+        </div>
+        <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
+        <div class="row gap8 mt8">
+          <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
+          <button class="btn btn-primary" style="flex:2" data-toast="Bid accepted" data-go="contact-employer-online">Accept Bid</button>
+        </div>
+      </div>
     </div>
   </div></div>
 </article>
@@ -2577,62 +2697,62 @@ textarea.input{padding:11px 13px}
       </div>
       <div data-pane="oseg:immediate">
         <div class="t-cap t-mut mt12">3 online jobs available</div>
-        <div class="glass tap mt12 anim-fadeUp d1" data-go="job-detail">
+        <div class="glass tap mt12 anim-fadeUp d1" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">Logo design for a Dhaka cafe</div><div class="t-subtitle t-gold">৳4,500</div></div>
           <div class="row between mt8">
             <span class="t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-globe"/></svg> Online · remote</span>
             <span class="t-cap t-gold t-b"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg> Bangladesh</span>
           </div>
           <div class="row gap8 mt12">
-            <button class="btn btn-secondary grow" data-go="job-detail">View details</button>
-            <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
+            <button class="btn btn-secondary grow" data-go="job-detail-online">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-online">Accept offer</button>
           </div>
         </div>
-        <div class="glass tap mt12 anim-fadeUp d2" data-go="job-detail">
+        <div class="glass tap mt12 anim-fadeUp d2" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">Translate 5 documents (EN → Arabic)</div><div class="t-subtitle t-gold">৳3,000</div></div>
           <div class="row between mt8">
             <span class="t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-globe"/></svg> Online · remote</span>
             <span class="t-cap t-gold t-b"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg> UAE</span>
           </div>
           <div class="row gap8 mt12">
-            <button class="btn btn-secondary grow" data-go="job-detail">View details</button>
-            <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
+            <button class="btn btn-secondary grow" data-go="job-detail-online">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-online">Accept offer</button>
           </div>
         </div>
-        <div class="glass tap mt12 anim-fadeUp d3" data-go="job-detail">
+        <div class="glass tap mt12 anim-fadeUp d3" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">Social media captions (10 posts)</div><div class="t-subtitle t-gold">৳1,800</div></div>
           <div class="row between mt8">
             <span class="t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-globe"/></svg> Online · remote</span>
             <span class="t-cap t-gold t-b"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg> Bangladesh</span>
           </div>
           <div class="row gap8 mt12">
-            <button class="btn btn-secondary grow" data-go="job-detail">View details</button>
-            <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
+            <button class="btn btn-secondary grow" data-go="job-detail-online">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-online">Accept offer</button>
           </div>
         </div>
       </div>
       <div data-pane="oseg:active" class="hidden">
         <div class="t-cap t-mut mt12">2 online jobs available</div>
-        <div class="glass tap mt12" data-go="job-detail">
+        <div class="glass tap mt12" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">Data entry — 200 product rows</div><div class="t-subtitle t-gold">৳1,200</div></div>
           <div class="row between mt8">
             <span class="t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-globe"/></svg> Long duration</span>
             <span class="t-cap t-gold t-b"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg> Bangladesh</span>
           </div>
           <div class="row gap8 mt12">
-            <button class="btn btn-secondary grow" data-go="job-detail">View details</button>
-            <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
+            <button class="btn btn-secondary grow" data-go="job-detail-online">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-online">Accept offer</button>
           </div>
         </div>
-        <div class="glass tap mt12" data-go="job-detail">
+        <div class="glass tap mt12" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">French voice-over — 2 min script</div><div class="t-subtitle t-gold">৳5,200</div></div>
           <div class="row between mt8">
             <span class="t-cap t-mut"><svg class="ic" style="width:14px;height:14px"><use href="#i-globe"/></svg> Long duration</span>
             <span class="t-cap t-gold t-b"><svg class="ic" style="width:14px;height:14px"><use href="#i-location"/></svg> France</span>
           </div>
           <div class="row gap8 mt12">
-            <button class="btn btn-secondary grow" data-go="job-detail">View details</button>
-            <button class="btn btn-primary grow" data-go="job-detail">Accept offer</button>
+            <button class="btn btn-secondary grow" data-go="job-detail-online">View details</button>
+            <button class="btn btn-primary grow" data-go="job-detail-online">Accept offer</button>
           </div>
         </div>
       </div>
@@ -2670,6 +2790,61 @@ textarea.input{padding:11px 13px}
       <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
       <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Jobs</button>
       <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-job-detail-online" data-title="Job detail · online" data-sec="5">
+  <div class="flabel"><span class="fname">Job detail · online</span><span class="froute" data-en-lock>/job/detail/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job Detail</div></div>
+    </div>
+    <div class="body">
+      <div class="row top between gap8 anim-fadeUp">
+        <div class="grow">
+          <div class="t-title t-b7">Logo design for a Dhaka cafe</div>
+          <div class="t-sm t-sec2 mt4">Posted 12 min ago</div>
+        </div>
+        <div style="text-align:right">
+          <div class="t-title t-b7 t-gold">৳4,500</div>
+          <div class="t-cap t-mut">BUDGET</div>
+        </div>
+      </div>
+      <div class="chiprow mt12 anim-fadeUp d1">
+        <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Online · remote</span>
+        <span class="chip gold">Worldwide</span>
+        <span class="chip on"><svg class="ic"><use href="#i-clock"/></svg>Instant</span>
+      </div>
+      <div class="t-body mt12">Design a logo for a Dhaka cafe — modern, minimal, 3 concepts. Source files needed in AI + PNG.</div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">HOW THIS JOB RUNS</div>
+        <div class="row gap8 mt12"><span class="t-gold"><svg class="ic"><use href="#i-globe"/></svg></span><span class="t-sm">Fully remote — no travel, no location sharing</span></div>
+        <div class="row gap8 mt8"><span class="t-gold"><svg class="ic"><use href="#i-chat"/></svg></span><span class="t-sm">Deliver the work through chat</span></div>
+        <div class="row gap8 mt8"><span class="t-gold"><svg class="ic"><use href="#i-wallet"/></svg></span><span class="t-sm">Paid online in 3 installments (20% · 60% · 20%)</span></div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">LANGUAGE REQUIRED</div>
+        <div class="chiprow mt8">
+          <span class="chip on">Bangla</span><span class="chip on">English</span><span class="chip on">Arabic</span>
+        </div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">POSTED BY</div>
+        <div class="t-body t-b mt8">Karim Ahmed</div>
+        <div class="row gap4 mt4">
+          <span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg><svg class="ic fill"><use href="#i-starFill"/></svg></span>
+          <span class="t-sm t-gold t-b">4.8</span><span class="t-cap t-mut">(142)</span>
+        </div>
+        <div class="row gap4 mt8"><span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>Bangladesh</span></div>
+        <div class="t-sm t-teal t-b mt8" data-go="employer-reviews" style="text-decoration:underline">View client reviews →</div>
+      </div>
+      <div class="row gap8 mt24">
+        <button class="btn btn-secondary grow" data-go="bid-submit">Place a bid</button>
+        <button class="btn btn-primary grow" data-go="worker-contact-online">Accept offer</button>
+      </div>
     </div>
   </div></div>
 </article>
@@ -3022,6 +3197,198 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-contact-employer-online" data-title="Contact page · online job" data-sec="6">
+  <div class="flabel"><span class="fname">Contact page · online job</span><span class="froute" data-en-lock>/contact/employer/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Your worker</div></div>
+    </div>
+    <div class="body">
+      <div class="glass">
+        <div class="t-cap t-mut">ORDER</div>
+        <div class="t-sm t-b mt4">Logo design for a Dhaka cafe</div>
+        <div class="chiprow mt8"><span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Online · remote</span></div>
+      </div>
+      <div class="glass t-c mt16 anim-fadeUp">
+        <div class="row gap8 t-err" style="justify-content:center">
+          <svg class="ic"><use href="#i-clock"/></svg>
+          <span class="t-display t-err">2:47</span>
+        </div>
+        <div class="t-sm t-err t-b t-c mt4">Continue within 2:47</div>
+        <div class="t-cap t-sec2 t-c mt4">If you do not continue within the time, this job will be automatically cancelled.</div>
+      </div>
+      <div class="glass mt16 anim-fadeUp d1">
+        <div class="row gap12">
+          <span class="avatar lg">AH</span>
+          <div class="grow">
+            <div class="t-subtitle">Ayesha Hassan</div>
+            <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.8</span><span class="t-cap t-mut">(64)</span></div>
+          </div>
+        </div>
+        <div class="chiprow mt8">
+          <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>UAE</span>
+          <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>Arabic · English</span>
+        </div>
+        <div class="t-sm t-teal t-b mt12" style="text-decoration:underline" data-go="worker-reviews">View reviews →</div>
+        <div class="row gap8 mt12">
+          <button class="btn btn-secondary grow" data-go="chat"><svg class="ic"><use href="#i-chat"/></svg>Chat</button>
+          <button class="btn btn-secondary grow" data-toast="Calling Ayesha Hassan..."><svg class="ic"><use href="#i-phone"/></svg>Call</button>
+        </div>
+      </div>
+      <div class="glass mt16">
+        <div class="row between"><span class="t-sm t-sec2">Agreed price</span><span class="t-sm t-b t-gold">৳4,800</span></div>
+      </div>
+      <div class="banner info mt16"><svg class="ic"><use href="#i-globe"/></svg>
+        <div><div class="bbody">This is a remote job — no live location and no map tracking. Work is delivered through chat.</div></div></div>
+    </div>
+    <div class="footpad">
+      <div class="row gap8">
+        <button class="btn btn-secondary grow" data-go="shortlist-online"><svg class="ic"><use href="#i-forward"/></svg>Forward order</button>
+        <button class="btn btn-destructive grow" data-go="cancel-reason">Cancel job</button>
+      </div>
+      <button class="btn btn-primary mt8" data-go="payment-online">Continue</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-payment-online" data-title="Payment · online job (no cash)" data-sec="6">
+  <div class="flabel"><span class="fname">Payment · online job (no cash)</span><span class="froute" data-en-lock>/payment/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Payment</div></div>
+    </div>
+    <div class="body">
+      <div class="glass t-c anim-fadeUp">
+        <div class="t-cap t-mut">AMOUNT TO BE PAID</div>
+        <div class="t-display t-gold mt4">৳4,800</div>
+      </div>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
+        <div><div class="bbody">Online jobs are paid online only. Cash isn't available for remote work.</div></div></div>
+      <div class="t-cap t-mut mt16">PAYMENT METHOD</div>
+      <div class="radiotile on mt12" data-tab="payo:bkash" role="button">
+        <span class="rdot"></span>
+        <span class="paylogo bkash">bKash</span>
+        <div class="grow"><div class="lt t-sm t-b">bKash</div><div class="t-cap t-sec2">•••• 7890</div></div>
+      </div>
+      <div class="radiotile mt8" data-tab="payo:nagad" role="button">
+        <span class="rdot"></span>
+        <span class="paylogo nagad">Nagad</span>
+        <div class="grow"><div class="lt t-sm t-b">Nagad</div><div class="t-cap t-sec2">•••• 4521</div></div>
+      </div>
+      <div class="lrow mt8" data-go="add-method">
+        <svg class="ic"><use href="#i-plus"/></svg>
+        <div class="lmain"><div class="lt">Add payment method</div></div>
+        <svg class="ic"><use href="#i-chevron"/></svg>
+      </div>
+      <div class="t-cap t-mut mt16">INTERNATIONAL PAYOUT</div>
+      <div class="glass mt8">
+        <div class="row gap12">
+          <span class="avatar sm gold"><svg class="ic" style="width:16px;height:16px"><use href="#i-globe"/></svg></span>
+          <div class="grow"><div class="t-sm t-b">Ayesha Hassan · UAE</div><div class="t-cap t-mut mt4">Receives in AED</div></div>
+        </div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">You pay</span><span class="t-sm t-b">৳4,800</span></div>
+        <div class="row between mt8"><span class="t-sm t-sec2">Exchange rate</span><span class="t-sm t-b">1 AED = ৳33.20</span></div>
+        <div class="row between mt8"><span class="t-sm t-sec2">Worker receives</span><span class="t-sm t-b t-gold">AED 122.90</span></div>
+        <div class="t-cap t-mut mt8">You always pay in ৳ from bKash / Nagad. Re'Loren converts and pays the worker in their local currency.</div>
+      </div>
+    </div>
+    <div class="footpad">
+      <button class="btn btn-primary" data-go="pay-success-online">Pay Now</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-pay-success-online" data-title="Payment success · online job" data-sec="6">
+  <div class="flabel"><span class="fname">Payment success · online job</span><span class="froute" data-en-lock>/payment/online/success</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <div class="atitles"><div class="atitle">Payment</div></div>
+    </div>
+    <div class="body" style="position:relative">
+      <div style="opacity:.3">
+        <div class="skeleton" style="height:80px"></div>
+        <div class="skeleton mt12" style="height:100px"></div>
+      </div>
+      <div class="glass lg" style="position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%)">
+        <button class="iconbtn" data-back style="position:absolute;top:6px;right:6px"><svg class="ic"><use href="#i-close"/></svg></button>
+        <div class="okring pulse anim-pop" style="margin:0 auto"><svg class="ic"><use href="#i-check"/></svg></div>
+        <div class="t-title t-c mt12 anim-fadeUp d1">Payment secured</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">৳4,800 is held in escrow. The worker can start now.</div>
+        <button class="btn btn-primary mt16 anim-fadeUp d3" data-go="job-progress-online-emp">Job Progress</button>
+        <button class="btn btn-secondary mt8 anim-fadeUp d4" data-toast="Receipt downloaded"><svg class="ic"><use href="#i-download"/></svg>Download receipt</button>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-job-progress-online-emp" data-title="Job progress · online (employer)" data-sec="6">
+  <div class="flabel"><span class="fname">Job progress · online (employer)</span><span class="froute" data-en-lock>/job/progress/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job Progress</div><div class="asub">Online · remote</div></div>
+    </div>
+    <div class="body">
+      <div class="glass">
+        <div class="row gap12">
+          <span class="avatar">AH</span>
+          <div class="grow">
+            <div class="t-sm t-b">Ayesha Hassan</div>
+            <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.8</span><span class="t-cap t-mut">(64)</span></div>
+          </div>
+          <button class="iconbtn" data-toast="Calling Ayesha Hassan..."><svg class="ic"><use href="#i-phone"/></svg></button>
+          <button class="iconbtn" data-go="chat"><svg class="ic"><use href="#i-chat"/></svg></button>
+        </div>
+        <div class="chiprow mt8"><span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>UAE</span></div>
+      </div>
+      <div class="glass mt12">
+        <div class="t-cap t-mut">JOB</div>
+        <div class="t-sm mt4">Logo design for a Dhaka cafe</div>
+        <hr class="divider">
+        <div class="row between"><span class="t-cap t-sec2">Total</span><span class="t-title t-gold">৳4,800</span></div>
+      </div>
+      <div class="t-cap t-mut mt12">INSTALLMENTS</div>
+      <div class="glass sel mt12 anim-fadeUp">
+        <div class="row gap12">
+          <span class="avatar sm">1</span>
+          <div class="grow"><div class="t-sm t-b">Installment 1</div><div class="t-cap t-mut">20% · ৳960</div></div>
+          <span class="pill teal">Active</span>
+        </div>
+        <div class="row gap8 mt12">
+          <button class="btn btn-destructive grow" data-go="cancel-reason">Cancel job</button>
+          <button class="btn btn-primary grow" data-toast="Installment 1 disbursed">Pay amount</button>
+        </div>
+      </div>
+      <div class="glass mt12" style="opacity:.5">
+        <div class="row gap12">
+          <span class="avatar sm">2</span>
+          <div class="grow"><div class="t-sm t-b">Installment 2</div><div class="t-cap t-mut">60% · ৳2,880</div></div>
+          <span class="pill warn">Pending</span>
+        </div>
+      </div>
+      <div class="glass mt12" style="opacity:.5">
+        <div class="row gap12">
+          <span class="avatar sm">3</span>
+          <div class="grow"><div class="t-sm t-b">Installment 3</div><div class="t-cap t-mut">20% · ৳960</div></div>
+          <span class="pill warn">Pending</span>
+        </div>
+      </div>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-globe"/></svg>
+        <div><div class="bbody">Remote job — no live location tracking. Delivered work arrives in chat.</div></div></div>
+    </div>
+    <div class="footpad">
+      <button class="btn btn-primary" data-go="completion">Complete this job</button>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-payment" data-title="Payment page · escrow" data-sec="6">
   <div class="flabel"><span class="fname">Payment page · escrow</span><span class="froute" data-en-lock>/payment</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -3117,7 +3484,8 @@ textarea.input{padding:11px 13px}
         <div class="okring pulse anim-pop" style="margin:0 auto"><svg class="ic"><use href="#i-check"/></svg></div>
         <div class="t-title t-c mt12 anim-fadeUp d1">Payment secured</div>
         <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">৳1,500 is held in escrow.</div>
-        <button class="btn btn-primary mt16 anim-fadeUp d3" data-go="job-start-code">Download receipt</button>
+        <button class="btn btn-primary mt16 anim-fadeUp d3" data-go="job-start-code">Job Progress</button>
+        <button class="btn btn-secondary mt8 anim-fadeUp d4" data-toast="Receipt downloaded"><svg class="ic"><use href="#i-download"/></svg>Download receipt</button>
       </div>
     </div>
   </div></div>
@@ -3239,6 +3607,9 @@ textarea.input{padding:11px 13px}
           <span class="pill warn">Pending</span>
         </div>
       </div>
+    </div>
+    <div class="footpad">
+      <button class="btn btn-primary" data-go="completion">Complete this job</button>
     </div>
     <div class="sheetwrap" data-sheet-id="sos">
       <div class="sdim"></div>
@@ -3418,7 +3789,8 @@ textarea.input{padding:11px 13px}
       </div>
     </div>
     <div class="footpad">
-      <button class="btn btn-destructive" data-sheet="cancel">Cancel this job</button>
+      <button class="btn btn-primary" data-go="worker-completion">Mark work complete</button>
+      <button class="btn btn-destructive mt8" data-sheet="cancel">Cancel this job</button>
     </div>
     <div class="sheetwrap" data-sheet-id="cancel">
       <div class="sdim"></div>
@@ -3439,6 +3811,115 @@ textarea.input{padding:11px 13px}
         <div class="t-sm t-sec2">Use SOS only in a real emergency. Re'Loren safety team and your emergency contact will be alerted with your live location.</div>
         <button class="btn btn-primary mt12" data-dismiss data-toast="Calling 999..."><svg class="ic"><use href="#i-phone"/></svg>Call 999 helpline</button>
         <button class="btn btn-secondary mt8" data-dismiss><svg class="ic"><use href="#i-location"/></svg>Share live location</button>
+      </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-worker-contact-online" data-title="Worker contact · online job" data-sec="7">
+  <div class="flabel"><span class="fname">Worker contact · online job</span><span class="froute" data-en-lock>/worker/contact/online</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Your client</div></div>
+    </div>
+    <div class="body">
+      <div class="banner ok anim-fadeUp"><svg class="ic"><use href="#i-checkCircle"/></svg>
+        <div><div class="bt">Offer accepted</div>
+        <div class="bbody">The client accepted your offer. This is a remote job — start as soon as the payment is secured.</div></div></div>
+      <div class="glass mt12 anim-fadeUp d1">
+        <div class="row gap12"><span class="avatar lg gold">KA</span>
+          <div><div class="t-subtitle">Karim Ahmed</div>
+            <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.8</span><span class="t-cap t-mut">(142)</span></div></div></div>
+        <div class="chiprow mt8"><span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>Bangladesh</span></div>
+        <div class="t-sm t-teal t-b mt12" style="text-decoration:underline" data-go="employer-reviews">View reviews →</div>
+        <div class="row gap8 mt12">
+          <button class="btn btn-secondary grow" data-go="chat"><svg class="ic"><use href="#i-chat"/></svg>Chat</button>
+          <button class="btn btn-secondary grow" data-toast="Calling Karim Ahmed..."><svg class="ic"><use href="#i-phone"/></svg>Call</button>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d2">
+        <div class="t-cap t-mut">JOB</div>
+        <div class="t-sm t-b7 mt8">Logo design for a Dhaka cafe</div>
+        <div class="chiprow mt8"><span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Online · remote</span></div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Budget</span><span class="t-sm t-b t-gold">৳4,800</span></div>
+        <div class="row between mt8"><span class="t-sm t-sec2">You receive</span><span class="t-sm t-b t-gold">AED 122.90</span></div>
+      </div>
+      <div class="banner info mt12 anim-fadeUp d3"><svg class="ic"><use href="#i-globe"/></svg>
+        <div><div class="bbody">No 4-digit code and no location sharing for remote jobs — the job starts once escrow is funded.</div></div></div>
+    </div>
+    <div class="footpad">
+      <div class="t-cap t-mut t-c">Can't take this job? Forward the accepted order to another available worker.</div>
+      <button class="btn btn-secondary mt8" data-toast="Order forwarded"><svg class="ic"><use href="#i-forward"/></svg>Forward order</button>
+      <button class="btn btn-primary mt8" data-go="worker-progress-remote">Start work</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-worker-progress-remote" data-title="Worker progress · online job" data-sec="7">
+  <div class="flabel"><span class="fname">Worker progress · online job</span><span class="froute" data-en-lock>/worker/progress/remote</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Job Progress</div><div class="asub">Online · remote</div></div>
+    </div>
+    <div class="body">
+      <div class="glass anim-fadeUp">
+        <div class="row gap12"><span class="avatar gold">KA</span>
+          <div class="grow"><div class="t-sm t-b">Karim Ahmed</div>
+            <div class="row gap4 mt4"><span class="stars"><svg class="ic fill"><use href="#i-starFill"/></svg></span><span class="t-sm t-b t-gold">4.8</span><span class="t-cap t-mut">(142)</span></div></div>
+          <button class="iconbtn" data-toast="Calling Karim Ahmed..."><svg class="ic"><use href="#i-phone"/></svg></button>
+          <button class="iconbtn" data-go="chat"><svg class="ic"><use href="#i-chat"/></svg></button>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d1" style="background:var(--navy-deep)">
+        <div class="t-cap t-mut">JOB</div>
+        <div class="t-sm mt4">Logo design for a Dhaka cafe</div>
+        <div class="row between mt8"><span class="t-cap t-sec2">Budget</span><span class="t-sm t-b t-gold">৳4,800</span></div>
+        <div class="row between mt8"><span class="t-cap t-sec2">You receive</span><span class="t-sm t-b t-gold">AED 122.90</span></div>
+      </div>
+      <div class="t-cap t-mut mt16">INSTALLMENTS</div>
+      <div class="glass mt12 anim-fadeUp d2">
+        <div class="row gap12">
+          <span class="avatar" style="background:rgba(102,187,106,.15);border-color:var(--success);color:var(--success)"><svg class="ic" style="width:16px;height:16px"><use href="#i-check"/></svg></span>
+          <div class="grow"><div class="t-sm t-b">Installment 1</div><div class="t-cap t-mut">20% · ৳960</div></div>
+          <span class="pill ok">Completed</span>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d3" style="border-color:var(--gold500)">
+        <div class="row gap12">
+          <span class="avatar" style="background:rgba(255,255,255,.15);border-color:var(--gold500);color:var(--gold500)"><svg class="ic" style="width:16px;height:16px"><use href="#i-clock"/></svg></span>
+          <div class="grow"><div class="t-sm t-b">Installment 2</div><div class="t-cap t-mut">60% · ৳2,880</div></div>
+          <span class="pill mut">In progress</span>
+        </div>
+      </div>
+      <div class="glass mt12 anim-fadeUp d4" style="opacity:.5">
+        <div class="row gap12">
+          <span class="avatar" style="background:var(--navy-raised);border-color:var(--navy-border);color:var(--t-muted)"><svg class="ic" style="width:16px;height:16px"><use href="#i-clock"/></svg></span>
+          <div class="grow"><div class="t-sm t-b">Installment 3</div><div class="t-cap t-mut">20% · ৳960</div></div>
+          <span class="pill warn">Pending</span>
+        </div>
+      </div>
+      <div class="banner info mt12"><svg class="ic"><use href="#i-attach"/></svg>
+        <div><div class="bbody">Send the delivered files in chat, then submit the work for the client to confirm.</div></div></div>
+    </div>
+    <div class="footpad">
+      <button class="btn btn-primary" data-go="worker-completion">Submit completed work</button>
+      <button class="btn btn-destructive mt8" data-sheet="cancel">Cancel this job</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="cancel">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Cancel order — Terms &amp; Conditions</div>
+        <div class="banner warn"><svg class="ic"><use href="#i-warning"/></svg>
+          <div><div class="bt">This may affect your rating</div>
+          <div class="bbody">Cancelling more than once a day will reduce your rating, which may affect your next wages.</div></div></div>
+        <div class="t-sm t-sec2 mt12">Frequent cancellations hurt your standing on the platform. Continue only if it's truly necessary.</div>
+        <button class="btn btn-secondary mt12" data-dismiss>Keep this job</button>
+        <button class="btn btn-destructive mt8" data-dismiss data-toast="Job cancelled">Cancel anyway</button>
       </div>
     </div>
   </div></div>
@@ -3619,6 +4100,44 @@ textarea.input{padding:11px 13px}
     </div>
     <div class="footpad">
       <button class="btn btn-primary" data-go="rate">Submit</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-worker-completion" data-title="Job completion · worker" data-sec="8">
+  <div class="flabel"><span class="fname">Job completion · worker</span><span class="froute" data-en-lock>/worker/job/completion</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="body">
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn btn-ghost sm inline" style="color:var(--teal500)" data-go="worker-home">Skip</button>
+      </div>
+      <div class="okring pulse anim-pop mt8"><svg class="ic"><use href="#i-check"/></svg></div>
+      <div class="t-title t-c mt16 anim-fadeUp">Work submitted</div>
+      <div class="t-body t-sec2 t-c mt12 anim-fadeUp d1">The client has been notified. Your final installment is released once they confirm.</div>
+      <div class="glass mt16 anim-fadeUp d2">
+        <div class="t-cap t-mut">JOB</div>
+        <div class="t-subtitle t-c mt4">Logo design for a Dhaka cafe</div>
+        <hr class="divider">
+        <div class="row between"><span class="t-sm t-sec2">Earned</span><span class="t-sm t-b t-gold">৳4,800</span></div>
+        <div class="row between mt8"><span class="t-sm t-sec2">Paid out to you</span><span class="t-sm t-b t-gold">AED 122.90</span></div>
+      </div>
+      <div class="glass t-c mt16 anim-fadeUp d3">
+        <span class="avatar lg gold">KA</span>
+        <div class="t-subtitle mt8">Karim Ahmed</div>
+        <div class="t-cap t-mut mt4">Rate your client</div>
+        <span class="stars mt12" style="gap:8px">
+          <svg class="ic fill" style="width:32px;height:32px"><use href="#i-starFill"/></svg>
+          <svg class="ic fill" style="width:32px;height:32px"><use href="#i-starFill"/></svg>
+          <svg class="ic fill" style="width:32px;height:32px"><use href="#i-starFill"/></svg>
+          <svg class="ic fill" style="width:32px;height:32px"><use href="#i-starFill"/></svg>
+          <svg class="ic fill off" style="width:32px;height:32px"><use href="#i-starFill"/></svg>
+        </span>
+      </div>
+      <textarea class="input mt16" rows="3" placeholder="Write a review (optional)"></textarea>
+    </div>
+    <div class="footpad">
+      <button class="btn btn-primary" data-go="worker-home" data-toast="Review submitted">Submit</button>
     </div>
   </div></div>
 </article>
@@ -4966,7 +5485,74 @@ const BN = {
 "Camera": "ক্যামেরা",
 "Other": "অন্যান্য",
 "Your job has been successfully published. We are now matching you with nearby asset services.": "আপনার কাজ সফলভাবে প্রকাশিত হয়েছে। আমরা এখন কাছাকাছি সম্পদ সেবার সাথে মেলাচ্ছি।",
-"Done remotely · paid online (bKash / Nagad)": "দূর থেকে সম্পন্ন · অনলাইনে পরিশোধ (বিকাশ / নগদ)"
+"Done remotely · paid online (bKash / Nagad)": "দূর থেকে সম্পন্ন · অনলাইনে পরিশোধ (বিকাশ / নগদ)",
+"Only workers inside Bangladesh can bid": "শুধু বাংলাদেশের ভেতরের কর্মীরা বিড করতে পারবে",
+"Workers from any country can bid": "যেকোনো দেশের কর্মীরা বিড করতে পারবে",
+"Only workers inside Bangladesh will be notified about this job.": "এই কাজের বিজ্ঞপ্তি শুধু বাংলাদেশের ভেতরের কর্মীরা পাবে।",
+"WORKER LANGUAGE": "কর্মীর ভাষা",
+"Workers are notified in the languages you pick — in the countries where those languages are spoken.": "আপনি যে ভাষাগুলো বাছবেন সেই ভাষার দেশগুলোর কর্মীদের কাছে তাদের নিজের ভাষায় বিজ্ঞপ্তি যাবে।",
+"Search a language...": "ভাষা খুঁজুন...",
+"Bangladesh · India": "বাংলাদেশ · ভারত",
+"UAE · Saudi Arabia · Qatar": "সংযুক্ত আরব আমিরাত · সৌদি আরব · কাতার",
+"France · Canada": "ফ্রান্স · কানাডা",
+"Arabic": "আরবি",
+"Hindi": "হিন্দি",
+"Malay": "মালয়",
+"French": "ফরাসি",
+"India": "ভারত",
+"Malaysia": "মালয়েশিয়া",
+"Bangladesh": "বাংলাদেশ",
+"UAE": "সংযুক্ত আরব আমিরাত",
+"France": "ফ্রান্স",
+"You pay in ৳ from bKash / Nagad. Foreign workers withdraw in their own currency — Re'Loren converts it.": "আপনি বিকাশ / নগদ থেকে ৳-এ পরিশোধ করবেন। বিদেশি কর্মীরা নিজের মুদ্রায় টাকা তুলবে — রি'লরেন রূপান্তর করে দেবে।",
+"Worker language": "কর্মীর ভাষা",
+"Workers in Bangladesh, UAE, Saudi Arabia and Qatar will be notified in their own language.": "বাংলাদেশ, সংযুক্ত আরব আমিরাত, সৌদি আরব ও কাতারের কর্মীরা তাদের নিজের ভাষায় বিজ্ঞপ্তি পাবে।",
+"Online Job Posted!": "অনলাইন কাজ পোস্ট হয়েছে!",
+"Your job is live worldwide. Workers who speak Bangla, English or Arabic are being notified now.": "আপনার কাজ এখন বিশ্বব্যাপী চালু। বাংলা, ইংরেজি বা আরবি জানা কর্মীদের কাছে বিজ্ঞপ্তি যাচ্ছে।",
+"3 languages": "3টি ভাষা",
+"View bids": "বিড দেখুন",
+"Collecting bids worldwide": "বিশ্বব্যাপী বিড সংগ্রহ করা হচ্ছে",
+"Remote job — no location matching. Pick the worker you want to hire.": "রিমোট কাজ — কোনো অবস্থান মেলানো নেই। যাকে নিয়োগ দিতে চান তাকে বেছে নিন।",
+"Bangla · English": "বাংলা · ইংরেজি",
+"Arabic · English": "আরবি · ইংরেজি",
+"French · English": "ফরাসি · ইংরেজি",
+"Logo design": "লোগো ডিজাইন",
+"Pays out in AED": "AED-তে পরিশোধ",
+"Pays out in EUR": "EUR-তে পরিশোধ",
+"Logo design for a Dhaka cafe": "ঢাকার একটি ক্যাফের জন্য লোগো ডিজাইন",
+"HOW THIS JOB RUNS": "এই কাজ কীভাবে চলবে",
+"Fully remote — no travel, no location sharing": "সম্পূর্ণ রিমোট — কোনো যাতায়াত নেই, অবস্থান শেয়ার নেই",
+"Deliver the work through chat": "চ্যাটের মাধ্যমে কাজ জমা দিন",
+"Paid online in 3 installments (20% · 60% · 20%)": "3 কিস্তিতে অনলাইনে পরিশোধ (20% · 60% · 20%)",
+"LANGUAGE REQUIRED": "প্রয়োজনীয় ভাষা",
+"This is a remote job — no live location and no map tracking. Work is delivered through chat.": "এটি একটি রিমোট কাজ — কোনো লাইভ লোকেশন বা ম্যাপ ট্র্যাকিং নেই। কাজ চ্যাটের মাধ্যমে জমা হয়।",
+"Online jobs are paid online only. Cash isn't available for remote work.": "অনলাইন কাজ শুধু অনলাইনে পরিশোধ হয়। রিমোট কাজে নগদ নেই।",
+"INTERNATIONAL PAYOUT": "আন্তর্জাতিক পরিশোধ",
+"Receives in AED": "AED-তে গ্রহণ করে",
+"You pay": "আপনি দেবেন",
+"Exchange rate": "বিনিময় হার",
+"Worker receives": "কর্মী পাবে",
+"You always pay in ৳ from bKash / Nagad. Re'Loren converts and pays the worker in their local currency.": "আপনি সবসময় বিকাশ / নগদ থেকে ৳-এ পরিশোধ করবেন। রি'লরেন রূপান্তর করে কর্মীকে তার স্থানীয় মুদ্রায় দেবে।",
+"৳4,800 is held in escrow. The worker can start now.": "৳4,800 এসক্রোতে রাখা হয়েছে। কর্মী এখন শুরু করতে পারবে।",
+"Receipt downloaded": "রসিদ ডাউনলোড হয়েছে",
+"Complete this job": "এই কাজটি সম্পন্ন করুন",
+"Remote job — no live location tracking. Delivered work arrives in chat.": "রিমোট কাজ — কোনো লাইভ লোকেশন ট্র্যাকিং নেই। জমা দেওয়া কাজ চ্যাটে আসবে।",
+"The client accepted your offer. This is a remote job — start as soon as the payment is secured.": "ক্লায়েন্ট আপনার প্রস্তাব গ্রহণ করেছে। এটি রিমোট কাজ — পেমেন্ট নিশ্চিত হলেই শুরু করুন।",
+"You receive": "আপনি পাবেন",
+"No 4-digit code and no location sharing for remote jobs — the job starts once escrow is funded.": "রিমোট কাজে কোনো 4 সংখ্যার কোড বা অবস্থান শেয়ার লাগে না — এসক্রোতে টাকা জমা হলেই কাজ শুরু।",
+"Start work": "কাজ শুরু করুন",
+"Send the delivered files in chat, then submit the work for the client to confirm.": "চ্যাটে ফাইলগুলো পাঠান, তারপর ক্লায়েন্টের নিশ্চিতকরণের জন্য কাজ জমা দিন।",
+"Submit completed work": "সম্পন্ন কাজ জমা দিন",
+"Mark work complete": "কাজ সম্পন্ন চিহ্নিত করুন",
+"Work submitted": "কাজ জমা হয়েছে",
+"The client has been notified. Your final installment is released once they confirm.": "ক্লায়েন্টকে জানানো হয়েছে। তারা নিশ্চিত করলেই আপনার শেষ কিস্তি ছাড় হবে।",
+"Paid out to you": "আপনাকে পরিশোধ",
+"Rate your client": "আপনার ক্লায়েন্টকে রেটিং দিন",
+"Review submitted": "রিভিউ জমা হয়েছে",
+"Ayesha Hassan": "আয়েশা হাসান",
+"Lucie Martin": "লুসি মার্তা",
+"Calling Ayesha Hassan...": "আয়েশা হাসানকে কল করা হচ্ছে...",
+"Ayesha Hassan · UAE": "আয়েশা হাসান · সংযুক্ত আরব আমিরাত"
 };
 </script>
 <script>
@@ -5182,6 +5768,12 @@ const BN = {
       $$(`[data-tab^="${g}:"]`, scr).forEach(b => b.classList.toggle('on', b === tab));
       $$(`[data-pane^="${g}:"]`, scr).forEach(pn =>
         pn.classList.toggle('hidden', pn.dataset.pane !== g + ':' + v));
+      return true;
+    }
+    const tgl = e.target.closest('[data-toggle]'); // multi-select (language picker, checktiles)
+    if (tgl && scr.contains(tgl)) {
+      tgl.classList.toggle('on');
+      if (tgl.dataset.toast) showToast(scr, tgl.dataset.toast);
       return true;
     }
     const dis = e.target.closest('[data-dismiss]');
