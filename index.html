@@ -2469,7 +2469,7 @@ textarea.input{padding:11px 13px}
     </div>
     <div class="bottomnav">
       <button class="bni on"><svg class="ic"><use href="#i-home"/></svg>Home</button>
-      <button class="bni" data-go="job-feed"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
+      <button class="bni" data-sheet="feedpick"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
       <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
     </div>
     <div class="sheetwrap" data-sheet-id="menu">
@@ -2486,6 +2486,15 @@ textarea.input{padding:11px 13px}
         <div class="lrow" data-go="terms"><svg class="ic" style="color:var(--gold500)"><use href="#i-file"/></svg><div class="lmain"><div class="lt">Terms & conditions</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <hr class="divider">
         <div class="lrow" data-go="splash"><div class="lmain"><div class="lt t-err">Sign out</div></div></div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="feedpick">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Which feed?</div>
+        <div class="lrow" data-dismiss data-go="online-feed"><svg class="ic" style="color:var(--gold500)"><use href="#i-globe"/></svg><div class="lmain"><div class="lt">Online</div><div class="ls">Remote jobs, paid online</div></div><span class="chip gold">12</span></div>
+        <div class="lrow" data-dismiss data-go="job-feed"><svg class="ic" style="color:var(--gold500)"><use href="#i-briefcase"/></svg><div class="lmain"><div class="lt">Skill job</div><div class="ls">On-site work near you</div></div><span class="chip gold">8</span></div>
+        <div class="lrow" data-dismiss data-go="asset-feed"><svg class="ic" style="color:var(--gold500)"><use href="#i-asset"/></svg><div class="lmain"><div class="lt">Asset service</div><div class="ls">Lend what you own</div></div><span class="chip gold">5</span></div>
       </div>
     </div>
   </div></div>
@@ -2527,12 +2536,12 @@ textarea.input{padding:11px 13px}
         <div class="bbody">You can hold one skill job or one online job at a time. Asset service has no limit — but each asset can serve only one job at a time. Locked buttons unlock when your current job is completed or cancelled.</div></div></div>
       <div class="t-label mt16">FIND WORK</div>
       <div class="row gap8 mt12">
-        <div class="glass grow t-c anim-fadeUp d1" style="position:relative;min-height:112px;padding:8px 6px;opacity:.45">
+        <div class="glass grow t-c anim-fadeUp d1" data-toast="Locked while your current job runs" style="position:relative;min-height:112px;padding:8px 6px;opacity:.45">
           <span class="pill mut" style="position:absolute;top:6px;right:6px">Locked</span>
           <svg class="ic" style="width:28px;height:28px;color:var(--gold500);margin-top:18px"><use href="#i-globe"/></svg>
           <div class="t-cap t-b7 mt8">Online</div>
         </div>
-        <div class="glass grow t-c anim-fadeUp d2" style="position:relative;min-height:112px;padding:8px 6px;opacity:.45">
+        <div class="glass grow t-c anim-fadeUp d2" data-toast="Locked while your current job runs" style="position:relative;min-height:112px;padding:8px 6px;opacity:.45">
           <span class="pill mut" style="position:absolute;top:6px;right:6px">Locked</span>
           <svg class="ic" style="width:28px;height:28px;color:var(--gold500);margin-top:18px"><use href="#i-briefcase"/></svg>
           <div class="t-cap t-b7 mt8">Skill job</div>
@@ -2544,6 +2553,7 @@ textarea.input{padding:11px 13px}
         </div>
       </div>
       <div class="t-cap t-mut mt8">Job in progress: Medicine delivery. Your other bids were withdrawn automatically when this one was accepted.</div>
+      <div class="t-sm t-teal t-b mt8" style="text-decoration:underline" data-go="job-feed-locked">Why is this locked? →</div>
       <div class="t-label mt16">ON GOING SERVICE</div>
       <div class="mt8" style="max-height:170px;overflow:auto">
         <div class="glass tap" data-go="worker-progress-online">
@@ -2558,7 +2568,7 @@ textarea.input{padding:11px 13px}
     </div>
     <div class="bottomnav">
       <button class="bni on"><svg class="ic"><use href="#i-home"/></svg>Home</button>
-      <button class="bni" data-go="asset-feed"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
+      <button class="bni" data-sheet="feedpick"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
       <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
     </div>
     <div class="sheetwrap" data-sheet-id="menu-eng">
@@ -2569,6 +2579,15 @@ textarea.input{padding:11px 13px}
         <div class="lrow"><svg class="ic" style="color:var(--gold500)"><use href="#i-asset"/></svg><div class="lmain"><div class="lt">Asset service is unlimited</div><div class="ls">One live service per individual asset</div></div></div>
         <div class="lrow"><svg class="ic" style="color:var(--gold500)"><use href="#i-info"/></svg><div class="lmain"><div class="lt">Bid as much as you like</div><div class="ls">The first acceptance wins; the rest are dropped</div></div></div>
         <button class="btn btn-secondary mt12" data-dismiss>Got it</button>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="feedpick">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Which feed?</div>
+        <div class="lrow" style="opacity:.45"><svg class="ic" style="color:var(--gold500)"><use href="#i-globe"/></svg><div class="lmain"><div class="lt">Online</div><div class="ls">Locked while your current job runs</div></div><span class="pill mut">Locked</span></div>
+        <div class="lrow" style="opacity:.45"><svg class="ic" style="color:var(--gold500)"><use href="#i-briefcase"/></svg><div class="lmain"><div class="lt">Skill job</div><div class="ls">Locked while your current job runs</div></div><span class="pill mut">Locked</span></div>
+        <div class="lrow" data-dismiss data-go="asset-feed"><svg class="ic" style="color:var(--gold500)"><use href="#i-asset"/></svg><div class="lmain"><div class="lt">Asset service</div><div class="ls">No limit — one live service per asset</div></div><span class="chip gold">5</span></div>
       </div>
     </div>
   </div></div>
@@ -2659,7 +2678,7 @@ textarea.input{padding:11px 13px}
         <button class="sopt on" data-tab="seg:immediate">Immediately hiring</button>
         <button class="sopt" data-tab="seg:active">Still active</button>
       </div>
-      <div class="t-cap t-mut mt8">Only skill jobs stack here. Asset requests live in your Asset feed.</div>
+      <div class="t-cap t-mut mt8">Only skill jobs stack here. While you are on a skill or online job this feed is locked — asset service stays open.</div>
       <div class="glass pad0 mt12 anim-fadeUp">
         <div class="mapmock tall">
           <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
@@ -2777,13 +2796,13 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
-<article class="frame" id="f-job-feed-empty" data-title="Job feed · no matches" data-sec="5">
-  <div class="flabel"><span class="fname">Job feed · no matches</span><span class="froute">/worker/feed</span>
+<article class="frame" id="f-job-feed-empty" data-title="Skill job feed · no matches" data-sec="5">
+  <div class="flabel"><span class="fname">Skill job feed · no matches</span><span class="froute">/worker/feed</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
   <div class="phone"><div class="scr">
     <div class="appbar">
       <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
-      <div class="atitles"><div class="atitle">Physical Job / Asset Service</div></div>
+      <div class="atitles"><div class="atitle">Skill Job</div></div>
       <button class="iconbtn" data-sheet="filters-empty"><svg class="ic"><use href="#i-filter"/></svg></button>
     </div>
     <div class="body">
@@ -2818,6 +2837,38 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-job-feed-locked" data-title="Skill job feed · locked" data-sec="5">
+  <div class="flabel"><span class="fname">Skill job feed &middot; locked</span><span class="froute">/worker/feed</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Skill Job</div></div>
+    </div>
+    <div class="body">
+      <div class="seg">
+        <button class="sopt on">Immediately hiring</button>
+        <button class="sopt">Still active</button>
+      </div>
+      <div class="banner warn mt12 anim-fadeUp"><svg class="ic"><use href="#i-warning"/></svg>
+        <div><div class="bt">Skill and online jobs are locked</div>
+        <div class="bbody">You are already on a skill job. You can hold one skill job or one online job at a time &mdash; this feed reopens when Medicine delivery is completed or cancelled.</div></div></div>
+      <div class="t-c" style="padding:28px 16px">
+        <div class="hero-ic gold anim-fadeUp d1" style="margin:0 auto;opacity:.5"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d2">No skill jobs while you&rsquo;re engaged</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d3">Asset service has no such limit &mdash; keep earning from what you own.</div>
+      </div>
+      <button class="btn btn-primary" data-go="asset-feed"><svg class="ic"><use href="#i-asset"/></svg>Asset service is still open</button>
+      <button class="btn btn-secondary mt8" data-go="worker-progress-online">View job in progress</button>
+    </div>
+    <div class="bottomnav">
+      <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
+      <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-asset-feed" data-title="Asset feed" data-sec="5">
   <div class="flabel"><span class="fname">Asset feed</span><span class="froute" data-en-lock>/worker/asset-feed</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -2832,7 +2883,8 @@ textarea.input{padding:11px 13px}
         <button class="sopt on" data-tab="sega:immediate">Immediately hiring</button>
         <button class="sopt" data-tab="sega:active">Still active</button>
       </div>
-      <div class="t-cap t-mut mt8">Only asset requests stack here. You can serve as many assets as you own — one live service per asset.</div>
+      <div class="t-cap t-mut mt8">Only asset requests stack here. You can serve as many assets as you own — one live service per asset, so an asset already on a job stops appearing.</div>
+      <div class="t-sm t-teal t-b mt8" style="text-decoration:underline" data-go="asset-feed-locked">Why am I seeing nothing? →</div>
       <div class="glass pad0 mt12 anim-fadeUp">
         <div class="mapmock tall">
           <svg class="roads" viewBox="0 0 300 210" preserveAspectRatio="none">
@@ -2925,6 +2977,90 @@ textarea.input{padding:11px 13px}
   </div></div>
 </article>
 
+<article class="frame" id="f-asset-feed-locked" data-title="Asset feed · all assets engaged" data-sec="5">
+  <div class="flabel"><span class="fname">Asset feed &middot; all assets engaged</span><span class="froute" data-en-lock>/worker/asset-feed</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Asset Feed</div></div>
+    </div>
+    <div class="body">
+      <div class="banner warn anim-fadeUp"><svg class="ic"><use href="#i-warning"/></svg>
+        <div><div class="bt">All your assets are on a job</div>
+        <div class="bbody">Your only declared asset is currently lent out. An asset can serve one job at a time &mdash; requests resume the moment it is free.</div></div></div>
+      <div class="t-c" style="padding:24px 16px">
+        <div class="hero-ic gold anim-fadeUp d1" style="margin:0 auto;opacity:.5"><svg class="ic"><use href="#i-asset"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d2">No asset requests right now</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d3">Declare another asset and its requests start stacking here straight away.</div>
+      </div>
+      <div class="t-label mt8">MY ASSETS</div>
+      <div class="glass mt8">
+        <div class="row gap12">
+          <span class="avatar t-gold"><svg class="ic"><use href="#i-asset"/></svg></span>
+          <div class="grow"><div class="t-sm t-b">Motorbike</div><div class="t-cap t-mut">Honda CB 150 &middot; BD-12-3456</div></div>
+          <span class="pill teal">On a job</span>
+        </div>
+      </div>
+      <button class="btn btn-primary mt16" data-go="asset-list"><svg class="ic"><use href="#i-plus"/></svg>Declare another asset</button>
+      <button class="btn btn-secondary mt8" data-go="worker-progress-cash">View asset job in progress</button>
+    </div>
+    <div class="bottomnav">
+      <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
+      <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-asset-feed-empty" data-title="Asset feed · no matches" data-sec="5">
+  <div class="flabel"><span class="fname">Asset feed &middot; no matches</span><span class="froute" data-en-lock>/worker/asset-feed</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">Asset Feed</div></div>
+      <button class="iconbtn" data-sheet="filters-asset-empty"><svg class="ic"><use href="#i-filter"/></svg></button>
+    </div>
+    <div class="body">
+      <div class="seg">
+        <button class="sopt on" data-tab="segae:immediate">Immediately hiring</button>
+        <button class="sopt" data-tab="segae:active">Still active</button>
+      </div>
+      <div class="row between mt16">
+        <span class="t-cap t-mut">0 asset requests nearby</span>
+        <button class="iconbtn" data-sheet="filters-asset-empty"><svg class="ic"><use href="#i-filter"/></svg></button>
+      </div>
+      <div class="t-c" style="padding:32px 16px">
+        <div class="hero-ic gold anim-fadeUp" style="margin:0 auto"><svg class="ic"><use href="#i-asset"/></svg></div>
+        <div class="t-subtitle t-c mt16 anim-fadeUp d1">No asset requests match right now</div>
+        <div class="t-sm t-sec2 t-c mt8 anim-fadeUp d2">Widen your radius, or declare more asset types to match more requests.</div>
+        <button class="btn btn-secondary mt16" data-go="asset-list"><svg class="ic"><use href="#i-plus"/></svg>Declare another asset</button>
+      </div>
+    </div>
+    <div class="bottomnav">
+      <button class="bni" data-go="worker-home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button class="bni on"><svg class="ic"><use href="#i-briefcase"/></svg>Job list</button>
+      <button class="bni" data-go="profile-hub"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+    </div>
+    <div class="sheetwrap" data-sheet-id="filters-asset-empty">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle mb12">Sort by</div>
+        <div class="radiotile on" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Nearest first</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Highest budget</div></div></div>
+        <div class="radiotile mt8" data-dismiss><span class="rdot"></span><div class="grow"><div class="lt t-sm">Newest first</div></div></div>
+        <div class="row between mt12"><span class="t-cap t-mut">DISTANCE RADIUS</span><span class="t-cap t-teal t-b7">3 km</span></div>
+        <div class="pbar mt8"><i style="width:29%"></i></div>
+        <div class="row gap8 mt16">
+          <button class="btn btn-secondary grow" data-toast="Filters cleared">Clear all</button>
+          <button class="btn btn-primary grow" data-dismiss>Apply filters</button>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</article>
+
 <article class="frame" id="f-online-feed" data-title="Online job feed" data-sec="5">
   <div class="flabel"><span class="fname">Online job feed</span><span class="froute">/worker/feed/online</span>
     <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
@@ -2939,6 +3075,7 @@ textarea.input{padding:11px 13px}
         <button class="sopt on" data-tab="oseg:immediate">Immediately Hiring</button>
         <button class="sopt" data-tab="oseg:active">Still Active</button>
       </div>
+      <div class="t-cap t-mut mt8">You can hold one online job or one skill job at a time — this feed locks while either is running.</div>
       <div data-pane="oseg:immediate">
         <div class="t-cap t-mut mt12">3 online jobs available</div>
         <div class="glass tap mt12 anim-fadeUp d1" data-go="job-detail-online">
@@ -2977,6 +3114,7 @@ textarea.input{padding:11px 13px}
       </div>
       <div data-pane="oseg:active" class="hidden">
         <div class="t-cap t-mut mt12">2 online jobs available</div>
+        <div class="t-cap t-mut mt8">Once a job is accepted it leaves this list and moves to On going service on your home screen.</div>
         <div class="glass tap mt12" data-go="job-detail-online">
           <div class="row between top gap8"><div class="t-subtitle grow">Data entry — 200 product rows</div><div class="t-subtitle t-gold">৳1,200</div></div>
           <div class="row between mt8">
@@ -4740,7 +4878,7 @@ textarea.input{padding:11px 13px}
     <div class="body">
       <div class="glass anim-fadeUp">
         <div class="row between top">
-          <div class="col"><span class="t-cap t-mut">ACTIVE BIDS</span><span class="t-title t-gold">1</span></div>
+          <div class="col"><span class="t-cap t-mut">ACTIVE BIDS</span><span class="t-title t-gold">3</span></div>
           <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">PAST BIDS</span><span class="t-title t-gold">4</span></div>
         </div>
       </div>
@@ -4751,17 +4889,38 @@ textarea.input{padding:11px 13px}
       </div>
       <div data-pane="bidseg:active">
         <div class="banner info mt12"><svg class="ic"><use href="#i-info"/></svg>
-          <div><div class="bbody">You can have one active bid for a Skill Job and one active bid for an Asset Service at a time. Cancel or complete an accepted bid before placing a new bid.</div></div></div>
+          <div><div class="bbody">Bid on as many jobs as you like. The moment a client accepts one, it stays live and your other bids are removed automatically.</div></div></div>
         <div class="glass tap mt12" data-go="bid-edit">
           <div class="row between top gap8"><div class="grow t-sm t-b">Medicine delivery — Motijheel → Dhanmondi</div><span class="pill mut">Active</span></div>
           <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Karim Ahmed</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 12 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-briefcase"/></svg>Skill job</span></div>
           <hr class="divider">
           <div class="row between">
             <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳1,500</span></div>
             <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳1,500</span></div>
-            <svg class="ic t-mut"><use href="#i-chevron"/></svg>
           </div>
         </div>
+        <div class="glass tap mt12" data-go="bid-edit">
+          <div class="row between top gap8"><div class="grow t-sm t-b">Airport drop — car</div><span class="pill mut">Active</span></div>
+          <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Salma Begum</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 26 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-asset"/></svg>Asset service</span></div>
+          <hr class="divider">
+          <div class="row between">
+            <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳1,800</span></div>
+            <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳1,800</span></div>
+          </div>
+        </div>
+        <div class="glass tap mt12" data-go="bid-edit">
+          <div class="row between top gap8"><div class="grow t-sm t-b">Logo design for a Dhaka cafe</div><span class="pill mut">Active</span></div>
+          <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Tareq Rahman</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 41 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-globe"/></svg>Online job</span></div>
+          <hr class="divider">
+          <div class="row between">
+            <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳4,500</span></div>
+            <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳4,800</span></div>
+          </div>
+        </div>
+        <div class="t-sm t-teal t-b mt12" style="text-decoration:underline" data-go="bid-history-accepted">Preview accepted state →</div>
       </div>
       <div class="hidden" data-pane="bidseg:past">
         <div class="glass tap mt12" data-go="bid-edit">
@@ -4796,11 +4955,31 @@ textarea.input{padding:11px 13px}
         <div class="glass tap mt12" data-go="bid-edit">
           <div class="row between top gap8"><div class="grow t-sm t-b">Medicine delivery — Motijheel → Dhanmondi</div><span class="pill mut">Active</span></div>
           <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Karim Ahmed</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 12 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-briefcase"/></svg>Skill job</span></div>
           <hr class="divider">
           <div class="row between">
             <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳1,500</span></div>
             <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳1,500</span></div>
-            <svg class="ic t-mut"><use href="#i-chevron"/></svg>
+          </div>
+        </div>
+        <div class="glass tap mt12" data-go="bid-edit">
+          <div class="row between top gap8"><div class="grow t-sm t-b">Airport drop — car</div><span class="pill mut">Active</span></div>
+          <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Salma Begum</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 26 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-asset"/></svg>Asset service</span></div>
+          <hr class="divider">
+          <div class="row between">
+            <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳1,800</span></div>
+            <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳1,800</span></div>
+          </div>
+        </div>
+        <div class="glass tap mt12" data-go="bid-edit">
+          <div class="row between top gap8"><div class="grow t-sm t-b">Logo design for a Dhaka cafe</div><span class="pill mut">Active</span></div>
+          <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Tareq Rahman</span><span class="t-cap t-mut">·</span><span class="t-cap t-mut">27/04/2026 · 41 min ago</span></div>
+          <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-globe"/></svg>Online job</span></div>
+          <hr class="divider">
+          <div class="row between">
+            <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">৳4,500</span></div>
+            <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">৳4,800</span></div>
           </div>
         </div>
         <div class="glass tap mt12" data-go="bid-edit">
@@ -4822,6 +5001,60 @@ textarea.input{padding:11px 13px}
           </div>
         </div>
       </div>
+    </div>
+  </div></div>
+</article>
+
+<article class="frame" id="f-bid-history-accepted" data-title="Assistant bid history · one accepted" data-sec="10">
+  <div class="flabel"><span class="fname">Assistant bid history &middot; one accepted</span><span class="froute" data-en-lock>/profile/bids</span>
+    <button class="fplay"><svg class="ic fill"><use href="#i-play"/></svg>Play</button></div>
+  <div class="phone"><div class="scr">
+    <div class="appbar">
+      <button class="iconbtn" data-back><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="atitles"><div class="atitle">My Bidded Jobs</div></div>
+    </div>
+    <div class="body">
+      <div class="glass anim-fadeUp">
+        <div class="row between top">
+          <div class="col"><span class="t-cap t-mut">ACTIVE BIDS</span><span class="t-title t-gold">1</span></div>
+          <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">PAST BIDS</span><span class="t-title t-gold">4</span></div>
+        </div>
+      </div>
+      <div class="banner ok mt12 anim-fadeUp d1"><svg class="ic"><use href="#i-checkCircle"/></svg>
+        <div><div class="bt">Medicine delivery was accepted</div>
+        <div class="bbody">Your other bids were removed automatically. Finish or cancel this job to start bidding again.</div></div></div>
+      <div class="glass tap mt12" data-go="worker-contact">
+        <div class="row between top gap8"><div class="grow t-sm t-b">Medicine delivery &mdash; Motijheel &rarr; Dhanmondi</div><span class="pill ok">Accepted</span></div>
+        <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Karim Ahmed</span><span class="t-cap t-mut">&middot;</span><span class="t-cap t-mut">27/04/2026 &middot; 12 min ago</span></div>
+        <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-briefcase"/></svg>Skill job</span></div>
+        <hr class="divider">
+        <div class="row between">
+          <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">&#2547;1,500</span></div>
+          <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">&#2547;1,500</span></div>
+          <svg class="ic t-mut"><use href="#i-chevron"/></svg>
+        </div>
+      </div>
+      <div class="glass mt12" style="opacity:.45">
+        <div class="row between top gap8"><div class="grow t-sm t-b">Airport drop &mdash; car</div><span class="pill mut">Removed</span></div>
+        <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Salma Begum</span><span class="t-cap t-mut">&middot;</span><span class="t-cap t-mut">27/04/2026 &middot; 26 min ago</span></div>
+        <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-asset"/></svg>Asset service</span></div>
+        <hr class="divider">
+        <div class="row between">
+          <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">&#2547;1,800</span></div>
+          <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">&#2547;1,800</span></div>
+        </div>
+      </div>
+      <div class="glass mt12" style="opacity:.45">
+        <div class="row between top gap8"><div class="grow t-sm t-b">Logo design for a Dhaka cafe</div><span class="pill mut">Removed</span></div>
+        <div class="row gap8 mt8"><svg class="ic t-mut" style="width:12px;height:12px"><use href="#i-user"/></svg><span class="t-cap t-mut">Tareq Rahman</span><span class="t-cap t-mut">&middot;</span><span class="t-cap t-mut">27/04/2026 &middot; 41 min ago</span></div>
+        <div class="chiprow mt8"><span class="chip"><svg class="ic"><use href="#i-globe"/></svg>Online job</span></div>
+        <hr class="divider">
+        <div class="row between">
+          <div class="col"><span class="t-cap t-mut">Your bid</span><span class="t-sm t-b7 t-gold">&#2547;4,500</span></div>
+          <div class="col" style="align-items:flex-end"><span class="t-cap t-mut">Budget</span><span class="t-sm t-sec2">&#2547;4,800</span></div>
+        </div>
+      </div>
+      <div class="t-cap t-mut mt12">Removed bids are kept in your history under Past, marked as removed by rule.</div>
     </div>
   </div></div>
 </article>
@@ -5335,7 +5568,6 @@ const BN = {
 "POST": "পোস্ট",
 "POSTED BY": "পোস্ট করেছেন",
 "Pending": "অপেক্ষমাণ",
-"Physical Job / Asset Service": "শারীরিক কাজ / সম্পদ সেবা",
 "Pick location on map": "মানচিত্রে অবস্থান বেছে নিন",
 "Pick the asset service you want to hire": "আপনি যে সম্পদ সেবা নিতে চান তা বেছে নিন",
 "Pick the assistant you want to hire": "আপনি যাকে নিয়োগ দিতে চান সেই সহকারীকে বেছে নিন",
@@ -5928,6 +6160,44 @@ const BN = {
 "Calling Ayesha Hassan...": "আয়েশা হাসানকে কল করা হচ্ছে...",
 "Ayesha Hassan · UAE": "আয়েশা হাসান · সংযুক্ত আরব আমিরাত",
 /* --- client feedback part 5 (8.6.26) --- */
+/* module 5 completion */
+"Which feed?": "কোন ফিড?",
+"Remote jobs, paid online": "রিমোট কাজ, অনলাইনে পরিশোধ",
+"On-site work near you": "আপনার কাছাকাছি সরেজমিন কাজ",
+"Why is this locked? →": "এটি বন্ধ কেন? →",
+"Locked while your current job runs": "চলমান কাজ শেষ না হওয়া পর্যন্ত বন্ধ",
+"No limit — one live service per asset": "কোনো সীমা নেই — প্রতি সম্পদে একটি চলমান সেবা",
+"Only skill jobs stack here. While you are on a skill or online job this feed is locked — asset service stays open.": "এখানে কেবল দক্ষতার কাজ জমা হয়। আপনি কোনো দক্ষতা বা অনলাইন কাজে থাকলে এই ফিড বন্ধ থাকে — সম্পদ সেবা খোলা থাকে।",
+"Skill Job": "দক্ষতার কাজ",
+"Skill and online jobs are locked": "দক্ষতা ও অনলাইন কাজ বন্ধ আছে",
+"You are already on a skill job. You can hold one skill job or one online job at a time — this feed reopens when Medicine delivery is completed or cancelled.": "আপনি ইতিমধ্যে একটি দক্ষতার কাজে আছেন। একসাথে একটি দক্ষতার কাজ বা একটি অনলাইন কাজ রাখতে পারবেন — ওষুধ ডেলিভারি শেষ বা বাতিল হলে এই ফিড আবার খুলবে।",
+"No skill jobs while you’re engaged": "নিয়োজিত থাকা অবস্থায় কোনো দক্ষতার কাজ নেই",
+"Asset service has no such limit — keep earning from what you own.": "সম্পদ সেবায় এমন কোনো সীমা নেই — আপনার যা আছে তা দিয়ে আয় চালিয়ে যান।",
+"Asset service is still open": "সম্পদ সেবা এখনও খোলা",
+"View job in progress": "চলমান কাজ দেখুন",
+"Only asset requests stack here. You can serve as many assets as you own — one live service per asset, so an asset already on a job stops appearing.": "এখানে কেবল সম্পদের অনুরোধ জমা হয়। আপনার যত সম্পদ আছে সব দিয়েই সেবা দিতে পারেন — প্রতি সম্পদে একটি চলমান সেবা, তাই কাজে থাকা সম্পদ আর দেখা যায় না।",
+"Why am I seeing nothing? →": "কিছু দেখা যাচ্ছে না কেন? →",
+"All your assets are on a job": "আপনার সব সম্পদ কাজে আছে",
+"Your only declared asset is currently lent out. An asset can serve one job at a time — requests resume the moment it is free.": "আপনার ঘোষিত একমাত্র সম্পদটি এখন ভাড়ায় আছে। একটি সম্পদ একসাথে একটি কাজেই যেতে পারে — খালি হওয়ামাত্র অনুরোধ আবার আসবে।",
+"No asset requests right now": "এখন কোনো সম্পদের অনুরোধ নেই",
+"Declare another asset and its requests start stacking here straight away.": "আরেকটি সম্পদ ঘোষণা করুন, তার অনুরোধ সাথে সাথে এখানে জমা হতে শুরু করবে।",
+"MY ASSETS": "আমার সম্পদ",
+"On a job": "কাজে আছে",
+"Declare another asset": "আরেকটি সম্পদ ঘোষণা করুন",
+"View asset job in progress": "চলমান সম্পদ কাজ দেখুন",
+"0 asset requests nearby": "কাছাকাছি ০টি সম্পদের অনুরোধ",
+"No asset requests match right now": "এখন কোনো সম্পদের অনুরোধ মিলছে না",
+"Widen your radius, or declare more asset types to match more requests.": "ব্যাসার্ধ বাড়ান, অথবা আরও অনুরোধ পেতে আরও ধরনের সম্পদ ঘোষণা করুন।",
+"You can hold one online job or one skill job at a time — this feed locks while either is running.": "একসাথে একটি অনলাইন কাজ বা একটি দক্ষতার কাজ রাখতে পারবেন — যেকোনো একটি চললে এই ফিড বন্ধ থাকে।",
+"Bid on as many jobs as you like. The moment a client accepts one, it stays live and your other bids are removed automatically.": "যত খুশি কাজে বিড করুন। কোনো ক্লায়েন্ট একটি গ্রহণ করলেই সেটি চালু থাকে এবং আপনার বাকি বিডগুলো স্বয়ংক্রিয়ভাবে সরে যায়।",
+"27/04/2026 · 26 min ago": "২৭/০৪/২০২৬ · ২৬ মিনিট আগে",
+"27/04/2026 · 41 min ago": "২৭/০৪/২০২৬ · ৪১ মিনিট আগে",
+"Online job": "অনলাইন কাজ",
+"Preview accepted state →": "গৃহীত অবস্থা দেখুন →",
+"Medicine delivery was accepted": "ওষুধ ডেলিভারি গৃহীত হয়েছে",
+"Your other bids were removed automatically. Finish or cancel this job to start bidding again.": "আপনার বাকি বিডগুলো স্বয়ংক্রিয়ভাবে সরে গেছে। আবার বিড শুরু করতে এই কাজটি শেষ করুন বা বাতিল করুন।",
+"Removed": "সরানো হয়েছে",
+"Removed bids are kept in your history under Past, marked as removed by rule.": "সরানো বিডগুলো আপনার ইতিহাসে পূর্বের বিড-এ থাকে, নিয়ম অনুযায়ী সরানো হিসেবে চিহ্নিত।",
 "Need someone to pick up medicine from Motijheel pharmacy and deliver to Dhanmondi before 6 PM.": "মতিঝিল ফার্মেসি থেকে ওষুধ সংগ্রহ করে সন্ধ্যা ৬টার আগে ধানমন্ডিতে পৌঁছে দেওয়ার জন্য একজন দরকার।",
 "Medicine delivery": "ওষুধ ডেলিভারি",
 "Be the chooser,": "নিজেই বেছে নিন,",
