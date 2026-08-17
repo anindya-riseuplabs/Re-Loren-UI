@@ -911,6 +911,9 @@ textarea.input{padding:11px 13px}
         <span class="input"><input value="Rahim Uddin" placeholder="Enter your name"></span></label>
       <label class="field mt16"><span class="flab">Phone number</span>
         <span class="input"><span class="prefix">+880</span><input value="1711-234567" placeholder="1711-234567"></span></label>
+      <label class="field mt16"><span class="flab">Profession</span>
+        <span class="input"><input data-field="prof" placeholder="e.g. Student, Plumber, Rider"><span data-sheet="prof"><svg class="ic"><use href="#i-chevronDown"/></svg></span></span>
+        <span class="fhint">Clients see this on your bid — pick one or type your own</span></label>
       <label class="field mt16"><span class="flab">Email (optional)</span>
         <span class="input"><input placeholder="email@example.com"></span></label>
       <label class="field mt16"><span class="flab">Password</span>
@@ -937,6 +940,25 @@ textarea.input{padding:11px 13px}
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Photo — profile.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Selfie — selfie.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-file"/></svg><div class="lmain"><div class="lt">Certificate — certificate.pdf</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="prof">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Profession</div>
+        <div class="t-sm t-sec2 mt4">Pick the closest one, or close this and type your own</div>
+        <label class="field mt12"><span class="input"><svg class="ic"><use href="#i-search"/></svg><input placeholder="Search professions"></span></label>
+        <div class="glass pad0 mt12" style="max-height:220px;overflow:auto">
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Student"><div class="lmain"><div class="lt">Student</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Delivery rider"><div class="lmain"><div class="lt">Delivery rider</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Driver"><div class="lmain"><div class="lt">Driver</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Plumber"><div class="lmain"><div class="lt">Plumber</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Electrician"><div class="lmain"><div class="lt">Electrician</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Tutor"><div class="lmain"><div class="lt">Tutor</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Shop worker"><div class="lmain"><div class="lt">Shop worker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Homemaker"><div class="lmain"><div class="lt">Homemaker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Other"><div class="lmain"><div class="lt">Other</div></div></div>
+        </div>
       </div>
     </div>
   </div></div>
@@ -1186,7 +1208,10 @@ textarea.input{padding:11px 13px}
         </div>
       </div>
       <div class="hidden" data-pane="sktab:declare">
-        <div class="t-subtitle mt12">Add what you can do</div>
+        <label class="field mt12"><span class="flab">Profession</span>
+          <span class="input"><input data-field="prof" placeholder="e.g. Student, Plumber, Rider"><span data-sheet="prof"><svg class="ic"><use href="#i-chevronDown"/></svg></span></span>
+          <span class="fhint">Clients see this on your bid — pick one or type your own</span></label>
+        <div class="t-subtitle mt16">Add what you can do</div>
         <div class="t-sm t-sec2 mt4">Search the list, or add a custom skill if not found.</div>
         <label class="field mt12"><span class="input"><input placeholder="Type a skill in your own words"></span></label>
         <div class="t-cap t-mut mt12">e.g. "I can drive a car, be a house maid, cook deshi/Chinese food" — add any skill you have, separated by commas (,).</div>
@@ -1277,6 +1302,25 @@ textarea.input{padding:11px 13px}
         <div class="t-sm t-sec2 mt4">Pick from your device</div>
         <div class="lrow mt8" data-dismiss><svg class="ic"><use href="#i-file"/></svg><div class="lmain"><div class="lt">Certificate — certificate.pdf</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Photo — profile.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="prof">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Profession</div>
+        <div class="t-sm t-sec2 mt4">Pick the closest one, or close this and type your own</div>
+        <label class="field mt12"><span class="input"><svg class="ic"><use href="#i-search"/></svg><input placeholder="Search professions"></span></label>
+        <div class="glass pad0 mt12" style="max-height:220px;overflow:auto">
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Student"><div class="lmain"><div class="lt">Student</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Delivery rider"><div class="lmain"><div class="lt">Delivery rider</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Driver"><div class="lmain"><div class="lt">Driver</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Plumber"><div class="lmain"><div class="lt">Plumber</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Electrician"><div class="lmain"><div class="lt">Electrician</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Tutor"><div class="lmain"><div class="lt">Tutor</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Shop worker"><div class="lmain"><div class="lt">Shop worker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Homemaker"><div class="lmain"><div class="lt">Homemaker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Other"><div class="lmain"><div class="lt">Other</div></div></div>
+        </div>
       </div>
     </div>
   </div></div>
@@ -1944,6 +1988,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳4,200</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Graphic designer</span>
           <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>Bangladesh</span>
           <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>Bangla · English</span>
           <span class="chip on"><svg class="ic"><use href="#i-check"/></svg>Logo design</span>
@@ -1962,6 +2007,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳4,800</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Freelance designer</span>
           <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>UAE</span>
           <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>Arabic · English</span>
           <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Pays out in AED</span>
@@ -1980,6 +2026,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳5,100</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Illustrator</span>
           <span class="chip gold"><svg class="ic"><use href="#i-flag"/></svg>France</span>
           <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg>French · English</span>
           <span class="chip on"><svg class="ic"><use href="#i-globe"/></svg>Pays out in EUR</span>
@@ -2040,6 +2087,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,500</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Delivery rider</span>
           <span class="chip on"><svg class="ic"><use href="#i-check"/></svg><span>Tag match:</span> Bike delivery</span>
           <span class="chip on"><svg class="ic"><use href="#i-briefcase"/></svg><span>Asset:</span> Motorbike</span>
           <span class="chip on"><svg class="ic"><use href="#i-location"/></svg><span>Distance:</span> 600 m</span>
@@ -2059,6 +2107,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,400</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Student</span>
           <span class="chip on"><svg class="ic"><use href="#i-check"/></svg><span>Tag match:</span> Bike delivery</span>
           <span class="chip on"><svg class="ic"><use href="#i-chat"/></svg><span>Language:</span> Banglish</span>
         </div>
@@ -2076,6 +2125,7 @@ textarea.input{padding:11px 13px}
           <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,600</div></div>
         </div>
         <div class="chiprow mt8">
+          <span class="chip on"><svg class="ic"><use href="#i-user"/></svg>Plumber</span>
           <span class="chip on"><svg class="ic"><use href="#i-check"/></svg><span>Tag match:</span> Bike delivery</span>
           <span class="chip on"><svg class="ic"><use href="#i-star"/></svg><span>Rating:</span> 4.6</span>
         </div>
@@ -2140,7 +2190,7 @@ textarea.input{padding:11px 13px}
             <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,500</div></div>
           </div>
           <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
-          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Rahim Uddin</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Rahim Uddin · Delivery rider</div>
           <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
           <div class="row gap8 mt8">
             <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
@@ -2182,7 +2232,7 @@ textarea.input{padding:11px 13px}
             <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,400</div></div>
           </div>
           <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
-          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Sabbir Hasan</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Sabbir Hasan · Student</div>
           <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
           <div class="row gap8 mt8">
             <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
@@ -2224,7 +2274,7 @@ textarea.input{padding:11px 13px}
             <div style="text-align:right"><div class="t-cap t-mut">Bid</div><div class="t-subtitle t-gold">৳1,600</div></div>
           </div>
           <div class="t-sm t-teal t-b mt8" data-go="worker-reviews">View reviews →</div>
-          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Nafis Ahmed</div>
+          <div class="t-cap t-mut mt4" style="text-align:right">Owner · Nafis Ahmed · Plumber</div>
           <button class="btn btn-secondary mt12" data-go="asset-view"><svg class="ic"><use href="#i-truck"/></svg>View asset details</button>
           <div class="row gap8 mt8">
             <button class="btn btn-secondary grow" data-toast="Bid declined">Decline</button>
@@ -4841,6 +4891,9 @@ textarea.input{padding:11px 13px}
         <span class="input"><input value="Karim Ahmed"></span></label>
       <label class="field mt16"><span class="flab">Phone number</span>
         <span class="input"><span class="prefix">+880</span><input value="1711-234567" placeholder="1711-234567"></span></label>
+      <label class="field mt16"><span class="flab">Profession</span>
+        <span class="input"><input data-field="prof" value="Delivery rider" placeholder="e.g. Student, Plumber, Rider"><span data-sheet="prof"><svg class="ic"><use href="#i-chevronDown"/></svg></span></span>
+        <span class="fhint">Clients see this on your bid — pick one or type your own</span></label>
       <label class="field mt16"><span class="flab">Email (optional)</span>
         <span class="input"><input value="karim@example.com"></span></label>
     </div>
@@ -4854,6 +4907,25 @@ textarea.input{padding:11px 13px}
         <div class="t-sm t-sec2 mt4">Pick from your device</div>
         <div class="lrow mt8" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Photo — profile.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Selfie — selfie.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
+      </div>
+    </div>
+    <div class="sheetwrap" data-sheet-id="prof">
+      <div class="sdim"></div>
+      <div class="sheet"><div class="grab"></div>
+        <div class="t-subtitle">Profession</div>
+        <div class="t-sm t-sec2 mt4">Pick the closest one, or close this and type your own</div>
+        <label class="field mt12"><span class="input"><svg class="ic"><use href="#i-search"/></svg><input placeholder="Search professions"></span></label>
+        <div class="glass pad0 mt12" style="max-height:220px;overflow:auto">
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Student"><div class="lmain"><div class="lt">Student</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Delivery rider"><div class="lmain"><div class="lt">Delivery rider</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Driver"><div class="lmain"><div class="lt">Driver</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Plumber"><div class="lmain"><div class="lt">Plumber</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Electrician"><div class="lmain"><div class="lt">Electrician</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Tutor"><div class="lmain"><div class="lt">Tutor</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Shop worker"><div class="lmain"><div class="lt">Shop worker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Homemaker"><div class="lmain"><div class="lt">Homemaker</div></div></div>
+          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Other"><div class="lmain"><div class="lt">Other</div></div></div>
+        </div>
       </div>
     </div>
   </div></div>
@@ -6349,6 +6421,24 @@ const BN = {
 "20 Aug 2026": "২০ আগস্ট ২০২৬",
 "Unpaid commission past the deadline pauses your access to new jobs.": "সময়সীমার পরেও কমিশন বকেয়া থাকলে নতুন কাজে আপনার প্রবেশ বন্ধ হয়ে যায়।",
 "Pay commission": "কমিশন পরিশোধ করুন",
+/* --- assistant profession --- */
+"Profession": "পেশা",
+"e.g. Student, Plumber, Rider": "যেমন শিক্ষার্থী, প্লাম্বার, রাইডার",
+"Clients see this on your bid — pick one or type your own": "ক্লায়েন্টরা আপনার বিডে এটি দেখবে — একটি বেছে নিন বা নিজে লিখুন",
+"Pick the closest one, or close this and type your own": "কাছাকাছি একটি বেছে নিন, অথবা এটি বন্ধ করে নিজে লিখুন",
+"Search professions": "পেশা খুঁজুন",
+"Student": "শিক্ষার্থী",
+"Driver": "ড্রাইভার",
+"Plumber": "প্লাম্বার",
+"Electrician": "ইলেকট্রিশিয়ান",
+"Shop worker": "দোকান কর্মী",
+"Homemaker": "গৃহিণী",
+"Graphic designer": "গ্রাফিক ডিজাইনার",
+"Freelance designer": "ফ্রিল্যান্স ডিজাইনার",
+"Illustrator": "ইলাস্ট্রেটর",
+"Owner · Rahim Uddin · Delivery rider": "মালিক · Rahim Uddin · ডেলিভারি রাইডার",
+"Owner · Sabbir Hasan · Student": "মালিক · Sabbir Hasan · শিক্ষার্থী",
+"Owner · Nafis Ahmed · Plumber": "মালিক · Nafis Ahmed · প্লাম্বার",
 };
 </script>
 <script>
