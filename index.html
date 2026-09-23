@@ -868,6 +868,9 @@ textarea.input{padding:11px 13px}
       </div>
       <label class="field mt16"><span class="flab">Full name</span>
         <span class="input"><input value="Karim Ahmed" placeholder="Enter your name"></span></label>
+      <div class="field mt16"><span class="flab">Gender</span>
+        <div class="seg"><button class="sopt on" data-tab="gender:m">Male</button><button class="sopt" data-tab="gender:f">Female</button><button class="sopt" data-tab="gender:o">Other</button></div>
+        <span class="fhint">Required</span></div>
       <label class="field mt16"><span class="flab">Phone number</span>
         <span class="input"><span class="prefix">+880</span><input value="1711-234567" placeholder="1711-234567"></span></label>
       <label class="field mt16"><span class="flab">Email (optional)</span>
@@ -909,6 +912,9 @@ textarea.input{padding:11px 13px}
       </div>
       <label class="field mt16"><span class="flab">Full name</span>
         <span class="input"><input value="Rahim Uddin" placeholder="Enter your name"></span></label>
+      <div class="field mt16"><span class="flab">Gender</span>
+        <div class="seg"><button class="sopt on" data-tab="gender:m">Male</button><button class="sopt" data-tab="gender:f">Female</button><button class="sopt" data-tab="gender:o">Other</button></div>
+        <span class="fhint">Required</span></div>
       <label class="field mt16"><span class="flab">Phone number</span>
         <span class="input"><span class="prefix">+880</span><input value="1711-234567" placeholder="1711-234567"></span></label>
       <label class="field mt16"><span class="flab">Profession</span>
@@ -929,7 +935,6 @@ textarea.input{padding:11px 13px}
       <div class="banner info mt16"><svg class="ic"><use href="#i-info"/></svg>
         <div><div class="bbody">Your age is verified automatically from your NID photo — no need to enter it.</div></div></div>
       <button class="btn btn-primary mt24" data-go="login-otp">Create account</button>
-      <button class="btn btn-secondary mt8" data-go="skills"><svg class="ic"><use href="#i-star"/></svg>Declare service</button>
       <div class="t-cap t-mut t-c mt12">By continuing you agree to our <span class="t-gold" style="text-decoration:underline" data-go="terms">Terms &amp; Privacy</span>.</div>
     </div>
     <div class="sheetwrap" data-sheet-id="pick">
@@ -1026,7 +1031,7 @@ textarea.input{padding:11px 13px}
 
 <section class="sec" data-sec="2">
 <h2>2 · Assistant verification</h2>
-<p class="sec-sub">Onboarding intro → NID upload → facial capture → emergency contact (under review)</p>
+<p class="sec-sub">Onboarding intro → NID upload → facial capture → emergency contact (under review) → declare service</p>
 <div class="frames">
 <article class="frame" id="f-worker-intro" data-title="Assistant verification intro" data-sec="2">
   <div class="flabel"><span class="fname">Assistant verification intro</span><span class="froute">/worker/intro</span>
@@ -1159,7 +1164,7 @@ textarea.input{padding:11px 13px}
         <span class="input"><input placeholder="NID / Birth reg. no."></span></label>
       <label class="field mt12"><span class="flab">Relation with you</span>
         <span class="input"><input placeholder="e.g. Father, Spouse, Brother"></span></label>
-      <button class="btn btn-primary mt24" data-go="worker-home">Save &amp; continue</button>
+      <button class="btn btn-primary mt24" data-go="skills">Save &amp; continue</button>
     </div>
     <div class="sheetwrap" data-sheet-id="otp">
       <div class="sdim"></div>
@@ -4891,9 +4896,6 @@ textarea.input{padding:11px 13px}
         <span class="input"><input value="Karim Ahmed"></span></label>
       <label class="field mt16"><span class="flab">Phone number</span>
         <span class="input"><span class="prefix">+880</span><input value="1711-234567" placeholder="1711-234567"></span></label>
-      <label class="field mt16"><span class="flab">Profession</span>
-        <span class="input"><input data-field="prof" value="Delivery rider" placeholder="e.g. Student, Plumber, Rider"><span data-sheet="prof"><svg class="ic"><use href="#i-chevronDown"/></svg></span></span>
-        <span class="fhint">Clients see this on your bid — pick one or type your own</span></label>
       <label class="field mt16"><span class="flab">Email (optional)</span>
         <span class="input"><input value="karim@example.com"></span></label>
     </div>
@@ -4907,25 +4909,6 @@ textarea.input{padding:11px 13px}
         <div class="t-sm t-sec2 mt4">Pick from your device</div>
         <div class="lrow mt8" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Photo — profile.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
         <div class="lrow" data-dismiss><svg class="ic"><use href="#i-image"/></svg><div class="lmain"><div class="lt">Selfie — selfie.jpg</div></div><svg class="ic"><use href="#i-chevron"/></svg></div>
-      </div>
-    </div>
-    <div class="sheetwrap" data-sheet-id="prof">
-      <div class="sdim"></div>
-      <div class="sheet"><div class="grab"></div>
-        <div class="t-subtitle">Profession</div>
-        <div class="t-sm t-sec2 mt4">Pick the closest one, or close this and type your own</div>
-        <label class="field mt12"><span class="input"><svg class="ic"><use href="#i-search"/></svg><input placeholder="Search professions"></span></label>
-        <div class="glass pad0 mt12" style="max-height:220px;overflow:auto">
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Student"><div class="lmain"><div class="lt">Student</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Delivery rider"><div class="lmain"><div class="lt">Delivery rider</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Driver"><div class="lmain"><div class="lt">Driver</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Plumber"><div class="lmain"><div class="lt">Plumber</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Electrician"><div class="lmain"><div class="lt">Electrician</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Tutor"><div class="lmain"><div class="lt">Tutor</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Shop worker"><div class="lmain"><div class="lt">Shop worker</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Homemaker"><div class="lmain"><div class="lt">Homemaker</div></div></div>
-          <div class="lrow" data-dismiss data-setfield="prof" data-setvalue="Other"><div class="lmain"><div class="lt">Other</div></div></div>
-        </div>
       </div>
     </div>
   </div></div>
@@ -6439,6 +6422,11 @@ const BN = {
 "Owner · Rahim Uddin · Delivery rider": "মালিক · Rahim Uddin · ডেলিভারি রাইডার",
 "Owner · Sabbir Hasan · Student": "মালিক · Sabbir Hasan · শিক্ষার্থী",
 "Owner · Nafis Ahmed · Plumber": "মালিক · Nafis Ahmed · প্লাম্বার",
+/* --- gender --- */
+"Gender": "লিঙ্গ",
+"Male": "পুরুষ",
+"Female": "নারী",
+"Required": "আবশ্যক",
 };
 </script>
 <script>
